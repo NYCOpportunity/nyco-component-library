@@ -28,6 +28,10 @@ const meta = {
       control: 'boolean',
       description: 'Disable the button',
     },
+    className: {
+      control: 'text',
+      description: 'Custom CSS classes (Tailwind)',
+    },
     children: {
       control: 'text',
       description: 'Button text content',
@@ -216,4 +220,14 @@ export const ColorMatrix: Story = {
       </div>
     </div>
   ),
+};
+
+/**
+ * Custom styling with className - experiment with Tailwind classes
+ */
+export const WithCustomStyles: Story = {
+  args: {
+    children: 'Custom Styled',
+    className: 'w-full shadow-lg hover:shadow-xl',
+  },
 };
