@@ -3,9 +3,13 @@ import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      jsxRuntime: 'automatic',
+    }),
+  ],
   build: {
-    emptyOutDir: false,
+    emptyOutDir: true,
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'UI',
@@ -13,13 +17,25 @@ export default defineConfig({
       fileName: (format) => (format === 'es' ? 'index.mjs' : 'index.cjs'),
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
-      output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') return 'style.css';
-          return assetInfo.name || 'asset';
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      output: [
+        {
+          format: 'es',
+          entryFileNames: 'index.mjs',
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name === 'style.css') return 'style.css';
+            return assetInfo.name || 'asset';
+          },
         },
-      },
+        {
+          format: 'cjs',
+          entryFileNames: 'index.cjs',
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name === 'style.css') return 'style.css';
+            return assetInfo.name || 'asset';
+          },
+        },
+      ],
     },
   },
 });
