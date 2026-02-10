@@ -21,11 +21,9 @@
     "./style.css": "./dist/style.css"
   },
   "scripts": {
-    "build": "pnpm run build:ts && pnpm run build:vite",
     "build:ts": "tsc -p tsconfig.build.json",
     "build:vite": "vite build",
-    "dev": "vite",
-    "preview": "vite preview"
+    "build": "pnpm run build:vite && pnpm run build:ts"
   },
   "peerDependencies": {
     "react": "^18.0.0",

@@ -1,28 +1,24 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = __filename.substring(0, __filename.lastIndexOf('/'));
+import path from 'node:path';
 
 export default defineConfig({
   plugins: [react()],
   build: {
+    emptyOutDir: false,
     lib: {
-      entry: `${__dirname}/src/index.ts`,
-      name: 'Ui',
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'UI',
       formats: ['es', 'cjs'],
       fileName: (format) => (format === 'es' ? 'index.mjs' : 'index.cjs'),
     },
-    cssCodeSplit: false,
     rollupOptions: {
       external: ['react', 'react-dom'],
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') return 'style.css';
+          return assetInfo.name || 'asset';
         },
-        assetFileNames: 'style.css',
       },
     },
   },
