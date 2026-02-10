@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ui-primary: #2563eb;
+  --ui-primary-foreground: #ffffff;
+  --ui-secondary: #7c3aed;
+  --ui-secondary-foreground: #ffffff;
+  --ui-font-sm: 0.875rem;
+  --ui-font-md: 1rem;
+  --ui-font-lg: 1.125rem;
+  --ui-radius: 0.5rem;
+}
+
+.d-text-small {
+  font-size: var(--ui-font-sm);
+  line-height: 1.25rem;
+}
+
+.d-text-body {
+  font-size: var(--ui-font-md);
+  line-height: 1.5rem;
+}
+
+.d-text-lg {
+  font-size: var(--ui-font-lg);
+  line-height: 1.75rem;
+}
