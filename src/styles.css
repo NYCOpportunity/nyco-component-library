@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================================
-   CSS CUSTOM PROPERTIES
-   ============================================================ */
-
 @layer base {
   :root {
     --ui-primary: #2563eb;
@@ -20,117 +16,54 @@
     --line-height-md: 1.5rem;
     --line-height-lg: 1.75rem;
 
+    /* --- Fonts --- */
     --font-primary: 'Public Sans', sans-serif;
     --font-secondary: 'Source Serif Pro', serif;
 
-    /* ==========================================================
-       BRAND FOUNDATIONS — NEUTRAL
-       Shared across all products.
-       ========================================================== */
+    /* --- Neutral --- */
+    --color-neutral-white: #ffffff; /* Page backgrounds, card surfaces */
+    --color-neutral-100: #f5f5f5; /* Subtle backgrounds */
+    --color-neutral-300: #dddddd; /* Borders, input fields, dividers */
+    --color-neutral-500: #aaaaaa; /* De-emphasized elements, icons */
+    --color-neutral-700: #777777; /* Secondary text, supporting content */
+    --color-neutral-900: #333333; /* Subtitles, subtext, footnotes */
+    --color-neutral-black: #191919; /* Primary text, headings */
 
-    /* Page backgrounds, card surfaces */
-    --color-neutral-white: #ffffff;
+    /* --- Text --- */
+    --color-text-primary: var(--color-neutral-black); /* Body text, headings */
+    --color-text-secondary: var(--color-neutral-700); /* Supporting text, captions */
 
-    /* Subtle backgrounds */
-    --color-neutral-100: #f5f5f5;
-
-    /* Borders, input fields, dividers */
-    --color-neutral-300: #dddddd;
-
-    /* De-emphasized elements, icons */
-    --color-neutral-500: #aaaaaa;
-
-    /* Secondary text, supporting content */
-    --color-neutral-700: #777777;
-
-    /* Subtitles, subtext, footnotes, source notes */
-    --color-neutral-900: #333333;
-
-    /* Primary text, headings */
-    --color-neutral-black: #191919;
-
-    /* ==========================================================
-       DEV TOKENS — NEUTRAL-DEPENDENT
-       These reference neutral foundations only and are
-       therefore shared across all products.
-       ========================================================== */
-
-    /* Body text, headings, primary content */
-    --color-text-primary: var(--color-neutral-black);
-
-    /* Supporting text, captions */
-    --color-text-secondary: var(--color-neutral-700);
-
-    /* Default borders, input fields, card outlines */
-    /* Note: For strong borders use --color-neutral-500 directly,
-       for subtle borders use --color-neutral-100 directly */
-    --color-border-default: var(--color-neutral-300);
-
-    /* Page backgrounds, cards */
-    --color-bg-primary: var(--color-neutral-white);
-
-    /* Subtle backgrounds */
-    --color-bg-secondary: var(--color-neutral-100);
-
-    /* ==========================================================
-       SEMANTIC COLORS
-       Currently fixed across all products.
-       TO REVISIT: May become product-specific when Workforce
-       Data and Equity palettes are defined.
-       ========================================================== */
-
-    /* --- Info --- */
-
-    /* Info message backgrounds */
-    --color-info-light: #dcedf5;
-
-    /* Info icons, borders */
-    --color-info-base: #70baff;
-
-    /* Info text (WCAG AA 4:5:1) */
-    --color-info-dark: #4a8fcc;
-
-    /* --- Success --- */
-
-    /* Success message backgrounds */
-    --color-success-light: #e2f2d5;
-
-    /* Success icons, checkmarks */
-    --color-success-base: #008703;
-
-    /* Success text (WCAG AA 4:6:1) */
-    --color-success-dark: #006602;
-
-    /* --- Warning --- */
-
-    /* Warning message backgrounds */
-    --color-warning-light: #f8ecce;
-
-    /* Warning icons, alerts */
-    --color-warning-base: #ff8320;
-
-    /* Warning text (WCAG AA 4:7:1) */
-    --color-warning-dark: #cc6919;
-
-    /* --- Error --- */
-
-    /* Error message backgrounds */
-    --color-error-light: #f8d9de;
-
-    /* Error icons, destructive buttons */
-    --color-error-base: #ec131e;
-
-    /* Error text (WCAG AA 4:9:1) */
-    --color-error-dark: #bd0f18;
-
-    /* Error state borders */
+    /* --- Border --- */
+    /* Strong borders: use --color-neutral-500 directly */
+    /* Subtle borders: use --color-neutral-100 directly */
+    --color-border-default: var(--color-neutral-300); /* Default borders, inputs, card outlines */
     --color-border-error: var(--color-error-base);
 
-    /* ==========================================================
-       DATA VISUALIZATION
-       ========================================================== */
+    /* --- Background --- */
+    --color-bg-primary: var(--color-neutral-white); /* Page backgrounds, cards */
+    --color-bg-secondary: var(--color-neutral-100); /* Subtle backgrounds */
 
-    /* --- Viz --- */
+    /* --- Info --- */
+    --color-info-light: #dcedf5; /* Backgrounds */
+    --color-info-base: #70baff; /* Icons, borders */
+    --color-info-dark: #4a8fcc; /* Text (WCAG AA 4.5:1) */
+
+    /* --- Success --- */
+    --color-success-light: #e2f2d5; /* Backgrounds */
+    --color-success-base: #008703; /* Icons, checkmarks */
+    --color-success-dark: #006602; /* Text (WCAG AA 4.6:1) */
+
+    /* --- Warning --- */
+    --color-warning-light: #f8ecce; /* Backgrounds */
+    --color-warning-base: #ff8320; /* Icons, alerts */
+    --color-warning-dark: #cc6919; /* Text (WCAG AA 4.7:1) */
+
+    /* --- Error --- */
+    --color-error-light: #f8d9de; /* Backgrounds */
+    --color-error-base: #ec131e; /* Icons, destructive buttons */
+    --color-error-dark: #bd0f18; /* Text (WCAG AA 4.9:1) */
+
+    /* --- Data Viz --- */
     --color-data-viz-01: #3f5bbf;
     --color-data-viz-02: #85b6ff;
     --color-data-viz-03: #e76e68;
@@ -140,12 +73,37 @@
     --color-data-viz-07: #78c7d4;
     --color-data-viz-08: #ff8822;
 
-    /* --- Maps --- */
+    /* --- Data Viz Maps --- */
     --color-data-viz-maps-01: #c8d1ef;
     --color-data-viz-maps-02: #92a4e6;
     --color-data-viz-maps-03: #3f5bbf;
     --color-data-viz-maps-04: #1c3aa4;
     --color-data-viz-maps-05: #050560;
+
+    /* --- Spacing — Base scale (8px grid) --- */
+    --space-1: 0.5rem; /* 8px */
+    --space-2: 1rem; /* 16px */
+    --space-3: 1.5rem; /* 24px */
+    --space-5: 2.5rem; /* 40px */
+    --space-6: 3rem; /* 48px */
+    --space-7: 3.5rem; /* 56px */
+    --space-9: 4.5rem; /* 72px */
+    --space-14: 7rem; /* 112px */
+
+    /* --- Spacing — Semantic --- */
+    --space-display-section: var(--space-14); /* Between major sections on landing/home pages */
+    --space-content-section: var(
+      --space-7
+    ); /* Between major page sections (compresses on mobile) */
+    --space-content-subsection: var(--space-5); /* Between sub-sections within a page */
+    --space-content-tight: var(--space-2); /* Between closely related content elements */
+    --space-content-divider: var(--space-3); /* Above and below a divider */
+  }
+
+  @media (max-width: 999px) {
+    :root {
+      --space-content-section: var(--space-6); /* 48px, down from 56px */
+    }
   }
 }
 
