@@ -1,6 +1,23 @@
 {
-  "name": "@scope/ui",
+  "name": "@nycopportunity/component-library",
   "version": "0.1.0",
+  "description": "A React component library for NYC Opportunity projects, built with TypeScript, Tailwind CSS, and Storybook",
+  "keywords": [
+    "react",
+    "components",
+    "ui",
+    "nyc",
+    "opportunity",
+    "typescript",
+    "tailwind"
+  ],
+  "author": "NYC Opportunity",
+  "license": "MIT",
+  "homepage": "https://github.com/NYCOpportunity/nyco-component-library#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NYCOpportunity/nyco-component-library.git"
+  },
   "private": false,
   "type": "module",
   "main": "./dist/index.cjs",
