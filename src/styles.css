@@ -2,31 +2,483 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --ui-primary: #2563eb;
-  --ui-primary-foreground: #ffffff;
-  --ui-secondary: #7c3aed;
-  --ui-secondary-foreground: #ffffff;
-  --ui-font-sm: 0.875rem;
-  --ui-font-md: 1rem;
-  --ui-font-lg: 1.125rem;
-  --ui-radius: 0.5rem;
-  --line-height-sm: 1rem;
-  --line-height-md: 1.5rem;
-  --line-height-lg: 1.75rem;
+/* ============================================================
+   CSS CUSTOM PROPERTIES
+   ============================================================ */
+
+@layer base {
+  :root {
+    --ui-primary: #2563eb;
+    --ui-primary-foreground: #ffffff;
+    --ui-secondary: #7c3aed;
+    --ui-secondary-foreground: #ffffff;
+    --ui-font-sm: 0.875rem;
+    --ui-font-md: 1rem;
+    --ui-font-lg: 1.125rem;
+    --ui-radius: 0.5rem;
+    --line-height-sm: 1rem;
+    --line-height-md: 1.5rem;
+    --line-height-lg: 1.75rem;
+
+    --font-primary: 'Public Sans', sans-serif;
+    --font-secondary: 'Source Serif Pro', serif;
+  }
 }
 
-.d-text-small {
-  font-size: var(--ui-font-sm);
-  line-height: var(--line-height-sm);
-}
+@layer components {
+  .d-text-small {
+    font-size: var(--ui-font-sm);
+    line-height: var(--line-height-sm);
+  }
 
-.d-text-body {
-  font-size: var(--ui-font-md);
-  line-height: var(--line-height-md);
-}
+  .d-text-body {
+    font-size: var(--ui-font-md);
+    line-height: var(--line-height-md);
+  }
 
-.d-text-lg {
-  font-size: var(--ui-font-lg);
-  line-height: 1.75rem;
+  .d-text-lg {
+    font-size: var(--ui-font-lg);
+    line-height: 1.75rem;
+  }
+
+  /* ============================================================
+     TYPOGRAPHY SYSTEM
+     Desktop: 999px+  |  Mobile: <999px
+     Naming convention: [category]-[style]
+     ============================================================ */
+
+  /* ============================================================
+     DISPLAY — Marketing / Landing Pages only
+     ============================================================ */
+
+  .display-title {
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+    line-height: 114%;
+    font-weight: 600; /* semi bold */
+  }
+
+  .display-subtitle {
+    font-family: var(--font-secondary);
+    font-size: 1.5rem;
+    letter-spacing: normal;
+    line-height: 130%;
+    font-weight: 400; /* regular */
+  }
+
+  .display-section-title {
+    font-family: var(--font-secondary);
+    font-size: 2.5rem;
+    letter-spacing: -0.01em;
+    line-height: 124%;
+    font-weight: 400; /* regular */
+  }
+
+  .display-product-header {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    letter-spacing: normal;
+    line-height: 140%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* ============================================================
+     HEADINGS — Content Pages
+     ============================================================ */
+
+  /* H1 — Main page heading */
+  .heading-h1 {
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    letter-spacing: -0.01em;
+    line-height: 124%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* H2 — Major section headings */
+  .heading-h2 {
+    font-family: var(--font-secondary);
+    font-size: 2rem;
+    letter-spacing: -0.01em;
+    line-height: 124%;
+    font-weight: 400; /* regular */
+  }
+
+  /* H3 — Subsections within H2 sections */
+  .heading-h3 {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    line-height: 124%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* ============================================================
+     BODY — Content pages and reading text
+     ============================================================ */
+
+  /* Regular — Content page body, accordion body, long-form reading */
+  .body-regular {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-weight: 400; /* regular */
+  }
+
+  /* Italic — Emphasized body, quotes, figure taxonomy */
+  .body-italic {
+    font-family: var(--font-secondary);
+    font-size: 1.125rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-style: italic;
+  }
+
+  /* Bold — Emphasized/bolded body, key terms */
+  .body-bold {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* Link — Links within body text */
+  .body-link {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-weight: 600; /* semi bold */
+    text-decoration: underline;
+  }
+
+  /* ============================================================
+     UI BASE STYLES — Reusable across various components
+     ============================================================ */
+
+  /* 16px Regular — Card descriptions, control panel, dropdowns, list items, chips, figure body text */
+  .ui-16-regular {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-weight: 400; /* regular */
+  }
+
+  /* 16px Bold — Control panel links, buttons, figure titles, figure links */
+  .ui-16-bold {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* 16px Link — Low digital literacy environments, control panel links, figure links */
+  .ui-16-link {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-weight: 600; /* semi bold */
+    text-decoration: underline;
+  }
+
+  /* 14px Regular — Breadcrumb text, card details/metadata, dates, tooltip body text */
+  .ui-14-regular {
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-weight: 400; /* regular */
+  }
+
+  /* 14px Italic — Figure taxonomy */
+  .ui-14-italic {
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-style: italic;
+  }
+
+  /* 14px Bold — Breadcrumb labels, card details/metadata emphasis, tooltip titles */
+  .ui-14-bold {
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* 12px All Caps — Eyebrow text e.g. "CURRENT SELECTION" */
+  .ui-12-all-caps {
+    font-family: var(--font-primary);
+    font-size: 0.75rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     BUTTONS — Standalone (for use outside control panel)
+     ============================================================ */
+
+  /* Button Label */
+  .button-label {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: normal;
+    line-height: 1.375rem;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* Button Link Label */
+  .button-link-label {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: normal;
+    line-height: 1.375rem;
+    font-weight: 600; /* semi bold */
+    text-decoration: underline;
+  }
+
+  /* ============================================================
+     COMPONENT TITLES — Component-specific sizes
+     ============================================================ */
+
+  /* Accordion Title */
+  .component-accordion-title {
+    font-family: var(--font-primary);
+    font-size: 1.25rem;
+    letter-spacing: normal;
+    line-height: 140%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* Card Title */
+  .component-card-title {
+    font-family: var(--font-primary);
+    font-size: 1.375rem;
+    letter-spacing: normal;
+    line-height: 140%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* Card Link Title */
+  .component-card-link-title {
+    font-family: var(--font-primary);
+    font-size: 1.375rem;
+    letter-spacing: normal;
+    line-height: 140%;
+    font-weight: 600; /* semi bold */
+    text-decoration: underline;
+  }
+
+  /* Control Panel Title */
+  .component-control-panel-title {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    letter-spacing: normal;
+    line-height: 140%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* ============================================================
+     MOBILE OVERRIDES — max-width: 999px
+     Tablet sizing to be added later per spec
+     ============================================================ */
+
+  @media (max-width: 999px) {
+    /* --- Display --- */
+
+    /* Home Page Hero Titles */
+    .display-title {
+      font-size: 2.375rem;
+      line-height: 114%;
+      font-weight: 600;
+    }
+
+    /* Home Page Subtitles */
+    .display-subtitle {
+      font-size: 1.25rem;
+      line-height: 130%;
+      font-weight: 400;
+    }
+
+    /* Home Page Section Titles */
+    .display-section-title {
+      font-size: 2rem;
+      letter-spacing: -0.01em;
+      line-height: 124%;
+      font-weight: 400;
+    }
+
+    /* Home Page Product Detail Headers */
+    .display-product-header {
+      font-size: 1.375rem;
+      line-height: 140%;
+      font-weight: 600;
+    }
+
+    /* --- Headings --- */
+
+    /* H1 — Main page heading */
+    .heading-h1 {
+      font-size: 2.375rem;
+      letter-spacing: normal;
+      line-height: 130%;
+      font-weight: 400;
+    }
+
+    /* H2 — Major section headings */
+    .heading-h2 {
+      font-size: 1.75rem;
+      letter-spacing: normal;
+      line-height: 124%;
+      font-weight: 400;
+    }
+
+    /* H3 — Subsections within H2 sections */
+    .heading-h3 {
+      font-size: 1.375rem;
+      letter-spacing: normal;
+      line-height: 130%;
+      font-weight: 400;
+    }
+
+    /* --- Body --- */
+
+    /* Regular — Content page body, accordion body, long-form reading */
+    .body-regular {
+      font-size: 1.125rem;
+      line-height: 150%;
+      font-weight: 400;
+    }
+
+    /* Italic — Emphasized body, quotes, figure taxonomy */
+    .body-italic {
+      font-size: 1.125rem;
+      line-height: 150%;
+    }
+
+    /* Bold — Emphasized/bolded body, key terms */
+    .body-bold {
+      font-size: 1.125rem;
+      line-height: 150%;
+      font-weight: 600;
+    }
+
+    /* Link — Links within body text */
+    .body-link {
+      font-size: 1.125rem;
+      line-height: 150%;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* --- UI Base --- */
+
+    /* 16px Regular */
+    .ui-16-regular {
+      font-size: 1rem;
+      line-height: 150%;
+      font-weight: 400;
+    }
+
+    /* 16px Bold */
+    .ui-16-bold {
+      font-size: 1rem;
+      line-height: 150%;
+      font-weight: 600;
+    }
+
+    /* 16px Link */
+    .ui-16-link {
+      font-size: 1rem;
+      line-height: 150%;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* 14px Regular */
+    .ui-14-regular {
+      font-size: 0.875rem;
+      line-height: 160%;
+      font-weight: 400;
+    }
+
+    /* 14px Italic */
+    .ui-14-italic {
+      font-size: 0.875rem;
+      line-height: 160%;
+      font-style: italic;
+    }
+
+    /* 14px Bold */
+    .ui-14-bold {
+      font-size: 0.875rem;
+      line-height: 160%;
+      font-weight: 600;
+    }
+
+    /* 12px All Caps */
+    .ui-12-all-caps {
+      font-size: 0.75rem;
+      line-height: 160%;
+      text-transform: uppercase;
+    }
+
+    /* --- Buttons --- */
+
+    /* Button Label */
+    .button-label {
+      font-size: 1rem;
+      line-height: 1.375rem;
+      font-weight: 600;
+    }
+
+    /* Button Link Label */
+    .button-link-label {
+      font-size: 1rem;
+      line-height: 1.375rem;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* --- Component Titles --- */
+
+    /* Accordion Title */
+    .component-accordion-title {
+      font-size: 1.25rem;
+      line-height: 140%;
+      font-weight: 600;
+    }
+
+    /* Card Title */
+    .component-card-title {
+      font-size: 1.375rem;
+      line-height: 140%;
+      font-weight: 600;
+    }
+
+    /* Card Link Title */
+    .component-card-link-title {
+      font-size: 1.375rem;
+      line-height: 140%;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* Control Panel Title */
+    .component-control-panel-title {
+      font-size: 1rem;
+      line-height: 140%;
+      font-weight: 600;
+    }
+  }
 }
