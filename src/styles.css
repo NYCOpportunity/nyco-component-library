@@ -11,16 +11,19 @@
   --ui-font-md: 1rem;
   --ui-font-lg: 1.125rem;
   --ui-radius: 0.5rem;
+  --line-height-sm: 1rem;
+  --line-height-md: 1.5rem;
+  --line-height-lg: 1.75rem;
 }
 
 .d-text-small {
   font-size: var(--ui-font-sm);
-  line-height: 1.25rem;
+  line-height: var(--line-height-sm);
 }
 
 .d-text-body {
   font-size: var(--ui-font-md);
-  line-height: 1.5rem;
+  line-height: var(--line-height-md);
 }
 
 .d-text-lg {

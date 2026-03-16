@@ -1,0 +1,68 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Library",
+      "type": "shell",
+      "command": "pnpm run build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "label": "Type Check",
+      "type": "shell",
+      "command": "pnpm run type-check",
+      "group": "test",
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "label": "Lint",
+      "type": "shell",
+      "command": "pnpm run lint",
+      "group": "test",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ]
+    },
+    {
+      "label": "Lint Fix",
+      "type": "shell",
+      "command": "pnpm run lint:fix",
+      "group": "test",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ]
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "command": "pnpm run format",
+      "group": "test"
+    },
+    {
+      "label": "Format Check",
+      "type": "shell",
+      "command": "pnpm run format:check",
+      "group": "test"
+    },
+    {
+      "label": "Start Storybook",
+      "type": "shell",
+      "command": "pnpm run storybook",
+      "isBackground": true
+    },
+    {
+      "label": "Build Storybook",
+      "type": "shell",
+      "command": "pnpm run build:storybook",
+      "group": "build"
+    }
+  ]
+}
