@@ -4,6 +4,7 @@ node_modules
 # Build outputs
 dist
 .storybook-static
+storybook-static
 
 # Environment variables
 .env
@@ -41,3 +42,4 @@ coverage
 .cache
 .temp
 .tmp
+.vercel
