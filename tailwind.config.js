@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./src/**/*.{ts,tsx}', './.storybook/**/*.{ts,tsx}'],
   safelist: [
     // Width utilities
@@ -29,7 +29,12 @@ module.exports = {
     { pattern: /^!/ },
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        primary: ["'Public Sans'", 'sans-serif'],
+        secondary: ["'Source Serif Pro'", 'serif'],
+      },
+    },
   },
   plugins: [],
 };
