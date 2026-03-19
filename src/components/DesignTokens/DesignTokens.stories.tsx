@@ -6,10 +6,32 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const colorGroups = [
   {
+    group: 'Primary',
+    colors: [
+      { name: 'Primary Light', variable: '--color-primary-light', value: '#ececfe', dark: false },
+      { name: 'Primary Base', variable: '--color-primary-base', value: '#050560', dark: true },
+      { name: 'Primary Dark', variable: '--color-primary-dark', value: '#030339', dark: true },
+    ],
+  },
+  {
+    group: 'Secondary',
+    colors: [
+      {
+        name: 'Secondary Light',
+        variable: '--color-secondary-light',
+        value: '#d3defa',
+        dark: false,
+      },
+      { name: 'Secondary Base', variable: '--color-secondary-base', value: '#2b4cca', dark: true },
+      { name: 'Secondary Dark', variable: '--color-secondary-dark', value: '#1b2d79', dark: true },
+    ],
+  },
+  {
     group: 'Neutral',
     colors: [
       { name: 'White', variable: '--color-neutral-white', value: '#ffffff', dark: false },
       { name: 'Neutral 100', variable: '--color-neutral-100', value: '#f5f5f5', dark: false },
+      { name: 'Neutral 200', variable: '--color-neutral-200', value: '#eeeeee', dark: false },
       { name: 'Neutral 300', variable: '--color-neutral-300', value: '#dddddd', dark: false },
       { name: 'Neutral 500', variable: '--color-neutral-500', value: '#aaaaaa', dark: false },
       { name: 'Neutral 700', variable: '--color-neutral-700', value: '#777777', dark: true },
@@ -36,7 +58,7 @@ const colorGroups = [
   {
     group: 'Warning',
     colors: [
-      { name: 'Warning Light', variable: '--color-warning-light', value: '#f8ecce', dark: false },
+      { name: 'Warning Light', variable: '--color-warning-light', value: '#fbecce', dark: false },
       { name: 'Warning Base', variable: '--color-warning-base', value: '#ff8320', dark: false },
       { name: 'Warning Dark', variable: '--color-warning-dark', value: '#cc6919', dark: true },
     ],
@@ -44,7 +66,7 @@ const colorGroups = [
   {
     group: 'Error',
     colors: [
-      { name: 'Error Light', variable: '--color-error-light', value: '#f8d9de', dark: false },
+      { name: 'Error Light', variable: '--color-error-light', value: '#fbd9de', dark: false },
       { name: 'Error Base', variable: '--color-error-base', value: '#ec131e', dark: true },
       { name: 'Error Dark', variable: '--color-error-dark', value: '#bd0f18', dark: true },
     ],
@@ -232,6 +254,119 @@ const fontGroups = [
 ];
 
 // ---------------------------------------------------------------------------
+// Dev token data — semantic aliases
+// ---------------------------------------------------------------------------
+
+const devTokenGroups = [
+  {
+    group: 'Text',
+    tokens: [
+      {
+        name: 'text-primary',
+        variable: '--color-text-primary',
+        value: '#191919',
+        usage: 'Body text, headings, primary content',
+        dark: true,
+      },
+      {
+        name: 'text-secondary',
+        variable: '--color-text-secondary',
+        value: '#777777',
+        usage: 'Supporting text, captions',
+        dark: true,
+      },
+      {
+        name: 'text-link',
+        variable: '--color-text-link',
+        value: '#284cca',
+        usage: 'Links, interactive text',
+        dark: true,
+      },
+    ],
+  },
+  {
+    group: 'Button',
+    note: 'For disabled buttons, use opacity: 0.4 instead of separate disabled colors',
+    tokens: [
+      {
+        name: 'button-primary-base',
+        variable: '--color-button-primary-base',
+        value: '#050560',
+        usage: 'Button backgrounds',
+        dark: true,
+      },
+      {
+        name: 'button-primary-hover',
+        variable: '--color-button-primary-hover',
+        value: '#505090',
+        usage: 'Button backgrounds on hover',
+        dark: true,
+      },
+      {
+        name: 'button-secondary-base',
+        variable: '--color-button-secondary-base',
+        value: '#284cca',
+        usage: 'Secondary button background/focus',
+        dark: true,
+      },
+      {
+        name: 'button-secondary-hover',
+        variable: '--color-button-secondary-hover',
+        value: '#6982da',
+        usage: 'Secondary button backgrounds on hover/focus',
+        dark: true,
+      },
+    ],
+  },
+  {
+    group: 'Border',
+    note: 'For strong borders use --color-neutral-500 directly · For subtle borders use --color-neutral-100 directly',
+    tokens: [
+      {
+        name: 'border-default',
+        variable: '--color-border-default',
+        value: '#dddddd',
+        usage: 'Default borders, input fields, card outlines',
+        dark: false,
+      },
+      {
+        name: 'border-focus',
+        variable: '--color-border-focus',
+        value: '#284cca',
+        usage: 'Focused input fields',
+        dark: true,
+      },
+      {
+        name: 'border-error',
+        variable: '--color-border-error',
+        value: '#ec131e',
+        usage: 'Error state borders',
+        dark: true,
+      },
+    ],
+  },
+  {
+    group: 'Background',
+    tokens: [
+      {
+        name: 'bg-primary',
+        variable: '--color-bg-primary',
+        value: '#ffffff',
+        usage: 'Page backgrounds, cards',
+        dark: false,
+      },
+      {
+        name: 'bg-secondary',
+        variable: '--color-bg-secondary',
+        value: '#f5f5f5',
+        usage: 'Subtle backgrounds',
+        dark: false,
+      },
+    ],
+  },
+];
+
+// ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
 
@@ -408,6 +543,130 @@ function FontGroup({ group, description, classes }: (typeof fontGroups)[number])
   );
 }
 
+function DevTokenRow({
+  name,
+  variable,
+  value,
+  usage,
+  dark,
+}: {
+  name: string;
+  variable: string;
+  value: string;
+  usage: string;
+  dark: boolean;
+}) {
+  const borderStyle = value === '#ffffff' ? '1px solid #dddddd' : 'none';
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '40px 1fr 1fr',
+        alignItems: 'center',
+        gap: 16,
+        padding: '12px 0',
+        borderBottom: '1px solid #f0f0f0',
+      }}
+    >
+      <div
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 8,
+          backgroundColor: value,
+          border: borderStyle,
+          flexShrink: 0,
+        }}
+      />
+      <div>
+        <div
+          style={{
+            fontFamily: 'monospace',
+            fontSize: '0.75rem',
+            color: '#191919',
+            fontWeight: 600,
+          }}
+        >
+          {name}
+        </div>
+        <div
+          style={{ fontFamily: 'monospace', fontSize: '0.6875rem', color: '#777', marginTop: 2 }}
+        >
+          {variable}
+        </div>
+        <div
+          style={{ fontFamily: 'monospace', fontSize: '0.6875rem', color: '#aaaaaa', marginTop: 2 }}
+        >
+          {value}
+        </div>
+      </div>
+      <div style={{ fontFamily: 'Public Sans, sans-serif', fontSize: '0.8125rem', color: '#555' }}>
+        {usage}
+      </div>
+    </div>
+  );
+}
+
+function DevTokenGroup({
+  group,
+  note,
+  tokens,
+}: {
+  group: string;
+  note?: string;
+  tokens: { name: string; variable: string; value: string; usage: string; dark: boolean }[];
+}) {
+  return (
+    <div style={{ marginBottom: 48 }}>
+      <h3
+        style={{
+          fontFamily: 'Public Sans, sans-serif',
+          fontSize: '1rem',
+          fontWeight: 600,
+          color: '#191919',
+          marginBottom: note ? 4 : 16,
+          paddingBottom: 8,
+          borderBottom: '1px solid #dddddd',
+        }}
+      >
+        {group}
+      </h3>
+      {note && (
+        <p
+          style={{
+            fontFamily: 'Public Sans, sans-serif',
+            fontSize: '0.75rem',
+            color: '#777',
+            margin: '0 0 12px',
+          }}
+        >
+          Note: {note}
+        </p>
+      )}
+      {tokens.map((t) => (
+        <DevTokenRow key={t.variable} {...t} />
+      ))}
+    </div>
+  );
+}
+
+function DevTokensPage() {
+  return (
+    <div style={{ padding: '40px 32px', maxWidth: 960, fontFamily: 'Public Sans, sans-serif' }}>
+      <h1 style={{ fontSize: '2rem', fontWeight: 600, color: '#191919', marginBottom: 8 }}>
+        Dev Tokens
+      </h1>
+      <p style={{ fontSize: '0.875rem', color: '#777', marginBottom: 40 }}>
+        Semantic aliases defined in <code>styles.css</code>. Use these in components instead of raw
+        brand colors.
+      </p>
+      {devTokenGroups.map((g) => (
+        <DevTokenGroup key={g.group} group={g.group} note={g.note} tokens={g.tokens} />
+      ))}
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Page-level render components (used by stories)
 // ---------------------------------------------------------------------------
@@ -460,6 +719,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Colors: Story = {
   render: () => <ColorsPage />,
+};
+
+export const DevTokens: Story = {
+  render: () => <DevTokensPage />,
 };
 
 export const Typography: Story = {
