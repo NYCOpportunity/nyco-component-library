@@ -14,6 +14,25 @@ const PlusIcon = () => (
   </svg>
 );
 
+const ArrowIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <path
+      d="M5 12h14M13 6l6 6-6 6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const meta = {
   title: 'Components/Button',
   component: Button,
@@ -56,6 +75,10 @@ const meta = {
     endIcon: {
       control: false,
       description: 'Icon element rendered after the label',
+    },
+    iconOnly: {
+      control: 'boolean',
+      description: 'Square icon-only button (no label)',
     },
   },
 } satisfies Meta<typeof Button>;
@@ -263,5 +286,117 @@ export const WithLeftIcon: Story = {
     color: 'primary',
     size: 'lg',
     startIcon: <PlusIcon />,
+  },
+};
+
+/**
+ * Icon-only square button
+ */
+export const IconOnly: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'lg',
+    iconOnly: true,
+    startIcon: <ArrowIcon />,
+    'aria-label': 'Next',
+  },
+};
+
+/**
+ * Desktop + Mobile matrix — all icon variants × states (Default, Hover, Disabled)
+ * Resize the viewport to see responsive sizing switch at 999px.
+ */
+export const DesktopMobileMatrix: Story = {
+  parameters: { layout: 'fullscreen' },
+  render: () => {
+    const label = 'Button';
+    const variants: Array<{ label: string; props: object }> = [
+      { label: 'Icon = None', props: { children: label } },
+      { label: 'Icon = Left', props: { children: label, startIcon: <PlusIcon /> } },
+      { label: 'Icon = Right', props: { children: label, endIcon: <ArrowIcon /> } },
+      {
+        label: 'Icon = Yes',
+        props: { iconOnly: true, startIcon: <ArrowIcon />, 'aria-label': 'Next' },
+      },
+    ];
+    const states: Array<{ label: string; props: object }> = [
+      { label: 'Default', props: {} },
+      { label: 'Disabled', props: { disabled: true } },
+    ];
+    const thStyle: React.CSSProperties = {
+      fontFamily: 'Public Sans, sans-serif',
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#777',
+      padding: '0 16px 12px',
+      textAlign: 'left',
+    };
+    const tdStyle: React.CSSProperties = { padding: '12px 16px' };
+    return (
+      <div
+        style={{
+          padding: 40,
+          fontFamily: 'Public Sans, sans-serif',
+          background: '#f5f5f5',
+          minHeight: '100vh',
+        }}
+      >
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#191919', marginBottom: 8 }}>
+          Buttons / Desktop + Mobile
+        </h2>
+        <p style={{ fontSize: '0.8125rem', color: '#777', marginBottom: 32 }}>
+          Desktop: 999px+ &nbsp;·&nbsp; Mobile: &lt;999px — resize to see responsive switch
+        </p>
+        <table
+          style={{
+            borderCollapse: 'collapse',
+            background: '#fff',
+            borderRadius: 8,
+            overflow: 'hidden',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          }}
+        >
+          <thead>
+            <tr>
+              <th style={{ ...thStyle, width: 100 }}>State</th>
+              {variants.map((v) => (
+                <th key={v.label} style={thStyle}>
+                  {v.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {states.map((state) => (
+              <tr key={state.label} style={{ borderTop: '1px solid #f0f0f0' }}>
+                <td
+                  style={{
+                    ...tdStyle,
+                    fontWeight: 600,
+                    fontSize: '0.8125rem',
+                    color: '#191919',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {state.label}
+                </td>
+                {variants.map((v) => (
+                  <td key={v.label} style={tdStyle}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="lg"
+                      {...(v.props as object)}
+                      {...(state.props as object)}
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
   },
 };

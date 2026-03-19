@@ -47,6 +47,8 @@
     --color-button-primary-hover: #505090; /* Button backgrounds on hover */
     --color-button-secondary-base: #284cca; /* Secondary button background/focus */
     --color-button-secondary-hover: #6982da; /* Secondary button backgrounds on hover/focus */
+    --color-button-disabled-base: var(--color-neutral-200); /* Disabled button background */
+    --color-button-disabled-text: var(--color-neutral-700); /* Disabled button text */
     /* Note: For disabled buttons, use opacity: 0.4 instead of separate disabled colors */
 
     /* --- Border --- */
