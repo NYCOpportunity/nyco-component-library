@@ -4,17 +4,24 @@
 
 @layer base {
   :root {
-    --ui-primary: #2563eb;
-    --ui-primary-foreground: #ffffff;
-    --ui-secondary: #7c3aed;
-    --ui-secondary-foreground: #ffffff;
-    --ui-font-sm: 0.875rem;
-    --ui-font-md: 1rem;
-    --ui-font-lg: 1.125rem;
-    --ui-radius: 0.5rem;
+    --color-primary-light: #ececfe; /* Soft backgrounds, subtle hover states, active chips */
+    --color-primary-base: #050560; /* Primary buttons, key actions, brand presence */
+    --color-primary-dark: #030339; /* Pressed/hover button states, emphasis */
+    --color-primary-foreground: #ffffff;
+
+    --color-secondary-light: #d3defa; /* Subtle backgrounds, light accents */
+    --color-secondary-base: #2b4cca; /* Links, secondary buttons, interactive elements */
+    --color-secondary-dark: #1b2d79; /* Link hover, pressed secondary buttons */
+    --color-secondary-foreground: #ffffff;
+
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.125rem;
     --line-height-sm: 1rem;
     --line-height-md: 1.5rem;
     --line-height-lg: 1.75rem;
+
+    --border-radius-base: 0.25rem; /* 4px */
 
     /* --- Fonts --- */
     --font-primary: 'Public Sans', sans-serif;
@@ -23,6 +30,7 @@
     /* --- Neutral --- */
     --color-neutral-white: #ffffff; /* Page backgrounds, card surfaces */
     --color-neutral-100: #f5f5f5; /* Subtle backgrounds */
+    --color-neutral-200: #eeeeee; /* Subtle backgrounds */
     --color-neutral-300: #dddddd; /* Borders, input fields, dividers */
     --color-neutral-500: #aaaaaa; /* De-emphasized elements, icons */
     --color-neutral-700: #777777; /* Secondary text, supporting content */
@@ -32,12 +40,21 @@
     /* --- Text --- */
     --color-text-primary: var(--color-neutral-black); /* Body text, headings */
     --color-text-secondary: var(--color-neutral-700); /* Supporting text, captions */
+    --color-text-link: #284cca; /* Links, interactive text */
+
+    /* --- Button --- */
+    --color-button-primary-base: var(--color-primary-base); /* Button backgrounds */
+    --color-button-primary-hover: #505090; /* Button backgrounds on hover */
+    --color-button-secondary-base: #284cca; /* Secondary button background/focus */
+    --color-button-secondary-hover: #6982da; /* Secondary button backgrounds on hover/focus */
+    /* Note: For disabled buttons, use opacity: 0.4 instead of separate disabled colors */
 
     /* --- Border --- */
     /* Strong borders: use --color-neutral-500 directly */
     /* Subtle borders: use --color-neutral-100 directly */
     --color-border-default: var(--color-neutral-300); /* Default borders, inputs, card outlines */
-    --color-border-error: var(--color-error-base);
+    --color-border-focus: #284cca; /* Focused input fields */
+    --color-border-error: var(--color-error-base); /* Error state borders */
 
     /* --- Background --- */
     --color-bg-primary: var(--color-neutral-white); /* Page backgrounds, cards */
@@ -54,12 +71,12 @@
     --color-success-dark: #006602; /* Text (WCAG AA 4.6:1) */
 
     /* --- Warning --- */
-    --color-warning-light: #f8ecce; /* Backgrounds */
+    --color-warning-light: #fbecce; /* Warning message backgrounds */
     --color-warning-base: #ff8320; /* Icons, alerts */
     --color-warning-dark: #cc6919; /* Text (WCAG AA 4.7:1) */
 
     /* --- Error --- */
-    --color-error-light: #f8d9de; /* Backgrounds */
+    --color-error-light: #fbd9de; /* Error message backgrounds */
     --color-error-base: #ec131e; /* Icons, destructive buttons */
     --color-error-dark: #bd0f18; /* Text (WCAG AA 4.9:1) */
 
@@ -109,17 +126,17 @@
 
 @layer components {
   .d-text-small {
-    font-size: var(--ui-font-sm);
+    font-size: var(--font-size-sm);
     line-height: var(--line-height-sm);
   }
 
   .d-text-body {
-    font-size: var(--ui-font-md);
+    font-size: var(--font-size-md);
     line-height: var(--line-height-md);
   }
 
   .d-text-lg {
-    font-size: var(--ui-font-lg);
+    font-size: var(--font-size-lg);
     line-height: 1.75rem;
   }
 
