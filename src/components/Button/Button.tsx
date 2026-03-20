@@ -1,20 +1,13 @@
 import * as React from 'react';
-import { ButtonColor, ButtonProps, ButtonSize, ButtonVariant } from '../../types/components';
+import { ButtonColor, ButtonProps, ButtonVariant } from '../../types/components';
 
 const baseClasses =
   'inline-flex items-center justify-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none';
 
-const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3 text-[length:var(--font-size-sm)] font-medium',
-  md: 'h-10 px-4 text-[length:var(--font-size-md)] font-medium',
-  lg: 'px-6 py-4 text-[18px] leading-[22px] font-semibold max-[999px]:px-4 max-[999px]:py-3 max-[999px]:text-[14px] max-[999px]:leading-[20px]',
-};
+const sizeClass =
+  'px-6 py-4 text-[18px] leading-[22px] font-semibold max-[999px]:px-4 max-[999px]:py-3 max-[999px]:text-[14px] max-[999px]:leading-[20px]';
 
-const iconOnlySizeClasses: Record<ButtonSize, string> = {
-  sm: 'size-8',
-  md: 'size-10',
-  lg: 'size-[54px] max-[999px]:size-[44px]',
-};
+const iconOnlySizeClass = 'size-[54px] max-[999px]:size-[44px]';
 
 const radiusClass = 'rounded-[var(--border-radius-base)]';
 
@@ -42,7 +35,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = 'contained',
       color = 'primary',
-      size = 'md',
       className,
       type = 'button',
       startIcon,
@@ -55,7 +47,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const classes = cx(
       baseClasses,
-      iconOnly ? iconOnlySizeClasses[size] : sizeClasses[size],
+      iconOnly ? iconOnlySizeClass : sizeClass,
       radiusClass,
       colorVariantClasses[color][variant],
       className

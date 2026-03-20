@@ -51,11 +51,6 @@ const meta = {
       options: ['primary', 'secondary'],
       description: 'Button color scheme',
     },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Button size',
-    },
     disabled: {
       control: 'boolean',
       description: 'Disable the button',
@@ -94,7 +89,6 @@ export const Primary: Story = {
     children: 'Click me',
     variant: 'contained',
     color: 'primary',
-    size: 'md',
   },
 };
 
@@ -106,7 +100,6 @@ export const Secondary: Story = {
     children: 'Secondary',
     variant: 'contained',
     color: 'secondary',
-    size: 'md',
   },
 };
 
@@ -118,7 +111,6 @@ export const Outlined: Story = {
     children: 'Outlined',
     variant: 'outlined',
     color: 'primary',
-    size: 'md',
   },
 };
 
@@ -130,31 +122,6 @@ export const Text: Story = {
     children: 'Text Button',
     variant: 'text',
     color: 'primary',
-    size: 'md',
-  },
-};
-
-/**
- * Small button size
- */
-export const Small: Story = {
-  args: {
-    children: 'Small',
-    variant: 'contained',
-    color: 'primary',
-    size: 'sm',
-  },
-};
-
-/**
- * Large button size
- */
-export const Large: Story = {
-  args: {
-    children: 'Large Button',
-    variant: 'contained',
-    color: 'primary',
-    size: 'lg',
   },
 };
 
@@ -168,19 +135,6 @@ export const Disabled: Story = {
     color: 'primary',
     disabled: true,
   },
-};
-
-/**
- * All size variants
- */
-export const AllSizes: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
-    </div>
-  ),
 };
 
 /**
@@ -228,37 +182,37 @@ export const ColorMatrix: Story = {
     >
       <div>
         <h4>Primary</h4>
-        <Button variant="contained" color="primary" size="md">
+        <Button variant="contained" color="primary">
           Contained
         </Button>
       </div>
       <div>
         <h4>Primary Outlined</h4>
-        <Button variant="outlined" color="primary" size="md">
+        <Button variant="outlined" color="primary">
           Outlined
         </Button>
       </div>
       <div>
         <h4>Primary Text</h4>
-        <Button variant="text" color="primary" size="md">
+        <Button variant="text" color="primary">
           Text
         </Button>
       </div>
       <div>
         <h4>Secondary</h4>
-        <Button variant="contained" color="secondary" size="md">
+        <Button variant="contained" color="secondary">
           Contained
         </Button>
       </div>
       <div>
         <h4>Secondary Outlined</h4>
-        <Button variant="outlined" color="secondary" size="md">
+        <Button variant="outlined" color="secondary">
           Outlined
         </Button>
       </div>
       <div>
         <h4>Secondary Text</h4>
-        <Button variant="text" color="secondary" size="md">
+        <Button variant="text" color="secondary">
           Text
         </Button>
       </div>
@@ -284,7 +238,6 @@ export const WithLeftIcon: Story = {
     children: 'Button',
     variant: 'contained',
     color: 'primary',
-    size: 'lg',
     startIcon: <PlusIcon />,
   },
 };
@@ -296,7 +249,6 @@ export const IconOnly: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'lg',
     iconOnly: true,
     startIcon: <ArrowIcon />,
     'aria-label': 'Next',
@@ -386,7 +338,6 @@ export const DesktopMobileMatrix: Story = {
                     <Button
                       variant="contained"
                       color="primary"
-                      size="lg"
                       {...(v.props as object)}
                       {...(state.props as object)}
                     />
