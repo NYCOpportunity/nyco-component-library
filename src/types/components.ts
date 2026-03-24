@@ -13,8 +13,15 @@ export interface BreadcrumbItem {
 export interface BreadcrumbsProps {
   /** Ordered list of breadcrumb items. The last item is treated as the current page. */
   items: BreadcrumbItem[];
-  /** Maximum number of items to show before collapsing into overflow. Default: 3. */
+  /**
+   * Max items to show on desktop before collapsing. Default: Infinity (collapses only when
+   * items overflow the container width).
+   */
   maxVisible?: number;
+  /**
+   * Max items to show on mobile (<999px) before collapsing. Default: Infinity.
+   */
+  mobileMaxVisible?: number;
   className?: string;
 }
 

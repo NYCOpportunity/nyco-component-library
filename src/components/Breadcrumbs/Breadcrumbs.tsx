@@ -1,6 +1,22 @@
 import * as React from 'react';
 import { BreadcrumbsProps } from '../../types/components';
 
+// Mirrors the Button component's mobile breakpoint
+const MOBILE_BREAKPOINT = '(max-width: 999px)';
+
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = React.useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_BREAKPOINT).matches
+  );
+  React.useEffect(() => {
+    const mq = window.matchMedia(MOBILE_BREAKPOINT);
+    const handler = (e: { matches: boolean }) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return isMobile;
+}
+
 const ChevronRight = () => (
   <svg
     width="16"
@@ -44,8 +60,29 @@ const Separator = () => (
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(' ');
 
 export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
-  ({ items, maxVisible = 3, className, ...props }, ref) => {
-    const isOverflow = items.length > maxVisible;
+  ({ items, maxVisible = Infinity, mobileMaxVisible = Infinity, className, ...props }, ref) => {
+    const isMobile = useIsMobile();
+    const effectiveMaxVisible = isMobile ? mobileMaxVisible : maxVisible;
+
+    // Hidden probe — always renders the full list to measure natural width.
+    // ResizeObserver compares probe width vs the nav container width to detect overflow.
+    const probeRef = React.useRef<React.ElementRef<'ol'>>(null);
+    const [containerOverflow, setContainerOverflow] = React.useState(false);
+
+    React.useLayoutEffect(() => {
+      const probe = probeRef.current;
+      if (!probe) return;
+      const nav = probe.parentElement;
+      if (!nav) return;
+
+      const check = () => setContainerOverflow(probe.scrollWidth > nav.clientWidth);
+      check();
+      window.addEventListener('resize', check);
+      return () => window.removeEventListener('resize', check);
+    }, [items]);
+
+    const forceOverflow = isFinite(effectiveMaxVisible) && items.length > effectiveMaxVisible;
+    const isOverflow = forceOverflow || containerOverflow;
     const hiddenItems = isOverflow ? items.slice(1, items.length - 1) : [];
 
     const linkClass =
@@ -57,10 +94,36 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
       <nav
         ref={ref}
         aria-label="Breadcrumb"
-        className={cx('font-[var(--font-primary)]', className)}
+        className={cx('font-[var(--font-primary)] relative', className)}
         {...props}
       >
-        <ol className="flex items-center flex-wrap">
+        {/* Hidden probe — measures full-list width to detect container overflow */}
+        <ol
+          ref={probeRef}
+          aria-hidden="true"
+          className="absolute invisible pointer-events-none flex items-center flex-nowrap"
+        >
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+            return (
+              <li key={index} className="flex items-center gap-[2px]">
+                {isLast ? (
+                  <span className={currentClass}>{item.label}</span>
+                ) : (
+                  <>
+                    <a href={item.href} className={linkClass} tabIndex={-1}>
+                      {item.label}
+                    </a>
+                    <Separator />
+                  </>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+
+        {/* Visible list */}
+        <ol className="flex items-center flex-nowrap">
           {isOverflow ? (
             <>
               {/* First item */}
