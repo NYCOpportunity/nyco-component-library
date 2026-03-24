@@ -30,8 +30,8 @@ const colorTokens: Record<
       { property: 'Background (hover)', variable: '--color-primary-light', value: '#ececfe' },
     ],
     text: [
-      { property: 'Text', variable: '--color-primary-base', value: '#050560' },
-      { property: 'Background (hover)', variable: '--color-primary-light', value: '#ececfe' },
+      { property: 'Text', variable: '--color-text-link', value: '#284cca' },
+      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
     ],
   },
   secondary: {
@@ -56,8 +56,8 @@ const colorTokens: Record<
       { property: 'Background (hover)', variable: '--color-secondary-light', value: '#d3defa' },
     ],
     text: [
-      { property: 'Text', variable: '--color-secondary-base', value: '#2b4cca' },
-      { property: 'Background (hover)', variable: '--color-secondary-light', value: '#d3defa' },
+      { property: 'Text', variable: '--color-text-link', value: '#284cca' },
+      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
     ],
   },
 };
@@ -163,15 +163,23 @@ function ButtonTokenPanel({
         <tbody>
           <tr>
             <td style={td}>Desktop ≥999px</td>
-            <td style={{ ...td, ...mono }}>px-6 → 1.5rem / 24px</td>
-            <td style={{ ...td, ...mono }}>py-4 → 1rem / 16px</td>
-            <td style={{ ...td, ...mono }}>54 × 54px</td>
+            <td style={{ ...td, ...mono }}>
+              {variant === 'text' ? 'px-1 → 0.25rem / 4px' : 'px-6 → 1.5rem / 24px'}
+            </td>
+            <td style={{ ...td, ...mono }}>
+              {variant === 'text' ? 'py-1 → 0.25rem / 4px' : 'py-4 → 1rem / 16px'}
+            </td>
+            <td style={{ ...td, ...mono }}>{variant === 'text' ? '—' : '54 × 54px'}</td>
           </tr>
           <tr>
             <td style={td}>Mobile &lt;999px</td>
-            <td style={{ ...td, ...mono }}>px-4 → 1rem / 16px</td>
-            <td style={{ ...td, ...mono }}>py-3 → 0.75rem / 12px</td>
-            <td style={{ ...td, ...mono }}>44 × 44px</td>
+            <td style={{ ...td, ...mono }}>
+              {variant === 'text' ? 'px-1 → 0.25rem / 4px' : 'px-4 → 1rem / 16px'}
+            </td>
+            <td style={{ ...td, ...mono }}>
+              {variant === 'text' ? 'py-1 → 0.25rem / 4px' : 'py-3 → 0.75rem / 12px'}
+            </td>
+            <td style={{ ...td, ...mono }}>{variant === 'text' ? '—' : '44 × 44px'}</td>
           </tr>
         </tbody>
       </table>
@@ -220,6 +228,7 @@ function ButtonTokenPanel({
 
 import * as React from 'react';
 
+// 24×24 icons used by contained / outlined button stories
 const PlusIcon = () => (
   <svg
     width="24"
@@ -230,6 +239,39 @@ const PlusIcon = () => (
     aria-hidden="true"
   >
     <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+// 16×16 icons sized for the link/text button variant
+const SmallPlusIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const ExternalLinkArrowIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <path
+      d="M3 13L13 3M13 3H7M13 3V9"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
@@ -357,11 +399,12 @@ export const Outlined: Story = {
 };
 
 /**
- * Text button - minimal style
+ * Link button — underlined blue text, minimal padding, no background hover.
+ * Use as an inline call to action. Responsive: 18px desktop · 14px mobile (≤999px).
  */
 export const Text: Story = {
   args: {
-    children: 'Text Button',
+    children: 'Link Button Label',
     variant: 'text',
     color: 'primary',
   },
@@ -812,6 +855,143 @@ export const MobileViewport: Story = {
               </Button>
             </div>
           </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * Link Button — full specification matrix.
+ * Rows: Icon = Left · Icon = Right · Icon = None.
+ * States: Default · Hover · Focus · Disabled.
+ * Columns: Desktop (18px) · Small (14px, forced via className override).
+ */
+export const LinkButtonMatrix: Story = {
+  parameters: { layout: 'fullscreen', hideTokenPanel: true },
+  render: () => {
+    const hoverCls = 'underline underline-offset-2';
+    const focusCls = 'ring-[3px] ring-[var(--color-border-focus)] outline-none';
+    const smallCls = 'text-[14px] leading-[20px]';
+
+    const iconGroups: Array<{
+      label: string;
+      props: Partial<React.ComponentProps<typeof Button>>;
+    }> = [
+      { label: 'Icon = Left', props: { startIcon: <SmallPlusIcon /> } },
+      { label: 'Icon = Right', props: { endIcon: <ExternalLinkArrowIcon /> } },
+      { label: 'Icon = None', props: {} },
+    ];
+
+    const states: Array<{ label: string; cls: string; disabled: boolean }> = [
+      { label: 'Default', cls: '', disabled: false },
+      { label: 'Hover', cls: hoverCls, disabled: false },
+      { label: 'Focus', cls: focusCls, disabled: false },
+      { label: 'Disabled', cls: '', disabled: true },
+    ];
+
+    const thStyle: React.CSSProperties = {
+      fontFamily: 'Public Sans, sans-serif',
+      fontSize: '0.6875rem',
+      fontWeight: 600,
+      color: '#777777',
+      padding: '10px 24px',
+      textAlign: 'left',
+      borderBottom: '1px solid #d4d4d4',
+    };
+    const groupLabelStyle: React.CSSProperties = {
+      fontFamily: 'Public Sans, sans-serif',
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#333333',
+      marginBottom: 2,
+    };
+    const stateLabelStyle: React.CSSProperties = {
+      fontFamily: 'Public Sans, sans-serif',
+      fontSize: '0.6875rem',
+      color: '#777777',
+    };
+    const cellStyle: React.CSSProperties = { padding: '10px 24px' };
+
+    return (
+      <div
+        style={{
+          padding: 40,
+          background: '#e5e5e5',
+          minHeight: '100vh',
+          fontFamily: 'Public Sans, sans-serif',
+        }}
+      >
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#191919', marginBottom: 4 }}>
+          Link Button
+        </h2>
+        <p style={{ fontSize: '0.875rem', color: '#777777', marginBottom: 32 }}>
+          Use as the main call to action on a page.
+        </p>
+
+        <div
+          style={{
+            background: '#ebebeb',
+            borderRadius: 8,
+            overflow: 'hidden',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          }}
+        >
+          {/* Column headers */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '180px 1fr 1fr',
+            }}
+          >
+            <div style={thStyle} />
+            <div style={thStyle}>Desktop</div>
+            <div style={thStyle}>Small</div>
+          </div>
+
+          {iconGroups.map((group) =>
+            states.map((state, si) => (
+              <div
+                key={`${group.label}-${state.label}`}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '180px 1fr 1fr',
+                  alignItems: 'center',
+                  borderTop: '1px solid #d4d4d4',
+                  background: si % 2 === 0 ? 'rgba(255,255,255,0.4)' : 'transparent',
+                }}
+              >
+                <div style={cellStyle}>
+                  {si === 0 && <div style={groupLabelStyle}>{group.label}</div>}
+                  <div style={stateLabelStyle}>{state.label}</div>
+                </div>
+                {/* Desktop size */}
+                <div style={cellStyle}>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    className={state.cls || undefined}
+                    disabled={state.disabled}
+                    {...group.props}
+                  >
+                    Link Button Label
+                  </Button>
+                </div>
+                {/* Small size — font-size override forces mobile scale */}
+                <div style={cellStyle}>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    className={[smallCls, state.cls].filter(Boolean).join(' ')}
+                    disabled={state.disabled}
+                    {...group.props}
+                  >
+                    Link Button Label
+                  </Button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     );
