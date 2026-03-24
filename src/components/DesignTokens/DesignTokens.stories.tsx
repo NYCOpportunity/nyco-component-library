@@ -305,16 +305,16 @@ const devTokenGroups = [
       {
         name: 'button-secondary-base',
         variable: '--color-button-secondary-base',
-        value: '#284cca',
-        usage: 'Secondary button background/focus',
-        dark: true,
+        value: '#ffffff',
+        usage: 'Secondary button background (white)',
+        dark: false,
       },
       {
         name: 'button-secondary-hover',
         variable: '--color-button-secondary-hover',
-        value: '#6982da',
-        usage: 'Secondary button backgrounds on hover/focus',
-        dark: true,
+        value: '#f5f5f5',
+        usage: 'Secondary button background on hover',
+        dark: false,
       },
     ],
   },
@@ -548,7 +548,7 @@ function DevTokenRow({
   variable,
   value,
   usage,
-  dark,
+  dark: _dark,
 }: {
   name: string;
   variable: string;

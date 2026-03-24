@@ -351,3 +351,223 @@ export const DesktopMobileMatrix: Story = {
     );
   },
 };
+
+/**
+ * Focus ring appearance — forced focus styles across all color × variant combinations.
+ * The 3px blue ring is applied via className to simulate keyboard-focus state visually.
+ */
+export const FocusStates: Story = {
+  parameters: { layout: 'padded' },
+  render: () => {
+    const headStyle: React.CSSProperties = {
+      fontFamily: 'Public Sans, sans-serif',
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#777',
+      marginBottom: 12,
+    };
+    const rowLabelStyle: React.CSSProperties = {
+      fontFamily: 'Public Sans, sans-serif',
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#191919',
+      display: 'flex',
+      alignItems: 'center',
+    };
+    const focusClass = 'ring-[3px] ring-[var(--color-border-focus)] outline-none';
+    const col: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 8 };
+    return (
+      <div
+        style={{
+          padding: 32,
+          background: '#f5f5f5',
+          minHeight: '100vh',
+          fontFamily: 'Public Sans, sans-serif',
+        }}
+      >
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#191919', marginBottom: 4 }}>
+          Buttons / Focus State
+        </h2>
+        <p style={{ fontSize: '0.8125rem', color: '#777', marginBottom: 32 }}>
+          3px solid ring · color: #284cca · no offset
+        </p>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '80px repeat(3, auto)',
+            gap: '24px 32px',
+            background: '#fff',
+            borderRadius: 8,
+            padding: 24,
+            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+            alignItems: 'center',
+          }}
+        >
+          {/* Column headers */}
+          <div />
+          <div style={headStyle}>Contained</div>
+          <div style={headStyle}>Outlined</div>
+          <div style={headStyle}>Text</div>
+
+          {/* Primary row */}
+          <div style={rowLabelStyle}>Primary</div>
+          <div style={col}>
+            <Button variant="contained" color="primary" className={focusClass}>
+              Button
+            </Button>
+          </div>
+          <div style={col}>
+            <Button variant="outlined" color="primary" className={focusClass}>
+              Button
+            </Button>
+          </div>
+          <div style={col}>
+            <Button variant="text" color="primary" className={focusClass}>
+              Button
+            </Button>
+          </div>
+
+          {/* Secondary row */}
+          <div style={rowLabelStyle}>Secondary</div>
+          <div style={col}>
+            <Button variant="contained" color="secondary" className={focusClass}>
+              Button
+            </Button>
+          </div>
+          <div style={col}>
+            <Button variant="outlined" color="secondary" className={focusClass}>
+              Button
+            </Button>
+          </div>
+          <div style={col}>
+            <Button variant="text" color="secondary" className={focusClass}>
+              Button
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * Mobile viewport (≤999px) — switch to this story to preview the compact responsive size.
+ * Set the Storybook viewport to ≤999px or use the preset defined below.
+ */
+export const MobileViewport: Story = {
+  parameters: {
+    layout: 'padded',
+    viewport: {
+      viewports: {
+        mobile390: {
+          name: 'Mobile 390px (≤999px breakpoint)',
+          styles: { width: '390px', height: '844px' },
+        },
+      },
+      defaultViewport: 'mobile390',
+    },
+  },
+  render: () => {
+    const sectionLabel: React.CSSProperties = {
+      fontFamily: 'Public Sans, sans-serif',
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#777',
+      marginBottom: 8,
+    };
+    const group: React.CSSProperties = { display: 'flex', flexWrap: 'wrap', gap: 12 };
+    return (
+      <div
+        style={{
+          padding: 24,
+          background: '#f5f5f5',
+          minHeight: '100vh',
+          fontFamily: 'Public Sans, sans-serif',
+        }}
+      >
+        <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: '#191919', marginBottom: 4 }}>
+          Buttons / Mobile ≤999px
+        </h2>
+        <p style={{ fontSize: '0.8125rem', color: '#777', marginBottom: 24 }}>
+          px-4 · py-3 · text-14px/20px · icon-only 44px
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <div>
+            <div style={sectionLabel}>Primary</div>
+            <div style={group}>
+              <Button variant="contained" color="primary">
+                Button
+              </Button>
+              <Button variant="contained" color="primary" startIcon={<PlusIcon />}>
+                Button
+              </Button>
+              <Button variant="contained" color="primary" endIcon={<ArrowIcon />}>
+                Button
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                iconOnly
+                startIcon={<ArrowIcon />}
+                aria-label="Next"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div style={sectionLabel}>Secondary</div>
+            <div style={group}>
+              <Button variant="contained" color="secondary">
+                Button
+              </Button>
+              <Button variant="contained" color="secondary" startIcon={<PlusIcon />}>
+                Button
+              </Button>
+              <Button variant="contained" color="secondary" endIcon={<ArrowIcon />}>
+                Button
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                iconOnly
+                startIcon={<ArrowIcon />}
+                aria-label="Next"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div style={sectionLabel}>Outlined · Text</div>
+            <div style={group}>
+              <Button variant="outlined" color="primary">
+                Outlined
+              </Button>
+              <Button variant="text" color="primary">
+                Text
+              </Button>
+              <Button variant="outlined" color="secondary">
+                Outlined
+              </Button>
+              <Button variant="text" color="secondary">
+                Text
+              </Button>
+            </div>
+          </div>
+
+          <div>
+            <div style={sectionLabel}>Disabled</div>
+            <div style={group}>
+              <Button variant="contained" color="primary" disabled>
+                Button
+              </Button>
+              <Button variant="contained" color="secondary" disabled>
+                Button
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};

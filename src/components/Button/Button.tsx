@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ButtonColor, ButtonProps, ButtonVariant } from '../../types/components';
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-2 disabled:pointer-events-none';
+  'inline-flex items-center justify-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] disabled:pointer-events-none';
 
 const sizeClass =
   'px-6 py-4 text-[18px] leading-[22px] font-semibold max-[999px]:px-4 max-[999px]:py-3 max-[999px]:text-[14px] max-[999px]:leading-[20px]';
@@ -21,7 +21,7 @@ const colorVariantClasses: Record<ButtonColor, Record<ButtonVariant, string>> = 
   },
   secondary: {
     contained:
-      'bg-[var(--color-button-secondary-base)] text-[var(--color-secondary-foreground)] border border-transparent hover:bg-[var(--color-button-secondary-hover)] disabled:opacity-40',
+      'bg-[var(--color-button-secondary-base)] text-[var(--color-neutral-black)] border border-[var(--color-border-default)] hover:bg-[var(--color-button-secondary-hover)] disabled:bg-[var(--color-button-disabled-base)] disabled:text-[var(--color-button-disabled-text)] disabled:border-transparent',
     outlined:
       'bg-transparent text-[var(--color-secondary-base)] border border-[var(--color-secondary-base)] hover:bg-[var(--color-secondary-light)] disabled:opacity-40',
     text: 'bg-transparent text-[var(--color-secondary-base)] hover:bg-[var(--color-secondary-light)] disabled:opacity-40',
