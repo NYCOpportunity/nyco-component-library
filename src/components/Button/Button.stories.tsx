@@ -299,6 +299,11 @@ const meta = {
       options: ['primary', 'secondary', 'text'],
       description: 'Button preset — combines visual style and color',
     },
+    size: {
+      control: 'select',
+      options: ['large', 'small'],
+      description: 'Button size — large (default) uses full padding; small uses compact padding',
+    },
     disabled: {
       control: 'boolean',
       description: 'Disable the button',
