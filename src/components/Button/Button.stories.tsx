@@ -1,6 +1,225 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 
+// ---------------------------------------------------------------------------
+// Token Panel — shown below each story in the Docs tab
+// ---------------------------------------------------------------------------
+
+const colorTokens: Record<
+  string,
+  Record<string, Array<{ property: string; variable: string; value: string }>>
+> = {
+  primary: {
+    contained: [
+      { property: 'Background', variable: '--color-button-primary-base', value: '#050560' },
+      {
+        property: 'Background (hover)',
+        variable: '--color-button-primary-hover',
+        value: '#505090',
+      },
+      { property: 'Text', variable: '--color-primary-foreground', value: '#ffffff' },
+      {
+        property: 'Background (disabled)',
+        variable: '--color-button-disabled-base',
+        value: '#eeeeee',
+      },
+      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    ],
+    outlined: [
+      { property: 'Text / Border', variable: '--color-primary-base', value: '#050560' },
+      { property: 'Background (hover)', variable: '--color-primary-light', value: '#ececfe' },
+    ],
+    text: [
+      { property: 'Text', variable: '--color-primary-base', value: '#050560' },
+      { property: 'Background (hover)', variable: '--color-primary-light', value: '#ececfe' },
+    ],
+  },
+  secondary: {
+    contained: [
+      { property: 'Background', variable: '--color-button-secondary-base', value: '#ffffff' },
+      {
+        property: 'Background (hover)',
+        variable: '--color-button-secondary-hover',
+        value: '#f5f5f5',
+      },
+      { property: 'Text', variable: '--color-neutral-black', value: '#191919' },
+      { property: 'Border', variable: '--color-border-default', value: '#dddddd' },
+      {
+        property: 'Background (disabled)',
+        variable: '--color-button-disabled-base',
+        value: '#eeeeee',
+      },
+      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    ],
+    outlined: [
+      { property: 'Text / Border', variable: '--color-secondary-base', value: '#2b4cca' },
+      { property: 'Background (hover)', variable: '--color-secondary-light', value: '#d3defa' },
+    ],
+    text: [
+      { property: 'Text', variable: '--color-secondary-base', value: '#2b4cca' },
+      { property: 'Background (hover)', variable: '--color-secondary-light', value: '#d3defa' },
+    ],
+  },
+};
+
+function ButtonTokenPanel({
+  variant = 'contained',
+  color = 'primary',
+}: {
+  variant?: string;
+  color?: string;
+}) {
+  const tokens = colorTokens[color]?.[variant] ?? colorTokens.primary.contained;
+
+  const label: React.CSSProperties = {
+    fontFamily: 'Public Sans, sans-serif',
+    fontSize: '0.625rem',
+    fontWeight: 700,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: '#aaaaaa',
+    margin: '16px 0 6px',
+  };
+  const table: React.CSSProperties = { width: '100%', borderCollapse: 'collapse' };
+  const th: React.CSSProperties = {
+    textAlign: 'left',
+    fontSize: '0.625rem',
+    fontWeight: 600,
+    color: '#aaaaaa',
+    padding: '0 12px 4px 0',
+    borderBottom: '1px solid #eeeeee',
+  };
+  const td: React.CSSProperties = {
+    fontSize: '0.6875rem',
+    color: '#333333',
+    padding: '5px 12px 5px 0',
+    borderBottom: '1px solid #f5f5f5',
+    verticalAlign: 'middle',
+  };
+  const mono: React.CSSProperties = {
+    fontFamily: 'monospace',
+    color: '#3f5bbf',
+    fontSize: '0.6875rem',
+  };
+
+  return (
+    <div
+      style={{
+        marginTop: 24,
+        borderTop: '1px solid #eeeeee',
+        paddingTop: 16,
+        fontFamily: 'Public Sans, sans-serif',
+      }}
+    >
+      {/* Color tokens */}
+      <p style={label}>
+        Color Tokens — {color} / {variant}
+      </p>
+      <table style={table}>
+        <thead>
+          <tr>
+            <th style={th}>Property</th>
+            <th style={th}>CSS Variable</th>
+            <th style={th}>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map((t) => (
+            <tr key={t.property}>
+              <td style={td}>{t.property}</td>
+              <td style={{ ...td, ...mono }}>{t.variable}</td>
+              <td style={td}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: 10,
+                      height: 10,
+                      borderRadius: 2,
+                      backgroundColor: t.value,
+                      border: '1px solid rgba(0,0,0,0.1)',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={mono}>{t.value}</span>
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Spacing / Padding */}
+      <p style={label}>Spacing — Padding</p>
+      <table style={table}>
+        <thead>
+          <tr>
+            <th style={th}>Viewport</th>
+            <th style={th}>Padding X</th>
+            <th style={th}>Padding Y</th>
+            <th style={th}>Icon-only size</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={td}>Desktop ≥999px</td>
+            <td style={{ ...td, ...mono }}>px-6 → 1.5rem / 24px</td>
+            <td style={{ ...td, ...mono }}>py-4 → 1rem / 16px</td>
+            <td style={{ ...td, ...mono }}>54 × 54px</td>
+          </tr>
+          <tr>
+            <td style={td}>Mobile &lt;999px</td>
+            <td style={{ ...td, ...mono }}>px-4 → 1rem / 16px</td>
+            <td style={{ ...td, ...mono }}>py-3 → 0.75rem / 12px</td>
+            <td style={{ ...td, ...mono }}>44 × 44px</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Text tokens */}
+      <p style={label}>Text Tokens</p>
+      <table style={{ ...table, marginBottom: 4 }}>
+        <thead>
+          <tr>
+            <th style={th}>Property</th>
+            <th style={th}>Token / Class</th>
+            <th style={th}>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={td}>Font Family</td>
+            <td style={{ ...td, ...mono }}>--font-primary</td>
+            <td style={{ ...td, ...mono }}>Public Sans, sans-serif</td>
+          </tr>
+          <tr>
+            <td style={td}>Font Weight</td>
+            <td style={{ ...td, ...mono }}>font-semibold</td>
+            <td style={{ ...td, ...mono }}>600</td>
+          </tr>
+          <tr>
+            <td style={td}>Font Size (desktop)</td>
+            <td style={{ ...td, ...mono }}>text-[18px]</td>
+            <td style={{ ...td, ...mono }}>18px / line-height 22px</td>
+          </tr>
+          <tr>
+            <td style={td}>Font Size (mobile)</td>
+            <td style={{ ...td, ...mono }}>text-[14px]</td>
+            <td style={{ ...td, ...mono }}>14px / line-height 20px</td>
+          </tr>
+          <tr>
+            <td style={td}>Border Radius</td>
+            <td style={{ ...td, ...mono }}>--border-radius-base</td>
+            <td style={{ ...td, ...mono }}>0.25rem / 4px</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+import * as React from 'react';
+
 const PlusIcon = () => (
   <svg
     width="24"
@@ -40,6 +259,29 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  decorators: [
+    (
+      Story: React.ComponentType,
+      context: {
+        viewMode: string;
+        args: Record<string, unknown>;
+        parameters: Record<string, unknown>;
+      }
+    ) => {
+      if (context.viewMode !== 'docs' || context.parameters.hideTokenPanel) {
+        return <Story />;
+      }
+      return (
+        <div>
+          <Story />
+          <ButtonTokenPanel
+            variant={context.args.variant as string}
+            color={context.args.color as string}
+          />
+        </div>
+      );
+    },
+  ],
   argTypes: {
     variant: {
       control: 'select',
@@ -141,6 +383,7 @@ export const Disabled: Story = {
  * All variant types
  */
 export const AllVariants: Story = {
+  parameters: { hideTokenPanel: true },
   render: () => (
     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
       <Button variant="contained" color="primary">
@@ -160,6 +403,7 @@ export const AllVariants: Story = {
  * All color combinations
  */
 export const AllColors: Story = {
+  parameters: { hideTokenPanel: true },
   render: () => (
     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
       <Button color="primary">Primary</Button>
@@ -172,6 +416,7 @@ export const AllColors: Story = {
  * Contained buttons in all colors and variants
  */
 export const ColorMatrix: Story = {
+  parameters: { hideTokenPanel: true },
   render: () => (
     <div
       style={{
@@ -260,7 +505,7 @@ export const IconOnly: Story = {
  * Resize the viewport to see responsive sizing switch at 999px.
  */
 export const DesktopMobileMatrix: Story = {
-  parameters: { layout: 'fullscreen' },
+  parameters: { layout: 'fullscreen', hideTokenPanel: true },
   render: () => {
     const label = 'Button';
     const variants: Array<{ label: string; props: object }> = [
@@ -357,7 +602,7 @@ export const DesktopMobileMatrix: Story = {
  * The 3px blue ring is applied via className to simulate keyboard-focus state visually.
  */
 export const FocusStates: Story = {
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', hideTokenPanel: true },
   render: () => {
     const headStyle: React.CSSProperties = {
       fontFamily: 'Public Sans, sans-serif',
@@ -457,6 +702,7 @@ export const FocusStates: Story = {
 export const MobileViewport: Story = {
   parameters: {
     layout: 'padded',
+    hideTokenPanel: true,
     viewport: {
       viewports: {
         mobile390: {
