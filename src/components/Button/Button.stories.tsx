@@ -5,71 +5,49 @@ import { Button } from './Button';
 // Token Panel — shown below each story in the Docs tab
 // ---------------------------------------------------------------------------
 
-const colorTokens: Record<
+const variantTokens: Record<
   string,
-  Record<string, Array<{ property: string; variable: string; value: string }>>
+  Array<{ property: string; variable: string; value: string }>
 > = {
-  primary: {
-    contained: [
-      { property: 'Background', variable: '--color-button-primary-base', value: '#050560' },
-      {
-        property: 'Background (hover)',
-        variable: '--color-button-primary-hover',
-        value: '#505090',
-      },
-      { property: 'Text', variable: '--color-primary-foreground', value: '#ffffff' },
-      {
-        property: 'Background (disabled)',
-        variable: '--color-button-disabled-base',
-        value: '#eeeeee',
-      },
-      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
-    ],
-    outlined: [
-      { property: 'Text / Border', variable: '--color-primary-base', value: '#050560' },
-      { property: 'Background (hover)', variable: '--color-primary-light', value: '#ececfe' },
-    ],
-    text: [
-      { property: 'Text', variable: '--color-text-link', value: '#284cca' },
-      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
-    ],
-  },
-  secondary: {
-    contained: [
-      { property: 'Background', variable: '--color-button-secondary-base', value: '#ffffff' },
-      {
-        property: 'Background (hover)',
-        variable: '--color-button-secondary-hover',
-        value: '#f5f5f5',
-      },
-      { property: 'Text', variable: '--color-neutral-black', value: '#191919' },
-      { property: 'Border', variable: '--color-border-default', value: '#dddddd' },
-      {
-        property: 'Background (disabled)',
-        variable: '--color-button-disabled-base',
-        value: '#eeeeee',
-      },
-      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
-    ],
-    outlined: [
-      { property: 'Text / Border', variable: '--color-secondary-base', value: '#2b4cca' },
-      { property: 'Background (hover)', variable: '--color-secondary-light', value: '#d3defa' },
-    ],
-    text: [
-      { property: 'Text', variable: '--color-text-link', value: '#284cca' },
-      { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
-    ],
-  },
+  primary: [
+    { property: 'Background', variable: '--color-button-primary-base', value: '#050560' },
+    {
+      property: 'Background (hover)',
+      variable: '--color-button-primary-hover',
+      value: '#505090',
+    },
+    { property: 'Text', variable: '--color-primary-foreground', value: '#ffffff' },
+    {
+      property: 'Background (disabled)',
+      variable: '--color-button-disabled-base',
+      value: '#eeeeee',
+    },
+    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+  ],
+  secondary: [
+    { property: 'Background', variable: '--color-button-secondary-base', value: '#ffffff' },
+    {
+      property: 'Background (hover)',
+      variable: '--color-button-secondary-hover',
+      value: '#f5f5f5',
+    },
+    { property: 'Text', variable: '--color-neutral-black', value: '#191919' },
+    { property: 'Border', variable: '--color-border-default', value: '#dddddd' },
+    {
+      property: 'Background (disabled)',
+      variable: '--color-button-disabled-base',
+      value: '#eeeeee',
+    },
+    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+  ],
+  text: [
+    { property: 'Text', variable: '--color-text-link', value: '#284cca' },
+    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+  ],
 };
 
-function ButtonTokenPanel({
-  variant = 'contained',
-  color = 'primary',
-}: {
-  variant?: string;
-  color?: string;
-}) {
-  const tokens = colorTokens[color]?.[variant] ?? colorTokens.primary.contained;
+function ButtonTokenPanel({ variant = 'primary' }: { variant?: string }) {
+  const tokens = variantTokens[variant] ?? variantTokens.primary;
 
   const label: React.CSSProperties = {
     fontFamily: 'Public Sans, sans-serif',
@@ -112,9 +90,7 @@ function ButtonTokenPanel({
       }}
     >
       {/* Color tokens */}
-      <p style={label}>
-        Color Tokens — {color} / {variant}
-      </p>
+      <p style={label}>Color Tokens — {variant}</p>
       <table style={table}>
         <thead>
           <tr>
@@ -316,10 +292,7 @@ const meta = {
       return (
         <div>
           <Story />
-          <ButtonTokenPanel
-            variant={context.args.variant as string}
-            color={context.args.color as string}
-          />
+          <ButtonTokenPanel variant={context.args.variant as string} />
         </div>
       );
     },
@@ -327,13 +300,8 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['contained', 'outlined', 'text'],
-      description: 'Button style variant',
-    },
-    color: {
-      control: 'select',
-      options: ['primary', 'secondary'],
-      description: 'Button color scheme',
+      options: ['primary', 'secondary', 'text'],
+      description: 'Button preset — combines visual style and color',
     },
     disabled: {
       control: 'boolean',
@@ -366,156 +334,58 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Primary contained button - the default style
+ * Primary button — main call to action
  */
 export const Primary: Story = {
   args: {
-    children: 'Click me',
-    variant: 'contained',
-    color: 'primary',
+    children: 'Button',
+    variant: 'primary',
   },
 };
 
 /**
- * Secondary contained button for alternative actions
+ * Secondary button — alternative / supporting action
  */
 export const Secondary: Story = {
   args: {
-    children: 'Secondary',
-    variant: 'contained',
-    color: 'secondary',
+    children: 'Button',
+    variant: 'secondary',
   },
 };
 
 /**
- * Outlined button variant - less prominent
- */
-export const Outlined: Story = {
-  args: {
-    children: 'Outlined',
-    variant: 'outlined',
-    color: 'primary',
-  },
-};
-
-/**
- * Link button — underlined blue text, minimal padding, no background hover.
- * Use as an inline call to action. Responsive: 18px desktop · 14px mobile (≤999px).
+ * Text / link button — inline call to action
  */
 export const Text: Story = {
   args: {
     children: 'Link Button Label',
     variant: 'text',
-    color: 'primary',
   },
 };
 
 /**
- * Disabled button state
+ * Disabled state
  */
 export const Disabled: Story = {
   args: {
-    children: 'Disabled',
-    variant: 'contained',
-    color: 'primary',
+    children: 'Button',
+    variant: 'primary',
     disabled: true,
   },
 };
 
 /**
- * All variant types
+ * All three variants side by side
  */
 export const AllVariants: Story = {
   parameters: { hideTokenPanel: true },
   render: () => (
-    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-      <Button variant="contained" color="primary">
-        Contained
-      </Button>
-      <Button variant="outlined" color="primary">
-        Outlined
-      </Button>
-      <Button variant="text" color="primary">
-        Text
-      </Button>
+    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="text">Link Button Label</Button>
     </div>
   ),
-};
-
-/**
- * All color combinations
- */
-export const AllColors: Story = {
-  parameters: { hideTokenPanel: true },
-  render: () => (
-    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-      <Button color="primary">Primary</Button>
-      <Button color="secondary">Secondary</Button>
-    </div>
-  ),
-};
-
-/**
- * Contained buttons in all colors and variants
- */
-export const ColorMatrix: Story = {
-  parameters: { hideTokenPanel: true },
-  render: () => (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '12px',
-      }}
-    >
-      <div>
-        <h4>Primary</h4>
-        <Button variant="contained" color="primary">
-          Contained
-        </Button>
-      </div>
-      <div>
-        <h4>Primary Outlined</h4>
-        <Button variant="outlined" color="primary">
-          Outlined
-        </Button>
-      </div>
-      <div>
-        <h4>Primary Text</h4>
-        <Button variant="text" color="primary">
-          Text
-        </Button>
-      </div>
-      <div>
-        <h4>Secondary</h4>
-        <Button variant="contained" color="secondary">
-          Contained
-        </Button>
-      </div>
-      <div>
-        <h4>Secondary Outlined</h4>
-        <Button variant="outlined" color="secondary">
-          Outlined
-        </Button>
-      </div>
-      <div>
-        <h4>Secondary Text</h4>
-        <Button variant="text" color="secondary">
-          Text
-        </Button>
-      </div>
-    </div>
-  ),
-};
-
-/**
- * Custom styling with className - experiment with Tailwind classes
- */
-export const WithCustomStyles: Story = {
-  args: {
-    children: 'Custom Styled',
-    className: 'w-full shadow-lg hover:shadow-xl',
-  },
 };
 
 /**
@@ -524,8 +394,7 @@ export const WithCustomStyles: Story = {
 export const WithLeftIcon: Story = {
   args: {
     children: 'Button',
-    variant: 'contained',
-    color: 'primary',
+    variant: 'primary',
     startIcon: <PlusIcon />,
   },
 };
@@ -535,8 +404,7 @@ export const WithLeftIcon: Story = {
  */
 export const IconOnly: Story = {
   args: {
-    variant: 'contained',
-    color: 'primary',
+    variant: 'primary',
     iconOnly: true,
     startIcon: <ArrowIcon />,
     'aria-label': 'Next',
@@ -544,104 +412,7 @@ export const IconOnly: Story = {
 };
 
 /**
- * Desktop + Mobile matrix — all icon variants × states (Default, Hover, Disabled)
- * Resize the viewport to see responsive sizing switch at 999px.
- */
-export const DesktopMobileMatrix: Story = {
-  parameters: { layout: 'fullscreen', hideTokenPanel: true },
-  render: () => {
-    const label = 'Button';
-    const variants: Array<{ label: string; props: object }> = [
-      { label: 'Icon = None', props: { children: label } },
-      { label: 'Icon = Left', props: { children: label, startIcon: <PlusIcon /> } },
-      { label: 'Icon = Right', props: { children: label, endIcon: <ArrowIcon /> } },
-      {
-        label: 'Icon = Yes',
-        props: { iconOnly: true, startIcon: <ArrowIcon />, 'aria-label': 'Next' },
-      },
-    ];
-    const states: Array<{ label: string; props: object }> = [
-      { label: 'Default', props: {} },
-      { label: 'Disabled', props: { disabled: true } },
-    ];
-    const thStyle: React.CSSProperties = {
-      fontFamily: 'Public Sans, sans-serif',
-      fontSize: '0.75rem',
-      fontWeight: 600,
-      color: '#777',
-      padding: '0 16px 12px',
-      textAlign: 'left',
-    };
-    const tdStyle: React.CSSProperties = { padding: '12px 16px' };
-    return (
-      <div
-        style={{
-          padding: 40,
-          fontFamily: 'Public Sans, sans-serif',
-          background: '#f5f5f5',
-          minHeight: '100vh',
-        }}
-      >
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#191919', marginBottom: 8 }}>
-          Buttons / Desktop + Mobile
-        </h2>
-        <p style={{ fontSize: '0.8125rem', color: '#777', marginBottom: 32 }}>
-          Desktop: 999px+ &nbsp;·&nbsp; Mobile: &lt;999px — resize to see responsive switch
-        </p>
-        <table
-          style={{
-            borderCollapse: 'collapse',
-            background: '#fff',
-            borderRadius: 8,
-            overflow: 'hidden',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={{ ...thStyle, width: 100 }}>State</th>
-              {variants.map((v) => (
-                <th key={v.label} style={thStyle}>
-                  {v.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {states.map((state) => (
-              <tr key={state.label} style={{ borderTop: '1px solid #f0f0f0' }}>
-                <td
-                  style={{
-                    ...tdStyle,
-                    fontWeight: 600,
-                    fontSize: '0.8125rem',
-                    color: '#191919',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {state.label}
-                </td>
-                {variants.map((v) => (
-                  <td key={v.label} style={tdStyle}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      {...(v.props as object)}
-                      {...(state.props as object)}
-                    />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  },
-};
-
-/**
- * Focus ring appearance — forced focus styles across all color × variant combinations.
+ * Focus ring appearance — forced focus styles across all three variants.
  * The 3px blue ring is applied via className to simulate keyboard-focus state visually.
  */
 export const FocusStates: Story = {
@@ -682,7 +453,7 @@ export const FocusStates: Story = {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '80px repeat(3, auto)',
+            gridTemplateColumns: 'auto repeat(3, auto)',
             gap: '24px 32px',
             background: '#fff',
             borderRadius: 8,
@@ -693,167 +464,26 @@ export const FocusStates: Story = {
         >
           {/* Column headers */}
           <div />
-          <div style={headStyle}>Contained</div>
-          <div style={headStyle}>Outlined</div>
+          <div style={headStyle}>Primary</div>
+          <div style={headStyle}>Secondary</div>
           <div style={headStyle}>Text</div>
 
-          {/* Primary row */}
-          <div style={rowLabelStyle}>Primary</div>
+          {/* Variants row */}
+          <div style={rowLabelStyle}>Default</div>
           <div style={col}>
-            <Button variant="contained" color="primary" className={focusClass}>
+            <Button variant="primary" className={focusClass}>
               Button
             </Button>
           </div>
           <div style={col}>
-            <Button variant="outlined" color="primary" className={focusClass}>
+            <Button variant="secondary" className={focusClass}>
               Button
             </Button>
           </div>
           <div style={col}>
-            <Button variant="text" color="primary" className={focusClass}>
-              Button
+            <Button variant="text" className={focusClass}>
+              Link Button Label
             </Button>
-          </div>
-
-          {/* Secondary row */}
-          <div style={rowLabelStyle}>Secondary</div>
-          <div style={col}>
-            <Button variant="contained" color="secondary" className={focusClass}>
-              Button
-            </Button>
-          </div>
-          <div style={col}>
-            <Button variant="outlined" color="secondary" className={focusClass}>
-              Button
-            </Button>
-          </div>
-          <div style={col}>
-            <Button variant="text" color="secondary" className={focusClass}>
-              Button
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  },
-};
-
-/**
- * Mobile viewport (≤999px) — switch to this story to preview the compact responsive size.
- * Set the Storybook viewport to ≤999px or use the preset defined below.
- */
-export const MobileViewport: Story = {
-  parameters: {
-    layout: 'padded',
-    hideTokenPanel: true,
-    viewport: {
-      viewports: {
-        mobile390: {
-          name: 'Mobile 390px (≤999px breakpoint)',
-          styles: { width: '390px', height: '844px' },
-        },
-      },
-      defaultViewport: 'mobile390',
-    },
-  },
-  render: () => {
-    const sectionLabel: React.CSSProperties = {
-      fontFamily: 'Public Sans, sans-serif',
-      fontSize: '0.75rem',
-      fontWeight: 600,
-      color: '#777',
-      marginBottom: 8,
-    };
-    const group: React.CSSProperties = { display: 'flex', flexWrap: 'wrap', gap: 12 };
-    return (
-      <div
-        style={{
-          padding: 24,
-          background: '#f5f5f5',
-          minHeight: '100vh',
-          fontFamily: 'Public Sans, sans-serif',
-        }}
-      >
-        <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: '#191919', marginBottom: 4 }}>
-          Buttons / Mobile ≤999px
-        </h2>
-        <p style={{ fontSize: '0.8125rem', color: '#777', marginBottom: 24 }}>
-          px-4 · py-3 · text-14px/20px · icon-only 44px
-        </p>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          <div>
-            <div style={sectionLabel}>Primary</div>
-            <div style={group}>
-              <Button variant="contained" color="primary">
-                Button
-              </Button>
-              <Button variant="contained" color="primary" startIcon={<PlusIcon />}>
-                Button
-              </Button>
-              <Button variant="contained" color="primary" endIcon={<ArrowIcon />}>
-                Button
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                iconOnly
-                startIcon={<ArrowIcon />}
-                aria-label="Next"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div style={sectionLabel}>Secondary</div>
-            <div style={group}>
-              <Button variant="contained" color="secondary">
-                Button
-              </Button>
-              <Button variant="contained" color="secondary" startIcon={<PlusIcon />}>
-                Button
-              </Button>
-              <Button variant="contained" color="secondary" endIcon={<ArrowIcon />}>
-                Button
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                iconOnly
-                startIcon={<ArrowIcon />}
-                aria-label="Next"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div style={sectionLabel}>Outlined · Text</div>
-            <div style={group}>
-              <Button variant="outlined" color="primary">
-                Outlined
-              </Button>
-              <Button variant="text" color="primary">
-                Text
-              </Button>
-              <Button variant="outlined" color="secondary">
-                Outlined
-              </Button>
-              <Button variant="text" color="secondary">
-                Text
-              </Button>
-            </div>
-          </div>
-
-          <div>
-            <div style={sectionLabel}>Disabled</div>
-            <div style={group}>
-              <Button variant="contained" color="primary" disabled>
-                Button
-              </Button>
-              <Button variant="contained" color="secondary" disabled>
-                Button
-              </Button>
-            </div>
           </div>
         </div>
       </div>
@@ -969,7 +599,6 @@ export const LinkButtonMatrix: Story = {
                 <div style={cellStyle}>
                   <Button
                     variant="text"
-                    color="primary"
                     className={state.cls || undefined}
                     disabled={state.disabled}
                     {...group.props}
@@ -981,7 +610,6 @@ export const LinkButtonMatrix: Story = {
                 <div style={cellStyle}>
                   <Button
                     variant="text"
-                    color="primary"
                     className={[smallCls, state.cls].filter(Boolean).join(' ')}
                     disabled={state.disabled}
                     {...group.props}
