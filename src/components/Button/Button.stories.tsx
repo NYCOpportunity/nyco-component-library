@@ -204,20 +204,6 @@ function ButtonTokenPanel({ variant = 'primary' }: { variant?: string }) {
 
 import * as React from 'react';
 
-// 24×24 icons used by contained / outlined button stories
-const PlusIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
 // 16×16 icons sized for the link/text button variant
 const SmallPlusIcon = () => (
   <svg
@@ -297,6 +283,16 @@ const meta = {
       );
     },
   ],
+  render: ({ startIcon, endIcon, iconOnly, children, ...args }) => (
+    <Button
+      {...args}
+      iconOnly={iconOnly}
+      startIcon={startIcon ? <ArrowIcon /> : undefined}
+      endIcon={endIcon ? <ArrowIcon /> : undefined}
+    >
+      {iconOnly ? undefined : children}
+    </Button>
+  ),
   argTypes: {
     variant: {
       control: 'select',
@@ -316,16 +312,19 @@ const meta = {
       description: 'Button text content',
     },
     startIcon: {
-      control: false,
-      description: 'Icon element rendered before the label',
+      control: 'boolean',
+      description: 'Show an icon before the label',
     },
     endIcon: {
-      control: false,
-      description: 'Icon element rendered after the label',
+      control: 'boolean',
+      description: 'Show an icon after the label',
     },
     iconOnly: {
       control: 'boolean',
-      description: 'Square icon-only button (no label)',
+      description: 'Square icon-only button — hides label, renders icon only',
+    },
+    type: {
+      table: { disable: true },
     },
   },
 } satisfies Meta<typeof Button>;
@@ -395,7 +394,7 @@ export const WithLeftIcon: Story = {
   args: {
     children: 'Button',
     variant: 'primary',
-    startIcon: <PlusIcon />,
+    startIcon: true,
   },
 };
 
@@ -406,7 +405,7 @@ export const IconOnly: Story = {
   args: {
     variant: 'primary',
     iconOnly: true,
-    startIcon: <ArrowIcon />,
+    startIcon: true,
     'aria-label': 'Next',
   },
 };
