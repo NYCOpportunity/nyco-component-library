@@ -9,10 +9,18 @@ const meta = {
     layout: 'padded',
   },
   tags: ['autodocs'],
+  args: {
+    items: [
+      { label: 'Home', href: '#' },
+      { label: 'Section', href: '#' },
+      { label: 'Current Page' },
+    ],
+  },
   argTypes: {
     items: {
-      control: false,
-      description: 'Ordered list of breadcrumb items. Last item is the current page.',
+      control: 'object',
+      description:
+        'Ordered list of breadcrumb items. Each item has a `label` (string) and an optional `href` (string). The last item is treated as the current page.',
     },
     className: {
       control: 'text',
@@ -27,6 +35,11 @@ type Story = StoryObj<typeof meta>;
 // ---------------------------------------------------------------------------
 // Stories
 // ---------------------------------------------------------------------------
+
+/**
+ * Default — interactive playground. Edit items in the Controls panel below.
+ */
+export const Default: Story = {};
 
 /**
  * Single breadcrumb — just the current page label.
