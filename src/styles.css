@@ -232,7 +232,7 @@
 
   /* Italic — Emphasized body, quotes, figure taxonomy */
   .body-italic {
-    font-family: var(--font-secondary);
+    font-family: var(--font-primary);
     font-size: 1.125rem;
     letter-spacing: normal;
     line-height: 150%;
@@ -269,6 +269,15 @@
     letter-spacing: normal;
     line-height: 150%;
     font-weight: 400; /* regular */
+  }
+
+  /* 16px Italic — Emphasized UI text */
+  .ui-16-italic {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    letter-spacing: normal;
+    line-height: 150%;
+    font-style: italic;
   }
 
   /* 16px Bold — Control panel links, buttons, figure titles, figure links */
@@ -315,6 +324,35 @@
     letter-spacing: normal;
     line-height: 160%;
     font-weight: 600; /* semi bold */
+  }
+
+  /* 14px Link — Low digital literacy environments, breadcrumb links */
+  .ui-14-link {
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-weight: 600; /* semi bold */
+    text-decoration: underline;
+  }
+
+  /* 14px Underline — Breadcrumb hover states, links to new pages */
+  .ui-14-underline {
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-weight: 400; /* regular */
+    text-decoration: underline;
+  }
+
+  /* 12px Regular — Global nav elements */
+  .ui-12-regular {
+    font-family: var(--font-primary);
+    font-size: 0.75rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-weight: 400;
   }
 
   /* 12px All Caps — Eyebrow text e.g. "CURRENT SELECTION" */
@@ -389,6 +427,15 @@
     letter-spacing: normal;
     line-height: 140%;
     font-weight: 600; /* semi bold */
+  }
+
+  /* In-Page Navigation Item — desktop 20px */
+  .component-nav-inpage-item {
+    font-family: var(--font-secondary);
+    font-size: 1.25rem;
+    letter-spacing: normal;
+    line-height: 130%;
+    font-weight: 400; /* regular */
   }
 
   /* ============================================================
@@ -467,6 +514,7 @@
     .body-italic {
       font-size: 1.125rem;
       line-height: 150%;
+      font-style: italic;
     }
 
     /* Bold — Emphasized/bolded body, key terms */
@@ -582,6 +630,13 @@
       font-size: 1rem;
       line-height: 140%;
       font-weight: 600;
+    }
+
+    /* In-Page Navigation Item — mobile 18px */
+    .component-nav-inpage-item {
+      font-size: 1.125rem;
+      line-height: 130%;
+      font-weight: 400;
     }
   }
 }

@@ -158,7 +158,7 @@ const fontGroups = [
       {
         className: 'body-italic',
         label: 'Body Italic',
-        font: 'Source Serif Pro',
+        font: 'Public Sans',
         size: '1.125rem / italic',
       },
       { className: 'body-bold', label: 'Body Bold', font: 'Public Sans', size: '1.125rem / 600' },
@@ -180,6 +180,12 @@ const fontGroups = [
         font: 'Public Sans',
         size: '1rem / 400',
       },
+      {
+        className: 'ui-16-italic',
+        label: 'UI 16 Italic',
+        font: 'Public Sans',
+        size: '1rem / italic',
+      },
       { className: 'ui-16-bold', label: 'UI 16 Bold', font: 'Public Sans', size: '1rem / 600' },
       {
         className: 'ui-16-link',
@@ -200,6 +206,24 @@ const fontGroups = [
         size: '0.875rem / italic',
       },
       { className: 'ui-14-bold', label: 'UI 14 Bold', font: 'Public Sans', size: '0.875rem / 600' },
+      {
+        className: 'ui-14-link',
+        label: 'UI 14 Link',
+        font: 'Public Sans',
+        size: '0.875rem / 600 underline',
+      },
+      {
+        className: 'ui-14-underline',
+        label: 'UI 14 Underline',
+        font: 'Public Sans',
+        size: '0.875rem / 400 underline',
+      },
+      {
+        className: 'ui-12-regular',
+        label: 'UI 12 Regular',
+        font: 'Public Sans',
+        size: '0.75rem / 400',
+      },
       {
         className: 'ui-12-all-caps',
         label: 'UI 12 All Caps',
@@ -248,6 +272,12 @@ const fontGroups = [
         label: 'Control Panel Title',
         font: 'Public Sans',
         size: '1.125rem / 600',
+      },
+      {
+        className: 'component-nav-inpage-item',
+        label: 'In-Page Nav Item',
+        font: 'Source Serif Pro',
+        size: '1.25rem / 400 (mobile: 1.125rem)',
       },
     ],
   },
