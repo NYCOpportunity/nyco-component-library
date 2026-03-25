@@ -14,10 +14,6 @@ const meta = {
       control: false,
       description: 'Ordered list of breadcrumb items. Last item is the current page.',
     },
-    maxVisible: {
-      control: { type: 'number', min: 1 },
-      description: 'Max items before collapsing into overflow. Default: 3.',
-    },
     className: {
       control: 'text',
       description: 'Custom CSS classes',
@@ -51,7 +47,7 @@ export const TwoItems: Story = {
 };
 
 /**
- * Three items — the default `maxVisible` threshold.
+ * Three items — two parent links and the current page.
  */
 export const ThreeItems: Story = {
   args: {
@@ -64,8 +60,8 @@ export const ThreeItems: Story = {
 };
 
 /**
- * Overflow — more items than `maxVisible` (default 3). Shows first item,
- * an ellipsis button, and the last item. Click the ellipsis to reveal hidden items.
+ * Overflow — container is too narrow to fit all items, so the middle items
+ * collapse into an ellipsis. Hover the dots to reveal the hidden items.
  */
 export const Overflow: Story = {
   args: {
@@ -76,10 +72,18 @@ export const Overflow: Story = {
       { label: 'Current Page' },
     ],
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 220, minHeight: 200 }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 /**
- * Deep overflow — many levels deep.
+ * Deep overflow — five levels deep collapsed into an ellipsis.
+ * Hover the dots to reveal all hidden levels.
  */
 export const DeepOverflow: Story = {
   args: {
@@ -91,6 +95,13 @@ export const DeepOverflow: Story = {
       { label: 'Current Page' },
     ],
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 220, minHeight: 200 }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 /**
@@ -140,26 +151,30 @@ export const AllStates: Story = {
         </div>
         <div style={row}>
           <span style={label}>Overflow (4 items)</span>
-          <Breadcrumbs
-            items={[
-              { label: 'Home', href: '#' },
-              { label: 'Section', href: '#' },
-              { label: 'Subsection', href: '#' },
-              { label: 'Current Page' },
-            ]}
-          />
+          <div style={{ width: 220 }}>
+            <Breadcrumbs
+              items={[
+                { label: 'Home', href: '#' },
+                { label: 'Section', href: '#' },
+                { label: 'Subsection', href: '#' },
+                { label: 'Current Page' },
+              ]}
+            />
+          </div>
         </div>
-        <div style={{ ...row, borderBottom: 'none' }}>
+        <div style={{ ...row, borderBottom: 'none', paddingBottom: 100 }}>
           <span style={label}>Deep overflow (5 items)</span>
-          <Breadcrumbs
-            items={[
-              { label: 'Home', href: '#' },
-              { label: 'Level 2', href: '#' },
-              { label: 'Level 3', href: '#' },
-              { label: 'Level 4', href: '#' },
-              { label: 'Current Page' },
-            ]}
-          />
+          <div style={{ width: 220 }}>
+            <Breadcrumbs
+              items={[
+                { label: 'Home', href: '#' },
+                { label: 'Level 2', href: '#' },
+                { label: 'Level 3', href: '#' },
+                { label: 'Level 4', href: '#' },
+                { label: 'Current Page' },
+              ]}
+            />
+          </div>
         </div>
       </div>
     );

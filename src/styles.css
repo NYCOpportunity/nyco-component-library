@@ -317,6 +317,16 @@
     font-weight: 600; /* semi bold */
   }
 
+  /* 14px Link — Low digital literacy environments, breadcrumb links */
+  .ui-14-link {
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    letter-spacing: normal;
+    line-height: 160%;
+    font-weight: 600; /* semi bold */
+    text-decoration: underline;
+  }
+
   /* 12px All Caps — Eyebrow text e.g. "CURRENT SELECTION" */
   .ui-12-all-caps {
     font-family: var(--font-primary);

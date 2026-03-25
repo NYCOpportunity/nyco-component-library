@@ -1,22 +1,6 @@
 import * as React from 'react';
 import { BreadcrumbsProps } from '../../types/components';
 
-// Mirrors the Button component's mobile breakpoint
-const MOBILE_BREAKPOINT = '(max-width: 999px)';
-
-function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = React.useState(
-    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_BREAKPOINT).matches
-  );
-  React.useEffect(() => {
-    const mq = window.matchMedia(MOBILE_BREAKPOINT);
-    const handler = (e: { matches: boolean }) => setIsMobile(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-  return isMobile;
-}
-
 const ChevronRight = () => (
   <svg
     width="16"
@@ -60,14 +44,11 @@ const Separator = () => (
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(' ');
 
 export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
-  ({ items, maxVisible = Infinity, mobileMaxVisible = Infinity, className, ...props }, ref) => {
-    const isMobile = useIsMobile();
-    const effectiveMaxVisible = isMobile ? mobileMaxVisible : maxVisible;
-
+  ({ items, className, ...props }, ref) => {
     // Hidden probe — always renders the full list to measure natural width.
-    // ResizeObserver compares probe width vs the nav container width to detect overflow.
+    // Compares probe scrollWidth vs nav clientWidth to detect overflow.
     const probeRef = React.useRef<React.ElementRef<'ol'>>(null);
-    const [containerOverflow, setContainerOverflow] = React.useState(false);
+    const [isOverflow, setIsOverflow] = React.useState(false);
 
     React.useLayoutEffect(() => {
       const probe = probeRef.current;
@@ -75,20 +56,20 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
       const nav = probe.parentElement;
       if (!nav) return;
 
-      const check = () => setContainerOverflow(probe.scrollWidth > nav.clientWidth);
+      const check = () => setIsOverflow(probe.scrollWidth > nav.clientWidth);
       check();
       window.addEventListener('resize', check);
       return () => window.removeEventListener('resize', check);
     }, [items]);
 
-    const forceOverflow = isFinite(effectiveMaxVisible) && items.length > effectiveMaxVisible;
-    const isOverflow = forceOverflow || containerOverflow;
     const hiddenItems = isOverflow ? items.slice(1, items.length - 1) : [];
 
+    // Parent links are semibold (clickable); current page (last) is regular weight
     const linkClass =
-      'text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-black)] hover:underline hover:underline-offset-2 py-px whitespace-nowrap';
-    const currentClass =
-      'text-[14px] leading-[1.6] font-semibold text-[var(--color-neutral-black)] py-px whitespace-nowrap';
+      'ui-14-bold text-[var(--color-neutral-black)] hover:underline hover:underline-offset-2 py-px whitespace-nowrap';
+    const currentClass = 'ui-14-regular text-[var(--color-neutral-black)] py-px whitespace-nowrap';
+    // Single item is the current page with no parent links — keep it prominent
+    const soloClass = 'ui-14-bold text-[var(--color-neutral-black)] py-px whitespace-nowrap';
 
     return (
       <nav
@@ -108,7 +89,9 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
             return (
               <li key={index} className="flex items-center gap-[2px]">
                 {isLast ? (
-                  <span className={currentClass}>{item.label}</span>
+                  <span className={items.length === 1 ? soloClass : currentClass}>
+                    {item.label}
+                  </span>
                 ) : (
                   <>
                     <a href={item.href} className={linkClass} tabIndex={-1}>
@@ -138,17 +121,17 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
               <li className="group relative flex items-center gap-[2px]">
                 <span
                   aria-label="Show more breadcrumbs"
-                  className="flex items-center justify-center w-4 h-4 text-[var(--color-neutral-black)] hover:text-[var(--color-text-link)] cursor-default"
+                  className="flex items-end justify-center w-4 h-4 text-[var(--color-neutral-black)] hover:text-[var(--color-text-link)] cursor-default"
                 >
                   <DotsIcon />
                 </span>
-                <div className="absolute top-full left-0 pt-1 min-w-[165px] invisible group-hover:visible z-10">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-1 min-w-[165px] invisible group-hover:visible z-10">
                   <div className="bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.08)]">
                     {hiddenItems.map((item, i) => (
                       <a
                         key={i}
                         href={item.href}
-                        className="block px-6 py-1 text-[14px] font-normal leading-[1.6] text-[var(--color-neutral-black)] hover:underline hover:underline-offset-2 whitespace-nowrap"
+                        className="block px-6 py-1 ui-14-regular text-[var(--color-neutral-black)] hover:underline hover:underline-offset-2 whitespace-nowrap"
                       >
                         {item.label}
                       </a>
@@ -171,7 +154,10 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
               return (
                 <li key={index} className="flex items-center gap-[2px]">
                   {isLast ? (
-                    <span className={currentClass} aria-current="page">
+                    <span
+                      className={items.length === 1 ? soloClass : currentClass}
+                      aria-current="page"
+                    >
                       {item.label}
                     </span>
                   ) : (
