@@ -2,6 +2,131 @@ import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Breadcrumbs } from './Breadcrumbs';
 
+// ---------------------------------------------------------------------------
+// Token Panel — shown below each story in the Docs tab
+// ---------------------------------------------------------------------------
+
+function BreadcrumbsTokenPanel() {
+  const label: React.CSSProperties = {
+    fontFamily: 'Public Sans, sans-serif',
+    fontSize: '0.625rem',
+    fontWeight: 700,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: '#aaaaaa',
+    margin: '16px 0 6px',
+  };
+  const table: React.CSSProperties = { width: '100%', borderCollapse: 'collapse' };
+  const th: React.CSSProperties = {
+    textAlign: 'left',
+    fontSize: '0.625rem',
+    fontWeight: 600,
+    color: '#aaaaaa',
+    padding: '0 12px 4px 0',
+    borderBottom: '1px solid #eeeeee',
+  };
+  const td: React.CSSProperties = {
+    fontSize: '0.6875rem',
+    color: '#333333',
+    padding: '5px 12px 5px 0',
+    borderBottom: '1px solid #f5f5f5',
+    verticalAlign: 'middle',
+  };
+  const mono: React.CSSProperties = {
+    fontFamily: 'monospace',
+    color: '#3f5bbf',
+    fontSize: '0.6875rem',
+  };
+
+  const colorTokens = [
+    { property: 'Text (links & current)', variable: '--color-neutral-black', value: '#191919' },
+    { property: 'Separator icon', variable: '--color-neutral-black', value: '#191919' },
+    { property: 'Dots icon (hover)', variable: '--color-text-link', value: '#284cca' },
+    { property: 'Dropdown background', variable: '--color-bg-primary', value: '#ffffff' },
+    { property: 'Dropdown border', variable: '--color-border-default', value: '#dddddd' },
+  ];
+
+  const textTokens = [
+    { property: 'Font family', token: '--font-primary', value: 'Public Sans, sans-serif' },
+    { property: 'Font size', token: 'ui-14-bold / ui-14-regular', value: '14px' },
+    { property: 'Line height', token: 'ui-14-bold / ui-14-regular', value: '160%' },
+    { property: 'Parent links', token: 'ui-14-bold', value: 'font-weight 600 (semibold)' },
+    { property: 'Current page', token: 'ui-14-regular', value: 'font-weight 400 (regular)' },
+    { property: 'Dropdown items', token: 'ui-14-regular', value: 'font-weight 400 (regular)' },
+    { property: 'Dropdown border radius', token: '--border-radius-base', value: '0.25rem / 4px' },
+  ];
+
+  return (
+    <div
+      style={{
+        marginTop: 24,
+        borderTop: '1px solid #eeeeee',
+        paddingTop: 16,
+        fontFamily: 'Public Sans, sans-serif',
+      }}
+    >
+      {/* Color tokens */}
+      <p style={label}>Color Tokens</p>
+      <table style={table}>
+        <thead>
+          <tr>
+            <th style={th}>Property</th>
+            <th style={th}>CSS Variable</th>
+            <th style={th}>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {colorTokens.map((t) => (
+            <tr key={t.property}>
+              <td style={td}>{t.property}</td>
+              <td style={{ ...td, ...mono }}>{t.variable}</td>
+              <td style={td}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: 10,
+                      height: 10,
+                      borderRadius: 2,
+                      backgroundColor: t.value,
+                      border: '1px solid rgba(0,0,0,0.1)',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={mono}>{t.value}</span>
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Typography tokens */}
+      <p style={label}>Typography Tokens</p>
+      <table style={{ ...table, marginBottom: 4 }}>
+        <thead>
+          <tr>
+            <th style={th}>Property</th>
+            <th style={th}>Token / Class</th>
+            <th style={th}>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {textTokens.map((t) => (
+            <tr key={t.property}>
+              <td style={td}>{t.property}</td>
+              <td style={{ ...td, ...mono }}>{t.token}</td>
+              <td style={{ ...td, ...mono }}>{t.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
 const meta = {
   title: 'Components/Breadcrumbs',
   component: Breadcrumbs,
@@ -16,6 +141,22 @@ const meta = {
       { label: 'Current Page' },
     ],
   },
+  decorators: [
+    (
+      Story: React.ComponentType,
+      context: { viewMode: string; parameters: Record<string, unknown> }
+    ) => {
+      if (context.viewMode !== 'docs' || context.parameters.hideTokenPanel) {
+        return <Story />;
+      }
+      return (
+        <div>
+          <Story />
+          <BreadcrumbsTokenPanel />
+        </div>
+      );
+    },
+  ],
   argTypes: {
     items: {
       control: 'object',
@@ -32,36 +173,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// ---------------------------------------------------------------------------
-// Stories
-// ---------------------------------------------------------------------------
-
-/**
- * Default — interactive playground. Edit items in the Controls panel below.
- */
 export const Default: Story = {};
 
-/**
- * Single breadcrumb — just the current page label.
- */
 export const OneItem: Story = {
   args: {
     items: [{ label: 'Current Page' }],
   },
 };
 
-/**
- * Two items — one parent link and the current page.
- */
 export const TwoItems: Story = {
   args: {
     items: [{ label: 'Home', href: '#' }, { label: 'Current Page' }],
   },
 };
 
-/**
- * Three items — two parent links and the current page.
- */
 export const ThreeItems: Story = {
   args: {
     items: [
@@ -72,11 +197,8 @@ export const ThreeItems: Story = {
   },
 };
 
-/**
- * Overflow — container is too narrow to fit all items, so the middle items
- * collapse into an ellipsis. Hover the dots to reveal the hidden items.
- */
 export const Overflow: Story = {
+  parameters: { hideTokenPanel: true },
   args: {
     items: [
       { label: 'Home', href: '#' },
@@ -99,6 +221,7 @@ export const Overflow: Story = {
  * Hover the dots to reveal all hidden levels.
  */
 export const DeepOverflow: Story = {
+  parameters: { hideTokenPanel: true },
   args: {
     items: [
       { label: 'Home', href: '#' },
@@ -122,7 +245,7 @@ export const DeepOverflow: Story = {
  */
 export const AllStates: Story = {
   args: { items: [] },
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', hideTokenPanel: true },
   render: () => {
     const row: React.CSSProperties = {
       display: 'flex',
