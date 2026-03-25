@@ -121,7 +121,7 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
               <li className="group relative flex items-center gap-[2px]">
                 <span
                   aria-label="Show more breadcrumbs"
-                  className="flex items-end justify-center w-4 h-4 text-[var(--color-neutral-black)] hover:text-[var(--color-text-link)] cursor-default"
+                  className="flex items-end justify-center w-4 h-4 text-[var(--color-neutral-black)] hover:text-[var(--color-neutral-700)] cursor-default"
                 >
                   <DotsIcon />
                 </span>
