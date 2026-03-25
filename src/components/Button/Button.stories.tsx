@@ -23,6 +23,7 @@ const variantTokens: Record<
       value: '#eeeeee',
     },
     { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    { property: 'Focus ring', variable: '--color-border-focus', value: '#284cca' },
   ],
   secondary: [
     { property: 'Background', variable: '--color-button-secondary-base', value: '#ffffff' },
@@ -39,10 +40,12 @@ const variantTokens: Record<
       value: '#eeeeee',
     },
     { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    { property: 'Focus ring', variable: '--color-border-focus', value: '#284cca' },
   ],
   text: [
     { property: 'Text', variable: '--color-text-link', value: '#284cca' },
     { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    { property: 'Focus ring', variable: '--color-border-focus', value: '#284cca' },
   ],
 };
 
@@ -437,7 +440,7 @@ export const FocusStates: Story = {
       display: 'flex',
       alignItems: 'center',
     };
-    const focusClass = 'ring-[3px] ring-[var(--color-border-focus)] outline-none';
+    const focusClass = 'ring-[3px] ring-[var(--color-border-focus)] ring-offset-[1px] outline-none';
     const col: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 8 };
     return (
       <div
@@ -452,7 +455,7 @@ export const FocusStates: Story = {
           Buttons / Focus State
         </h2>
         <p style={{ fontSize: '0.8125rem', color: '#777', marginBottom: 32 }}>
-          3px solid ring · color: #284cca · no offset
+          3px solid ring · color: #284cca · 1px offset
         </p>
         <div
           style={{
