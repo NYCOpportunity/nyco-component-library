@@ -39,20 +39,23 @@ function BreadcrumbsTokenPanel() {
   };
 
   const colorTokens = [
-    { property: 'Text (links & current)', variable: '--color-neutral-black', value: '#191919' },
+    { property: 'Text — links & current page', variable: '--color-neutral-black', value: '#191919' },
     { property: 'Separator icon', variable: '--color-neutral-black', value: '#191919' },
+    { property: 'Dots icon', variable: '--color-neutral-black', value: '#191919' },
     { property: 'Dots icon (hover)', variable: '--color-text-link', value: '#284cca' },
-    { property: 'Dropdown background', variable: '--color-bg-primary', value: '#ffffff' },
-    { property: 'Dropdown border', variable: '--color-border-default', value: '#dddddd' },
+    { property: 'Dropdown background', variable: '--color-bg-primary (→ --color-neutral-white)', value: '#ffffff' },
+    { property: 'Dropdown border', variable: '--color-border-default (→ --color-neutral-300)', value: '#dddddd' },
   ];
 
   const textTokens = [
-    { property: 'Font family', token: '--font-primary', value: 'Public Sans, sans-serif' },
-    { property: 'Font size', token: 'ui-14-bold / ui-14-regular', value: '14px' },
-    { property: 'Line height', token: 'ui-14-bold / ui-14-regular', value: '160%' },
-    { property: 'Parent links', token: 'ui-14-bold', value: 'font-weight 600 (semibold)' },
-    { property: 'Current page', token: 'ui-14-regular', value: 'font-weight 400 (regular)' },
-    { property: 'Dropdown items', token: 'ui-14-regular', value: 'font-weight 400 (regular)' },
+    { property: 'Font family', token: '--font-primary', value: "Public Sans, sans-serif" },
+    { property: 'Parent link — size', token: 'ui-14-bold', value: '0.875rem / 14px' },
+    { property: 'Parent link — line height', token: 'ui-14-bold', value: '160%' },
+    { property: 'Parent link — weight', token: 'ui-14-bold', value: '600 (semibold)' },
+    { property: 'Current page — size', token: 'ui-14-regular', value: '0.875rem / 14px' },
+    { property: 'Current page — line height', token: 'ui-14-regular', value: '160%' },
+    { property: 'Current page — weight', token: 'ui-14-regular', value: '400 (regular)' },
+    { property: 'Dropdown items — weight', token: 'ui-14-regular', value: '400 (regular)' },
     { property: 'Dropdown border radius', token: '--border-radius-base', value: '0.25rem / 4px' },
   ];
 
