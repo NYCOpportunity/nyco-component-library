@@ -159,9 +159,9 @@ const meta = {
   decorators: [
     (
       Story: React.ComponentType,
-      context: { viewMode: string; parameters: Record<string, unknown> }
+      context: { viewMode: string; name: string; parameters: Record<string, unknown> }
     ) => {
-      if (context.viewMode !== 'docs' || context.parameters.hideTokenPanel) {
+      if (context.viewMode !== 'docs' || context.name !== 'Default') {
         return <Story />;
       }
       return (
@@ -213,7 +213,6 @@ export const ThreeItems: Story = {
 };
 
 export const Overflow: Story = {
-  parameters: { hideTokenPanel: true },
   args: {
     items: [
       { label: 'Home', href: '#' },
@@ -236,7 +235,6 @@ export const Overflow: Story = {
  * Hover the dots to reveal all hidden levels.
  */
 export const DeepOverflow: Story = {
-  parameters: { hideTokenPanel: true },
   args: {
     items: [
       { label: 'Home', href: '#' },
@@ -260,7 +258,7 @@ export const DeepOverflow: Story = {
  */
 export const AllStates: Story = {
   args: { items: [] },
-  parameters: { layout: 'padded', hideTokenPanel: true },
+  parameters: { layout: 'padded' },
   render: () => {
     const row: React.CSSProperties = {
       display: 'flex',
