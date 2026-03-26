@@ -69,16 +69,21 @@ function AccordionTokenPanel() {
   ];
 
   const textTokens = [
-    { property: 'Title font family', token: '--font-primary', value: 'Public Sans, sans-serif' },
-    { property: 'Title weight', token: 'font-semibold', value: '600' },
-    { property: 'Title size (desktop)', token: 'text-[20px]', value: '20px / lh 1.4' },
-    { property: 'Title size (mobile)', token: 'text-[18px]', value: '18px / lh 1.4' },
-    { property: 'Body font family', token: '--font-primary', value: 'Public Sans, sans-serif' },
-    { property: 'Body weight', token: 'font-normal', value: '400' },
-    { property: 'Body size', token: 'text-[18px]', value: '18px / lh 1.5' },
-    { property: 'Nav font family', token: '--font-secondary', value: 'Source Serif Pro, serif' },
-    { property: 'Nav size (desktop)', token: 'text-[20px]', value: '20px / lh 1.3' },
-    { property: 'Nav size (mobile)', token: 'text-[18px]', value: '18px / lh 1.3' },
+    {
+      property: 'Title',
+      token: '.component-accordion-title',
+      value: 'Public Sans, 1.25rem, 600, lh 140%',
+    },
+    {
+      property: 'Body',
+      token: '.body-regular',
+      value: 'Public Sans, 1.125rem, 400, lh 150%',
+    },
+    {
+      property: 'Nav item',
+      token: '.component-nav-inpage-item',
+      value: 'Source Serif Pro, 1.25rem, 400, lh 130%',
+    },
     { property: 'Border radius', token: '--border-radius-base', value: '0.25rem / 4px' },
   ];
 

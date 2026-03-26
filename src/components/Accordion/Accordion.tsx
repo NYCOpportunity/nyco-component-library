@@ -116,7 +116,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
           aria-controls={panelId}
           className="flex items-center justify-between w-full text-left focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] rounded-[2px]"
         >
-          <span className="font-['Public_Sans',sans-serif] font-semibold text-[20px] max-[999px]:text-[18px] leading-[1.4] text-[var(--color-neutral-black)]">
+          <span className="component-accordion-title text-[var(--color-neutral-black)]">
             {title}
           </span>
           <span className="shrink-0 text-[var(--color-neutral-black)]">
@@ -189,7 +189,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
             id={panelId}
             role="region"
             aria-label={title}
-            className="font-['Public_Sans',sans-serif] font-normal text-[18px] leading-[1.5] text-[var(--color-neutral-black)] w-full shrink-0"
+            className="body-regular text-[var(--color-neutral-black)] w-full shrink-0"
           >
             {children}
           </div>
