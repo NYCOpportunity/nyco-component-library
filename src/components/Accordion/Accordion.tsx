@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { AccordionProps } from '../../types/components';
 
-// ---------------------------------------------------------------------------
-// Icons
-// ---------------------------------------------------------------------------
-
 const PlusIcon = () => (
   <svg
     width="24"
@@ -43,15 +39,7 @@ const MinusIcon = () => (
   </svg>
 );
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
 const cx = (...classes: Array<string | undefined | false>) => classes.filter(Boolean).join(' ');
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 
 export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
   (
@@ -83,18 +71,14 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     // -----------------------------------------------------------------------
     // Container classes — Figma exact spacing
     //
-    // Accordion:
-    //   Closed: px-6 py-4 (24/16)
-    //   Open:   px-6 py-6 gap-4 (24/24)
+    // Accordion (all states): px-6 py-6 gap-4
+    //   gap-4 is always set; it's only visible when open (divider + content).
     //
-    // In-Page Nav (padding identical on desktop & mobile per Figma):
-    //   Closed: px-6 py-4
-    //   Open:   p-6 (24 all sides)                                        gap-4
+    // In-Page Nav (all states): px-6 py-6 gap-4
     // -----------------------------------------------------------------------
     const containerCx = cx(
       'bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)]',
-      'w-full flex flex-col',
-      isInPageNav ? (isOpen ? 'p-6 gap-4' : 'px-6 py-4') : isOpen ? 'px-6 py-6 gap-4' : 'px-6 py-4',
+      'w-full flex flex-col px-6 py-6 gap-4',
       className
     );
 
@@ -153,7 +137,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
                       href={item.href}
                       onClick={item.onClick}
                       className={cx(
-                        "flex-1 font-['Source_Serif_4','Source_Serif_Pro',serif] font-normal text-[20px] max-[999px]:text-[18px] leading-[1.3]",
+                        'flex-1 component-nav-inpage-item',
                         item.active
                           ? 'text-[var(--color-neutral-black)]'
                           : 'text-[var(--color-neutral-700)] hover:text-[var(--color-neutral-black)] transition-colors'
@@ -164,7 +148,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
                   ) : (
                     <span
                       className={cx(
-                        "flex-1 font-['Source_Serif_4','Source_Serif_Pro',serif] font-normal text-[20px] max-[999px]:text-[18px] leading-[1.3]",
+                        'flex-1 component-nav-inpage-item',
                         item.active
                           ? 'text-[var(--color-neutral-black)]'
                           : 'text-[var(--color-neutral-700)]'
