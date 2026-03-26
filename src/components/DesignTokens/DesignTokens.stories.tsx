@@ -213,12 +213,6 @@ const fontGroups = [
         size: '0.875rem / 600 underline',
       },
       {
-        className: 'ui-14-underline',
-        label: 'UI 14 Underline',
-        font: 'Public Sans',
-        size: '0.875rem / 400 underline',
-      },
-      {
         className: 'ui-12-regular',
         label: 'UI 12 Regular',
         font: 'Public Sans',

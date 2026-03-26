@@ -336,16 +336,6 @@
     text-decoration: underline;
   }
 
-  /* 14px Underline — Breadcrumb hover states, links to new pages */
-  .ui-14-underline {
-    font-family: var(--font-primary);
-    font-size: 0.875rem;
-    letter-spacing: normal;
-    line-height: 160%;
-    font-weight: 400; /* regular */
-    text-decoration: underline;
-  }
-
   /* 12px Regular — Global nav elements */
   .ui-12-regular {
     font-family: var(--font-primary);

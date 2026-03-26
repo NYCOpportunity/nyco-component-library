@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ButtonProps, ButtonSize, ButtonVariant } from '../../types/components';
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[1px] disabled:pointer-events-none';
+  'inline-flex items-center justify-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] disabled:pointer-events-none';
 
 const sizeClasses: Record<ButtonSize, string> = {
   large:

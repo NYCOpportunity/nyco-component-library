@@ -53,9 +53,14 @@ function BreadcrumbsTokenPanel() {
       value: '#ffffff',
     },
     {
-      property: 'Dropdown border',
-      variable: '--color-border-default (→ --color-neutral-300)',
-      value: '#dddddd',
+      property: 'Dropdown item — hover bg',
+      variable: '--color-neutral-100',
+      value: '#f5f5f5',
+    },
+    {
+      property: 'Dropdown item — pressed bg',
+      variable: '--color-neutral-200',
+      value: '#eeeeee',
     },
   ];
 
