@@ -84,8 +84,8 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     // Container classes — Figma exact spacing
     //
     // Accordion:
-    //   Closed  desktop: px-6 py-4 (24/16)   mobile: px-4 py-4 (16/16)
-    //   Open    desktop: px-6 py-6 (24/24)   mobile: px-4 py-6 (16/24)  gap-4
+    //   Closed: px-6 py-4 (24/16)
+    //   Open:   px-6 py-6 gap-4 (24/24)
     //
     // In-Page Nav (padding identical on desktop & mobile per Figma):
     //   Closed: px-6 py-4
@@ -94,13 +94,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     const containerCx = cx(
       'bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)]',
       'w-full flex flex-col',
-      isInPageNav
-        ? isOpen
-          ? 'p-6 gap-4'
-          : 'px-6 py-4'
-        : isOpen
-          ? 'px-6 py-6 gap-4 max-[999px]:px-4'
-          : 'px-6 py-4 max-[999px]:px-4 max-[999px]:py-4',
+      isInPageNav ? (isOpen ? 'p-6 gap-4' : 'px-6 py-4') : isOpen ? 'px-6 py-6 gap-4' : 'px-6 py-4',
       className
     );
 
