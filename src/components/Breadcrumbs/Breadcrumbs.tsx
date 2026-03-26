@@ -126,12 +126,12 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
                   <DotsIcon />
                 </span>
                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 min-w-[165px] invisible group-hover:visible z-10">
-                  <div className="bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.08)]">
+                  <div className="bg-[var(--color-bg-primary)] rounded-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.15)] p-[8px]">
                     {hiddenItems.map((item, i) => (
                       <a
                         key={i}
                         href={item.href}
-                        className="block px-6 py-1 ui-14-regular text-[var(--color-neutral-black)] hover:underline hover:underline-offset-2 whitespace-nowrap"
+                        className="block px-[16px] py-[8px] rounded-[4px] ui-14-regular text-[var(--color-neutral-black)] hover:bg-[var(--color-neutral-100)] active:bg-[var(--color-neutral-200)] whitespace-nowrap"
                       >
                         {item.label}
                       </a>
