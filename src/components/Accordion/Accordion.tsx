@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AccordionProps } from '../../types/components';
 
-const PlusIcon = () => (
+const PlusIcon = ({ rotate }: { rotate?: boolean }) => (
   <svg
     width="24"
     height="24"
@@ -9,6 +9,7 @@ const PlusIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
+    className={rotate ? 'rotate-45 transition-transform' : 'transition-transform'}
   >
     <path
       d="M12 5v14M5 12h14"
@@ -79,8 +80,8 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     // In-Page Nav (all states): px-6 py-6 gap-4
     // -----------------------------------------------------------------------
     const containerCx = cx(
-      'bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)]',
-      'w-full flex flex-col px-6 py-6 gap-4',
+      'bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)] max-[999px]:rounded-lg overflow-hidden',
+      'w-full flex flex-col',
       disabled && 'opacity-40 pointer-events-none',
       className
     );
@@ -97,35 +98,34 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
           aria-controls={panelId}
           disabled={disabled}
           aria-disabled={disabled}
-          className="flex items-center justify-between w-full text-left focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] rounded-[2px] disabled:cursor-not-allowed"
+          className="flex items-center justify-between w-full text-left px-6 py-4 max-[999px]:p-4 hover:bg-[var(--color-neutral-100)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:ring-[var(--color-border-focus)] disabled:cursor-not-allowed"
         >
           <span className="component-accordion-title text-[var(--color-neutral-black)]">
             {title}
           </span>
           <span className="shrink-0 text-[var(--color-neutral-black)]">
-            {isOpen ? <MinusIcon /> : <PlusIcon />}
+            {isOpen ? <PlusIcon rotate /> : <PlusIcon />}
           </span>
         </button>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Divider — direct sibling so container gap-4 gives 16px spacing   */}
+        {/* Divider                                                           */}
         {/* ---------------------------------------------------------------- */}
         {isOpen && (
-          <div
-            className="h-px w-full bg-[var(--color-border-default)] shrink-0"
-            aria-hidden="true"
-          />
+          <div className="h-px bg-[var(--color-border-default)] shrink-0" aria-hidden="true" />
         )}
 
         {/* ---------------------------------------------------------------- */}
-        {/* Panel content — direct sibling of divider; gap-4 from container  */}
-        {/* creates the 16px spacing (matches Figma gap-[16px] on container). */}
+        {/* Panel content                                                     */}
         {/* ---------------------------------------------------------------- */}
         {isOpen && isInPageNav && (
-          <nav id={panelId} aria-label={title} className="flex flex-col pb-4 w-full shrink-0">
+          <nav
+            id={panelId}
+            aria-label={title}
+            className="flex flex-col px-6 max-[999px]:px-4 pt-4 pb-6 w-full shrink-0"
+          >
             {items.map((item, index) => (
               <div key={index} className="flex items-stretch w-full">
-                {/* 2px left-edge stroke — black active, neutral-300 inactive */}
                 <div
                   className={cx(
                     'shrink-0 w-[2px]',
@@ -135,7 +135,6 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
                   )}
                   aria-hidden="true"
                 />
-                {/* Tab label — px-4 py-3 = 16/12 matches Figma */}
                 <div className="flex flex-1 items-center px-4 py-3">
                   {item.href ? (
                     <a
@@ -173,7 +172,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
             id={panelId}
             role="region"
             aria-label={title}
-            className="body-regular text-[var(--color-neutral-black)] w-full shrink-0"
+            className="body-regular text-[var(--color-neutral-black)] px-6 max-[999px]:px-4 pt-4 pb-6 w-full shrink-0"
           >
             {children}
           </div>

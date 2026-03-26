@@ -450,3 +450,35 @@ export const AllVariants: Story = {
     );
   },
 };
+
+/** Mobile collapsed — 16px padding, 8px radius, rotated + as close icon. */
+export const MobileCollapsed: Story = {
+  name: 'Mobile — Collapsed',
+  parameters: {
+    viewport: { defaultViewport: 'mobile2' },
+  },
+  args: { defaultOpen: false },
+};
+
+/** Mobile expanded — body content visible at mobile size. */
+export const MobileExpanded: Story = {
+  name: 'Mobile — Expanded',
+  parameters: {
+    viewport: { defaultViewport: 'mobile2' },
+  },
+  args: { defaultOpen: true },
+};
+
+/** Mobile in-page nav — expanded at mobile size. */
+export const MobileInPageNav: Story = {
+  name: 'Mobile — In-Page Nav',
+  parameters: {
+    viewport: { defaultViewport: 'mobile2' },
+  },
+  args: {
+    title: 'Table of Contents',
+    variant: 'in-page-nav',
+    defaultOpen: true,
+    items: defaultNavItems,
+  },
+};
