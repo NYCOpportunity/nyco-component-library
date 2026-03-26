@@ -51,6 +51,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
       open: openProp,
       defaultOpen = false,
       onOpenChange,
+      disabled = false,
       className,
     },
     ref
@@ -61,6 +62,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     const panelId = React.useId();
 
     const toggle = () => {
+      if (disabled) return;
       const next = !isOpen;
       if (!isControlled) setInternalOpen(next);
       onOpenChange?.(next);
@@ -79,6 +81,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     const containerCx = cx(
       'bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)]',
       'w-full flex flex-col px-6 py-6 gap-4',
+      disabled && 'opacity-40 pointer-events-none',
       className
     );
 
@@ -92,7 +95,9 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
           onClick={toggle}
           aria-expanded={isOpen}
           aria-controls={panelId}
-          className="flex items-center justify-between w-full text-left focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] rounded-[2px]"
+          disabled={disabled}
+          aria-disabled={disabled}
+          className="flex items-center justify-between w-full text-left focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] rounded-[2px] disabled:cursor-not-allowed"
         >
           <span className="component-accordion-title text-[var(--color-neutral-black)]">
             {title}

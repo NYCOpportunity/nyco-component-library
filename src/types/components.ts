@@ -54,5 +54,7 @@ export interface AccordionProps {
   defaultOpen?: boolean;
   /** Called whenever the open state should change. */
   onOpenChange?: (open: boolean) => void;
+  /** When true, prevents toggling and dims the component. */
+  disabled?: boolean;
   className?: string;
 }

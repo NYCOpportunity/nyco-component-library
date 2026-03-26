@@ -222,6 +222,10 @@ const meta = {
       control: false,
       description: 'Callback fired when open state changes. Receives the next boolean.',
     },
+    disabled: {
+      control: 'boolean',
+      description: 'When true, prevents toggling and dims the component.',
+    },
     className: {
       control: 'text',
       description: 'Additional CSS classes for the outer container.',
@@ -256,6 +260,18 @@ export const Default: Story = {};
 export const Expanded: Story = {
   name: 'Default — Expanded',
   args: { defaultOpen: true },
+};
+
+/** Disabled state — cannot be toggled, visually dimmed. */
+export const Disabled: Story = {
+  name: 'Default — Disabled',
+  args: { disabled: true },
+};
+
+/** Disabled expanded — content visible but interaction locked. */
+export const DisabledExpanded: Story = {
+  name: 'Default — Disabled Expanded',
+  args: { disabled: true, defaultOpen: true },
 };
 
 // ---------------------------------------------------------------------------
