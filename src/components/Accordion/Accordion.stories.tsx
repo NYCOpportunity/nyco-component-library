@@ -258,38 +258,131 @@ export const Expanded: Story = {
   args: { defaultOpen: true },
 };
 
-/** In-Page Nav collapsed — used as a sticky Table of Contents sidebar. */
+// ---------------------------------------------------------------------------
+// Shared helpers for In-Page Nav stories
+// ---------------------------------------------------------------------------
+
+const pageSections = [
+  {
+    id: 'introduction',
+    label: 'Introduction',
+    content:
+      "Funded through the Workforce Innovation and Opportunity Act (WIOA), Learn & Earn (In-School Youth Program) supports high school juniors and seniors through high school graduation with work readiness training, career exploration, tutoring, and paid internships. The program is designed to help young people build the skills they need to succeed in today's economy.",
+  },
+  {
+    id: 'eligibility',
+    label: 'Eligibility',
+    content:
+      'To be eligible for the Learn & Earn program, applicants must be between 14 and 21 years of age, currently enrolled in high school (grades 10–12), a resident of New York City, and meet income guidelines based on household size. Priority is given to youth who face significant barriers to employment, including those in foster care, justice-involved youth, homeless youth, and individuals with disabilities.',
+  },
+  {
+    id: 'apply',
+    label: 'How to Apply',
+    content:
+      'Applications are accepted on a rolling basis. To apply, complete the online application form on the NYC Opportunity portal, upload proof of age and NYC residency, provide your most recent report card or transcript, and attend a program orientation session. After submitting your application, a program coordinator will contact you within 5 business days to schedule an intake interview.',
+  },
+  {
+    id: 'details',
+    label: 'Program Details',
+    content:
+      'Participants receive up to 120 hours of paid work experience at $18.00 per hour. The program runs year-round with two main cohorts: a summer session (June–August) and an academic-year session (September–May). In addition to paid internships, participants receive weekly workshops on financial literacy, college and career readiness, and digital skills. A dedicated case manager supports each participant throughout their enrollment.',
+  },
+  {
+    id: 'contact',
+    label: 'Contact Us',
+    content:
+      'For questions about the program, contact the Learn & Earn program office at learnandearn@opportunity.nyc.gov or call 311 and ask for Learn & Earn Youth Services. Walk-in hours are available Monday through Friday, 9 AM – 5 PM, at 1 Centre Street, New York, NY 10007. For translation or accessibility accommodations, please indicate your needs when you contact us.',
+  },
+];
+
+type SectionId = (typeof pageSections)[number]['id'];
+
+function InPageNavLayout({ defaultOpen }: { defaultOpen?: boolean }) {
+  const [activeId, setActiveId] = React.useState<SectionId>('introduction');
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  const makeNavItems = (): AccordionNavItem[] =>
+    pageSections.map((s) => ({
+      label: s.label,
+      href: `#${s.id}`,
+      active: s.id === activeId,
+      onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        setActiveId(s.id as SectionId);
+        const target = contentRef.current?.querySelector(`#${s.id}`);
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      },
+    }));
+
+  return (
+    <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', maxWidth: 900 }}>
+      {/* Sticky nav sidebar */}
+      <div style={{ width: 280, flexShrink: 0, position: 'sticky', top: 16 }}>
+        <Accordion
+          title="Table of Contents"
+          variant="in-page-nav"
+          defaultOpen={defaultOpen}
+          items={makeNavItems()}
+        />
+      </div>
+
+      {/* Page content */}
+      <div
+        ref={contentRef}
+        style={{
+          flex: 1,
+          maxHeight: 480,
+          overflowY: 'auto',
+          paddingRight: 8,
+          scrollBehavior: 'smooth',
+        }}
+      >
+        {pageSections.map((section) => (
+          <section
+            key={section.id}
+            id={section.id}
+            style={{ marginBottom: 40, scrollMarginTop: 16 }}
+          >
+            <h2
+              style={{
+                fontFamily: 'Public Sans, sans-serif',
+                fontSize: '1.25rem',
+                fontWeight: 600,
+                lineHeight: '140%',
+                color: '#191919',
+                marginBottom: 12,
+              }}
+            >
+              {section.label}
+            </h2>
+            <p
+              style={{
+                fontFamily: 'Public Sans, sans-serif',
+                fontSize: '1.125rem',
+                fontWeight: 400,
+                lineHeight: '150%',
+                color: '#191919',
+              }}
+            >
+              {section.content}
+            </p>
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** In-Page Nav collapsed alongside real page content — click to open, then navigate to sections. */
 export const InPageNavDefault: Story = {
   name: 'In-Page Nav — Collapsed',
-  args: {
-    title: 'Table of Contents',
-    variant: 'in-page-nav',
-  },
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 343 }}>
-        <Story />
-        <AccordionTokenPanel />
-      </div>
-    ),
-  ],
+  render: () => <InPageNavLayout defaultOpen={false} />,
 };
 
-/** In-Page Nav open — shows the tab list with active/inactive strokes. */
+/** In-Page Nav open alongside real page content — click a section to scroll and mark it active. */
 export const InPageNavExpanded: Story = {
   name: 'In-Page Nav — Expanded',
-  args: {
-    title: 'Table of Contents',
-    variant: 'in-page-nav',
-    defaultOpen: true,
-  },
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 343 }}>
-        <Story />
-      </div>
-    ),
-  ],
+  render: () => <InPageNavLayout defaultOpen={true} />,
 };
 
 /**

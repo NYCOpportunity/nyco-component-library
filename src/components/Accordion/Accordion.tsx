@@ -151,6 +151,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
                   {item.href ? (
                     <a
                       href={item.href}
+                      onClick={item.onClick}
                       className={cx(
                         "flex-1 font-['Source_Serif_4','Source_Serif_Pro',serif] font-normal text-[20px] max-[999px]:text-[18px] leading-[1.3]",
                         item.active

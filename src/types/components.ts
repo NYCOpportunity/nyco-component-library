@@ -32,6 +32,8 @@ export interface AccordionNavItem {
   href?: string;
   /** Whether this item is the active/current item. */
   active?: boolean;
+  /** Optional click handler — called when the item anchor is clicked. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export interface AccordionProps {
