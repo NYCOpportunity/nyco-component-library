@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { AccordionProps } from '../../types/components';
+import { cx } from '../../utils/cx';
+import { useFlash } from '../../hooks/useFlash';
 
 const PlusIcon = ({ rotate }: { rotate?: boolean }) => (
   <svg
@@ -21,27 +23,6 @@ const PlusIcon = ({ rotate }: { rotate?: boolean }) => (
   </svg>
 );
 
-const MinusIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path
-      d="M5 12h14"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const cx = (...classes: Array<string | undefined | false>) => classes.filter(Boolean).join(' ');
-
 export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
   (
     {
@@ -61,6 +42,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     const isControlled = openProp !== undefined;
     const isOpen = isControlled ? openProp : internalOpen;
     const panelId = React.useId();
+    const { flashing, handlePointerDown } = useFlash(disabled);
 
     const toggle = () => {
       if (disabled) return;
@@ -71,53 +53,39 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
 
     const isInPageNav = variant === 'in-page-nav';
 
-    // -----------------------------------------------------------------------
-    // Container classes — Figma exact spacing
-    //
-    // Accordion (all states): px-6 py-6 gap-4
-    //   gap-4 is always set; it's only visible when open (divider + content).
-    //
-    // In-Page Nav (all states): px-6 py-6 gap-4
-    // -----------------------------------------------------------------------
-    const containerCx = cx(
-      'bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)] max-[999px]:rounded-lg overflow-hidden',
-      'w-full flex flex-col',
-      disabled && 'opacity-40 pointer-events-none',
-      className
-    );
-
     return (
-      <div ref={ref} className={containerCx}>
-        {/* ---------------------------------------------------------------- */}
-        {/* Header button — always visible                                    */}
-        {/* ---------------------------------------------------------------- */}
+      <div
+        ref={ref}
+        className={cx(
+          'bg-[var(--color-bg-primary)] border border-[var(--color-border-default)] rounded-[var(--border-radius-base)] max-[999px]:rounded-lg overflow-hidden w-full flex flex-col',
+          disabled && 'opacity-40 pointer-events-none',
+          className
+        )}
+      >
         <button
           type="button"
           onClick={toggle}
+          onPointerDown={handlePointerDown}
           aria-expanded={isOpen}
           aria-controls={panelId}
           disabled={disabled}
-          aria-disabled={disabled}
-          className="flex items-center justify-between w-full text-left px-6 py-4 max-[999px]:p-4 hover:bg-[var(--color-neutral-100)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:ring-[var(--color-border-focus)] disabled:cursor-not-allowed"
+          className={cx(
+            'flex items-center justify-between w-full text-left px-6 py-4 max-[999px]:p-4 min-[999px]:hover:bg-[var(--color-neutral-100)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:ring-[var(--color-border-focus)] disabled:cursor-not-allowed',
+            flashing && 'max-[998px]:bg-[var(--color-neutral-100)]'
+          )}
         >
           <span className="component-accordion-title text-[var(--color-neutral-black)]">
             {title}
           </span>
           <span className="shrink-0 text-[var(--color-neutral-black)]">
-            {isOpen ? <PlusIcon rotate /> : <PlusIcon />}
+            <PlusIcon rotate={isOpen} />
           </span>
         </button>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Divider                                                           */}
-        {/* ---------------------------------------------------------------- */}
         {isOpen && (
           <div className="h-px bg-[var(--color-border-default)] shrink-0" aria-hidden="true" />
         )}
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Panel content                                                     */}
-        {/* ---------------------------------------------------------------- */}
         {isOpen && isInPageNav && (
           <nav
             id={panelId}
@@ -144,7 +112,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
                         'flex-1 component-nav-inpage-item',
                         item.active
                           ? 'text-[var(--color-neutral-black)]'
-                          : 'text-[var(--color-neutral-700)] hover:text-[var(--color-neutral-black)] transition-colors'
+                          : 'text-[var(--color-neutral-700)] [@media(hover:hover)]:hover:text-[var(--color-neutral-black)] transition-colors'
                       )}
                     >
                       {item.label}
