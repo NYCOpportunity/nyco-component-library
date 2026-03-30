@@ -8,3 +8,6 @@ export type { BreadcrumbItem, BreadcrumbsProps } from './types/components';
 
 export { Accordion } from './components/Accordion';
 export type { AccordionProps, AccordionNavItem } from './types/components';
+
+export { Divider } from './components/Divider';
+export type { DividerProps } from './types/components';
