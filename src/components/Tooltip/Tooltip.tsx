@@ -183,7 +183,7 @@ export const Tooltip = ({
               isDark
                 ? 'bg-[var(--color-neutral-900,#333333)]'
                 : 'bg-[var(--color-neutral-100,#f5f5f5)]',
-              isRich ? 'p-2 flex flex-col max-w-[160px]' : 'px-2 py-1 whitespace-nowrap'
+              isRich ? 'p-2 flex flex-col max-w-[160px]' : 'p-2 whitespace-nowrap'
             )}
           >
             {isRich && (
