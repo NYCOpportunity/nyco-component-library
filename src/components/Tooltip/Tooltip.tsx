@@ -8,8 +8,8 @@ import { cx } from '../../utils/cx';
 function InfoIcon() {
   return (
     <svg
-      width="22"
-      height="22"
+      width={22}
+      height={22}
       viewBox="0 0 22 22"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -109,9 +109,10 @@ export const Tooltip = ({
   title,
   mode = 'dark',
   placement = 'top',
-  children = <InfoIcon />,
+  children,
   className,
 }: TooltipProps) => {
+  const trigger = children ?? <InfoIcon />;
   const tooltipId = React.useId();
   const [visible, setVisible] = React.useState(false);
   const [ready, setReady] = React.useState(false);
@@ -148,7 +149,7 @@ export const Tooltip = ({
   const caretBefore = resolvedPlacement === 'bottom' || resolvedPlacement === 'right';
   const caretEl = <Caret placement={resolvedPlacement} color={caretColor} />;
 
-  const trigger = React.cloneElement(children, {
+  const triggerEl = React.cloneElement(trigger, {
     'aria-describedby': visible ? tooltipId : undefined,
   });
 
@@ -161,7 +162,7 @@ export const Tooltip = ({
       onFocus={show}
       onBlur={hide}
     >
-      {trigger}
+      {triggerEl}
 
       {visible && (
         <div
