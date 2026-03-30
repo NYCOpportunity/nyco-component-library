@@ -65,3 +65,24 @@ export interface DividerProps {
   orientation?: 'horizontal' | 'vertical';
   className?: string;
 }
+
+// *** Tooltip Types ***
+export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
+
+export interface TooltipProps {
+  /** Text shown in the tooltip. */
+  content: React.ReactNode;
+  /** Optional bold title. When provided the tooltip renders in rich style. */
+  title?: string;
+  /** `'dark'` (default) — neutral-900 bg, white text. `'light'` — neutral-100 bg, black text. */
+  mode?: 'light' | 'dark';
+  /**
+   * Preferred placement relative to the trigger.
+   * Automatically flips when the tooltip would overflow the viewport — falls back to `'bottom'` as last resort.
+   * Defaults to `'top'`.
+   */
+  placement?: TooltipPlacement;
+  /** The element that triggers the tooltip on hover / focus. Must accept `onMouseEnter`, `onMouseLeave`, `onFocus`, `onBlur`. */
+  children: React.ReactElement;
+  className?: string;
+}
