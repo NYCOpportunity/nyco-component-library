@@ -58,3 +58,10 @@ export interface AccordionProps {
   disabled?: boolean;
   className?: string;
 }
+
+// *** Divider Types ***
+export interface DividerProps {
+  /** `'horizontal'` spans full parent width (default). `'vertical'` spans full parent height. */
+  orientation?: 'horizontal' | 'vertical';
+  className?: string;
+}
