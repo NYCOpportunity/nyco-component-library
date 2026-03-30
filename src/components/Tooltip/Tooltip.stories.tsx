@@ -9,6 +9,10 @@ const meta: Meta<typeof Tooltip> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    backgrounds: {
+      default: 'grey',
+      values: [{ name: 'grey', value: '#e8e8e8' }],
+    },
   },
   argTypes: {
     placement: {
