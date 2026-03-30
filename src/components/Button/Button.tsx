@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ButtonProps, ButtonSize, ButtonVariant } from '../../types/components';
+import { useFlash } from '../../hooks/useFlash';
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-1 transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] disabled:pointer-events-none';
+  'inline-flex items-center justify-center gap-1 [@media(hover:hover)]:transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] disabled:pointer-events-none';
 
 const sizeClasses: Record<ButtonSize, string> = {
   large:
@@ -26,13 +27,19 @@ const radiusClass = 'rounded-[var(--border-radius-base)]';
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--color-button-primary-base)] text-[var(--color-primary-foreground)] border border-transparent hover:bg-[var(--color-button-primary-hover)] disabled:bg-[var(--color-button-disabled-base)] disabled:text-[var(--color-button-disabled-text)] disabled:border-transparent',
+    'bg-[var(--color-button-primary-base)] text-[var(--color-primary-foreground)] border border-transparent [@media(hover:hover)]:hover:bg-[var(--color-button-primary-hover)] disabled:bg-[var(--color-button-disabled-base)] disabled:text-[var(--color-button-disabled-text)] disabled:border-transparent',
   secondary:
-    'bg-[var(--color-button-secondary-base)] text-[var(--color-neutral-black)] border border-[var(--color-border-default)] hover:bg-[var(--color-button-secondary-hover)] disabled:bg-[var(--color-button-disabled-base)] disabled:text-[var(--color-button-disabled-text)] disabled:border-transparent',
-  text: 'bg-transparent text-[var(--color-text-link)] no-underline hover:underline hover:underline-offset-2 disabled:text-[var(--color-button-disabled-text)] disabled:no-underline',
+    'bg-[var(--color-button-secondary-base)] text-[var(--color-neutral-black)] border border-[var(--color-border-default)] [@media(hover:hover)]:hover:bg-[var(--color-button-secondary-hover)] disabled:bg-[var(--color-button-disabled-base)] disabled:text-[var(--color-button-disabled-text)] disabled:border-transparent',
+  text: 'bg-transparent text-[var(--color-text-link)] no-underline [@media(hover:hover)]:hover:underline [@media(hover:hover)]:hover:underline-offset-2 disabled:text-[var(--color-button-disabled-text)] disabled:no-underline',
 };
 
-const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(' ');
+const flashClasses: Record<ButtonVariant, string> = {
+  primary: '[@media(hover:none)]:bg-[var(--color-button-primary-hover)]',
+  secondary: '[@media(hover:none)]:bg-[var(--color-button-secondary-hover)]',
+  text: '[@media(hover:none)]:underline [@media(hover:none)]:underline-offset-2',
+};
+
+const cx = (...classes: Array<string | undefined | false>) => classes.filter(Boolean).join(' ');
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -45,10 +52,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       endIcon,
       iconOnly = false,
       children,
+      disabled,
       ...props
     },
     ref
   ) => {
+    const { flashing, handlePointerDown } = useFlash(disabled);
+
     const classes = cx(
       baseClasses,
       iconOnly
@@ -58,11 +68,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           : sizeClasses[size],
       radiusClass,
       variantClasses[variant],
+      flashing && flashClasses[variant],
       className
     );
 
     return (
-      <button ref={ref} type={type} className={classes} {...props}>
+      <button
+        ref={ref}
+        type={type}
+        className={classes}
+        disabled={disabled}
+        onPointerDown={handlePointerDown}
+        {...props}
+      >
         {startIcon && <span className="inline-flex shrink-0">{startIcon}</span>}
         {children}
         {endIcon && <span className="inline-flex shrink-0">{endIcon}</span>}

@@ -70,8 +70,8 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
           aria-controls={panelId}
           disabled={disabled}
           className={cx(
-            'flex items-center justify-between w-full text-left px-6 py-4 max-[999px]:p-4 min-[999px]:hover:bg-[var(--color-neutral-100)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:ring-[var(--color-border-focus)] disabled:cursor-not-allowed',
-            flashing && 'max-[998px]:bg-[var(--color-neutral-100)]'
+            'flex items-center justify-between w-full text-left px-6 py-4 max-[999px]:p-4 [@media(hover:hover)]:hover:bg-[var(--color-neutral-100)] [@media(hover:hover)]:transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:ring-[var(--color-border-focus)] disabled:cursor-not-allowed',
+            flashing && '[@media(hover:none)]:bg-[var(--color-neutral-100)]'
           )}
         >
           <span className="component-accordion-title text-[var(--color-neutral-black)]">
