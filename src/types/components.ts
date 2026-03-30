@@ -82,7 +82,7 @@ export interface TooltipProps {
    * Defaults to `'top'`.
    */
   placement?: TooltipPlacement;
-  /** The element that triggers the tooltip on hover / focus. Must accept `onMouseEnter`, `onMouseLeave`, `onFocus`, `onBlur`. */
-  children: React.ReactElement;
+  /** The element that triggers the tooltip on hover / focus. Defaults to the built-in info icon. */
+  children?: React.ReactElement;
   className?: string;
 }

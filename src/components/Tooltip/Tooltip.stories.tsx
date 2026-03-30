@@ -30,16 +30,14 @@ type Story = StoryObj<typeof Tooltip>;
 // ---------------------------------------------------------------------------
 export const Playground: Story = {
   args: {
-    content: 'Simple tooltip',
+    content: 'Simple tooltip text',
     placement: 'top',
     mode: 'dark',
   },
   render: (args) => (
-    <Tooltip {...args}>
-      <Button variant="secondary" size="small">
-        Hover me
-      </Button>
-    </Tooltip>
+    <div style={{ padding: 80 }}>
+      <Tooltip {...args} />
+    </div>
   ),
 };
 
@@ -48,13 +46,9 @@ export const Playground: Story = {
 // ---------------------------------------------------------------------------
 export const Placements: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, auto)', gap: 48, padding: 48 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gap: 80, padding: 100 }}>
       {(['top', 'bottom', 'left', 'right'] as const).map((p) => (
-        <Tooltip key={p} content="Tooltip text" placement={p}>
-          <Button variant="secondary" size="small" style={{ width: 100 }}>
-            {p}
-          </Button>
-        </Tooltip>
+        <Tooltip key={p} content="Tooltip text" placement={p} />
       ))}
     </div>
   ),
@@ -65,17 +59,9 @@ export const Placements: Story = {
 // ---------------------------------------------------------------------------
 export const Modes: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 48, padding: 48 }}>
-      <Tooltip content="Dark tooltip" mode="dark" placement="top">
-        <Button variant="secondary" size="small">
-          Dark
-        </Button>
-      </Tooltip>
-      <Tooltip content="Light tooltip" mode="light" placement="top">
-        <Button variant="secondary" size="small">
-          Light
-        </Button>
-      </Tooltip>
+    <div style={{ display: 'flex', gap: 80, padding: 100 }}>
+      <Tooltip content="Dark tooltip" mode="dark" placement="top" />
+      <Tooltip content="Light tooltip" mode="light" placement="top" />
     </div>
   ),
 };
@@ -85,20 +71,42 @@ export const Modes: Story = {
 // ---------------------------------------------------------------------------
 export const Rich: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 48, padding: 48, flexWrap: 'wrap' }}>
-      <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="top">
+    <div style={{ display: 'flex', gap: 80, padding: 100, flexWrap: 'wrap' }}>
+      <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="top" />
+      <Tooltip title="Title" content="Rich tool tip text here" mode="light" placement="top" />
+      <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="right" />
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// With title — plain tooltip with a title label
+// ---------------------------------------------------------------------------
+export const WithTitle: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, auto)', gap: 80, padding: 100 }}>
+      <Tooltip title="Hint" content="Dark tooltip with title" mode="dark" placement="top" />
+      <Tooltip title="Hint" content="Light tooltip with title" mode="light" placement="top" />
+      <Tooltip title="Hint" content="Opens to the right" mode="dark" placement="right" />
+      <Tooltip title="Hint" content="Opens to the bottom" mode="dark" placement="bottom" />
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// Custom trigger — shows that any element can be used as trigger
+// ---------------------------------------------------------------------------
+export const CustomTrigger: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 80, padding: 100, alignItems: 'center' }}>
+      <Tooltip title="Title" content="Rich tooltip on a button" mode="dark" placement="top">
         <Button variant="secondary" size="small">
-          Dark rich
+          Button trigger
         </Button>
       </Tooltip>
-      <Tooltip title="Title" content="Rich tool tip text here" mode="light" placement="top">
-        <Button variant="secondary" size="small">
-          Light rich
-        </Button>
-      </Tooltip>
-      <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="right">
-        <Button variant="secondary" size="small">
-          Right
+      <Tooltip content="Plain tooltip on a button" mode="light" placement="top">
+        <Button variant="primary" size="small">
+          Light
         </Button>
       </Tooltip>
     </div>
@@ -112,7 +120,6 @@ export const OverflowDetection: Story = {
   parameters: { layout: 'fullscreen' },
   render: () => (
     <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-      {/* Top-left corner — preferred top+left would overflow, should flip */}
       <div style={{ position: 'absolute', top: 12, left: 12 }}>
         <Tooltip content="Flips to bottom/right" placement="top">
           <Button variant="secondary" size="small">
@@ -121,7 +128,6 @@ export const OverflowDetection: Story = {
         </Tooltip>
       </div>
 
-      {/* Top-right corner */}
       <div style={{ position: 'absolute', top: 12, right: 12 }}>
         <Tooltip content="Flips to bottom/left" placement="top">
           <Button variant="secondary" size="small">
@@ -130,7 +136,6 @@ export const OverflowDetection: Story = {
         </Tooltip>
       </div>
 
-      {/* Bottom-left corner */}
       <div style={{ position: 'absolute', bottom: 12, left: 12 }}>
         <Tooltip content="Flips to top/right" placement="bottom">
           <Button variant="secondary" size="small">
@@ -139,7 +144,6 @@ export const OverflowDetection: Story = {
         </Tooltip>
       </div>
 
-      {/* Bottom-right corner */}
       <div style={{ position: 'absolute', bottom: 12, right: 12 }}>
         <Tooltip content="Flips to top/left" placement="bottom">
           <Button variant="secondary" size="small">
@@ -148,7 +152,6 @@ export const OverflowDetection: Story = {
         </Tooltip>
       </div>
 
-      {/* Center — default top, no overflow */}
       <div
         style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }}
       >
