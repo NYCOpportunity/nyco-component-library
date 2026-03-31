@@ -213,7 +213,23 @@ export const Placements: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gap: 80, padding: 100 }}>
       {(['top', 'bottom', 'left', 'right'] as const).map((p) => (
-        <Tooltip key={p} content="Tooltip text" placement={p} />
+        <div
+          key={p}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}
+        >
+          <p
+            style={{
+              fontFamily: 'Public Sans, sans-serif',
+              fontSize: 12,
+              color: '#555555',
+              margin: 0,
+              textTransform: 'capitalize',
+            }}
+          >
+            {p}
+          </p>
+          <Tooltip content="Tooltip text" placement={p} />
+        </div>
       ))}
     </div>
   ),
@@ -222,11 +238,30 @@ export const Placements: Story = {
 // ---------------------------------------------------------------------------
 // Light vs Dark mode
 // ---------------------------------------------------------------------------
+const itemStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: 12,
+};
+const itemLabel: React.CSSProperties = {
+  fontFamily: 'Public Sans, sans-serif',
+  fontSize: 12,
+  color: '#555555',
+  margin: 0,
+};
+
 export const Modes: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 80, padding: 100 }}>
-      <Tooltip content="Dark tooltip" mode="dark" placement="top" />
-      <Tooltip content="Light tooltip" mode="light" placement="top" />
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark</p>
+        <Tooltip content="Dark tooltip" mode="dark" placement="top" />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Light</p>
+        <Tooltip content="Light tooltip" mode="light" placement="top" />
+      </div>
     </div>
   ),
 };
@@ -237,9 +272,18 @@ export const Modes: Story = {
 export const Rich: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 80, padding: 100, flexWrap: 'wrap' }}>
-      <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="top" />
-      <Tooltip title="Title" content="Rich tool tip text here" mode="light" placement="top" />
-      <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="right" />
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · top</p>
+        <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="top" />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Light · top</p>
+        <Tooltip title="Title" content="Rich tool tip text here" mode="light" placement="top" />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · right</p>
+        <Tooltip title="Title" content="Rich tool tip text here" mode="dark" placement="right" />
+      </div>
     </div>
   ),
 };
@@ -250,10 +294,22 @@ export const Rich: Story = {
 export const WithTitle: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, auto)', gap: 80, padding: 100 }}>
-      <Tooltip title="Hint" content="Dark tooltip with title" mode="dark" placement="top" />
-      <Tooltip title="Hint" content="Light tooltip with title" mode="light" placement="top" />
-      <Tooltip title="Hint" content="Opens to the right" mode="dark" placement="right" />
-      <Tooltip title="Hint" content="Opens to the bottom" mode="dark" placement="bottom" />
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · top</p>
+        <Tooltip title="Hint" content="Dark tooltip with title" mode="dark" placement="top" />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Light · top</p>
+        <Tooltip title="Hint" content="Light tooltip with title" mode="light" placement="top" />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · right</p>
+        <Tooltip title="Hint" content="Opens to the right" mode="dark" placement="right" />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · bottom</p>
+        <Tooltip title="Hint" content="Opens to the bottom" mode="dark" placement="bottom" />
+      </div>
     </div>
   ),
 };
@@ -264,22 +320,31 @@ export const WithTitle: Story = {
 export const LongContent: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 80, padding: 100, flexWrap: 'wrap' }}>
-      <Tooltip
-        content="This tooltip has longer body text that wraps inside the paper without overflowing or expanding beyond the maximum defined width."
-        mode="dark"
-        placement="top"
-      />
-      <Tooltip
-        content="Light mode tooltip with enough words to trigger wrapping so the paper stays compact and readable."
-        mode="light"
-        placement="top"
-      />
-      <Tooltip
-        title="With title"
-        content="A rich tooltip where both the body wraps to the next line and the title stays on its own line."
-        mode="dark"
-        placement="top"
-      />
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · top</p>
+        <Tooltip
+          content="This tooltip has longer body text that wraps inside the paper without overflowing or expanding beyond the maximum defined width."
+          mode="dark"
+          placement="top"
+        />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Light · top</p>
+        <Tooltip
+          content="Light mode tooltip with enough words to trigger wrapping so the paper stays compact and readable."
+          mode="light"
+          placement="top"
+        />
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · top · with title</p>
+        <Tooltip
+          title="With title"
+          content="A rich tooltip where both the body wraps to the next line and the title stays on its own line."
+          mode="dark"
+          placement="top"
+        />
+      </div>
     </div>
   ),
 };
@@ -290,16 +355,22 @@ export const LongContent: Story = {
 export const CustomTrigger: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 80, padding: 100, alignItems: 'center' }}>
-      <Tooltip title="Title" content="Rich tooltip on a button" mode="dark" placement="top">
-        <Button variant="secondary" size="small">
-          Button trigger
-        </Button>
-      </Tooltip>
-      <Tooltip content="Plain tooltip on a button" mode="light" placement="top">
-        <Button variant="primary" size="small">
-          Light
-        </Button>
-      </Tooltip>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Dark · top · rich</p>
+        <Tooltip title="Title" content="Rich tooltip on a button" mode="dark" placement="top">
+          <Button variant="secondary" size="small">
+            Button trigger
+          </Button>
+        </Tooltip>
+      </div>
+      <div style={itemStyle}>
+        <p style={itemLabel}>Light · top</p>
+        <Tooltip content="Plain tooltip on a button" mode="light" placement="top">
+          <Button variant="primary" size="small">
+            Light
+          </Button>
+        </Tooltip>
+      </div>
     </div>
   ),
 };
