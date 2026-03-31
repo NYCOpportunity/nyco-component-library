@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Chip } from './Chip';
 
 // ---------------------------------------------------------------------------
@@ -397,6 +398,7 @@ function AllStatesGrid() {
 const meta: Meta<typeof Chip> = {
   title: 'Components/Chip',
   component: Chip,
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
@@ -409,6 +411,10 @@ const meta: Meta<typeof Chip> = {
       },
     },
   },
+  args: {
+    onDismiss: fn(),
+    onSelectedChange: fn(),
+  },
   argTypes: {
     variant: {
       control: 'radio',
@@ -416,20 +422,65 @@ const meta: Meta<typeof Chip> = {
       description:
         '`selectable` — toggles highlighted state. `dismissible` — shows × remove button.',
     },
-    label: { control: 'text' },
+    label: { control: 'text', description: 'Text content of the chip.' },
     tooltip: {
       control: 'text',
-      description: 'Tooltip body. When set an ⓘ icon appears (Figma: "with Function").',
+      description: 'Tooltip body text. When set, an ⓘ icon appears (Figma: "with Function").',
     },
-    tooltipTitle: { control: 'text' },
-    selected: { control: 'boolean' },
-    defaultSelected: { control: 'boolean' },
-    disabled: { control: 'boolean' },
+    tooltipTitle: {
+      control: 'text',
+      description: 'Optional bold heading shown above the tooltip body.',
+    },
+    selected: {
+      control: 'boolean',
+      description: 'Controlled selected state (selectable variant only).',
+    },
+    defaultSelected: {
+      control: 'boolean',
+      description: 'Uncontrolled initial selected state (selectable variant only).',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Dims the chip to 30% opacity and blocks interaction.',
+    },
+    onSelectedChange: {
+      action: 'onSelectedChange',
+      description: 'Called with the new boolean value when selection toggles.',
+    },
+    onDismiss: {
+      action: 'onDismiss',
+      description: 'Called when the × button is clicked (dismissible variant only).',
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Chip>;
+
+// ---------------------------------------------------------------------------
+// Playground — interactive props panel
+// ---------------------------------------------------------------------------
+export const Playground: Story = {
+  name: 'Playground',
+  args: {
+    variant: 'selectable',
+    label: 'Poverty rate',
+    tooltip: '',
+    tooltipTitle: '',
+    disabled: false,
+    defaultSelected: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use the **Controls** panel below to try every prop combination. ' +
+          'Switch `variant` between `selectable` and `dismissible`, toggle `disabled`, ' +
+          'add a `tooltip` string to show the ⓘ icon, and watch the **Actions** panel for callbacks.',
+      },
+    },
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Figma documentation frame — all states × all types
