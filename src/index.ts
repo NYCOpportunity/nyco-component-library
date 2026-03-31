@@ -14,3 +14,6 @@ export type { DividerProps } from './types/components';
 
 export { Tooltip } from './components/Tooltip';
 export type { TooltipProps, TooltipPlacement } from './types/components';
+
+export { Chip } from './components/Chip';
+export type { ChipProps, ChipVariant } from './types/components';

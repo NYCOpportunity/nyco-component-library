@@ -66,6 +66,38 @@ export interface DividerProps {
   className?: string;
 }
 
+// *** Chip Types ***
+export type ChipVariant = 'selectable' | 'dismissible';
+
+export interface ChipProps {
+  /** Text label displayed inside the chip. */
+  label: string;
+  /**
+   * `'selectable'` (default) — toggles a highlighted/selected state on click.
+   * `'dismissible'` — shows an × button that calls `onDismiss` to remove the chip.
+   */
+  variant?: ChipVariant;
+  /**
+   * Optional tooltip content. When provided an info icon appears inside the chip
+   * and a tooltip is shown on hover / focus.
+   * - Selectable: tooltip trigger is the entire chip button.
+   * - Dismissible: tooltip trigger is the info icon only.
+   */
+  tooltip?: React.ReactNode;
+  /** Optional bold title shown at the top of the tooltip. */
+  tooltipTitle?: string;
+  /** Controlled selected state (selectable variant). */
+  selected?: boolean;
+  /** Initial selected state when uncontrolled (selectable variant). Defaults to `false`. */
+  defaultSelected?: boolean;
+  /** Called when the selected state should change (selectable variant). */
+  onSelectedChange?: (selected: boolean) => void;
+  /** Called when the × button is clicked (dismissible variant). */
+  onDismiss?: () => void;
+  disabled?: boolean;
+  className?: string;
+}
+
 // *** Tooltip Types ***
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
