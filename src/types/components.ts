@@ -98,6 +98,52 @@ export interface ChipProps {
   className?: string;
 }
 
+// *** ChipGroup Types ***
+
+/** A single option available in a ChipGroup. */
+export interface ChipOption {
+  /** Unique identifier — also used as the value in `value` / `onChange`. */
+  value: string;
+  /** Display label shown inside the chip. */
+  label: string;
+  /** Optional tooltip body text shown via the ⓘ icon. */
+  tooltip?: string;
+  /** Optional bold tooltip title. */
+  tooltipTitle?: string;
+  /** Prevents this option from being selected or dismissed. */
+  disabled?: boolean;
+}
+
+export interface ChipGroupProps {
+  /** Full set of selectable options. */
+  options: ChipOption[];
+  /**
+   * `'multiselect'` (default) — all options rendered as selectable chips in one row.
+   * `'picker'` — options row + a second row of selected items rendered as dismissible chips.
+   */
+  mode?: 'multiselect' | 'picker';
+  /**
+   * When true, selection changes are buffered until the user clicks Apply.
+   * Renders Apply / Clear buttons below the chips.
+   * - Use `onApply` to receive the committed selection.
+   * - Without `pending`, use `onChange` for live updates.
+   */
+  pending?: boolean;
+  /** Controlled selection (array of `ChipOption.value`). */
+  value?: string[];
+  /** Uncontrolled initial selection. Defaults to `[]`. */
+  defaultValue?: string[];
+  /** Called on every selection change when `pending` is false. */
+  onChange?: (selected: string[]) => void;
+  /** Called when the Apply button is clicked (`pending` mode). Receives committed selection. */
+  onApply?: (selected: string[]) => void;
+  /** Override the Apply button label. Defaults to `"Apply"`. */
+  applyLabel?: string;
+  /** Override the Clear button label. Defaults to `"Clear"`. */
+  clearLabel?: string;
+  className?: string;
+}
+
 // *** Tooltip Types ***
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 

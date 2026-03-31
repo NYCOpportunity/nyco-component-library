@@ -17,3 +17,6 @@ export type { TooltipProps, TooltipPlacement } from './types/components';
 
 export { Chip } from './components/Chip';
 export type { ChipProps, ChipVariant } from './types/components';
+
+export { ChipGroup } from './components/ChipGroup';
+export type { ChipGroupProps, ChipOption } from './types/components';
