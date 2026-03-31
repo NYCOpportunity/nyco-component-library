@@ -11,3 +11,6 @@ export type { AccordionProps, AccordionNavItem } from './types/components';
 
 export { Divider } from './components/Divider';
 export type { DividerProps } from './types/components';
+
+export { Tooltip } from './components/Tooltip';
+export type { TooltipProps, TooltipPlacement } from './types/components';
