@@ -19,4 +19,4 @@ export { Chip } from './components/Chip';
 export type { ChipProps, ChipVariant } from './types/components';
 
 export { ChipGroup } from './components/ChipGroup';
-export type { ChipGroupProps, ChipOption } from './types/components';
+export type { ChipGroupProps, ChipGroupActionsContext, ChipOption } from './types/components';

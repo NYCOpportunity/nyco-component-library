@@ -359,3 +359,167 @@ export const Controlled: Story = {
   },
   render: () => <ControlledExample />,
 };
+
+// ---------------------------------------------------------------------------
+// Custom Actions — renderActions render prop
+// ---------------------------------------------------------------------------
+
+// Reusable mini button matching the design system style used in stories
+function StoryButton({
+  children,
+  onClick,
+  disabled,
+  variant = 'primary',
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
+  variant?: 'primary' | 'secondary' | 'ghost';
+}) {
+  const base =
+    'inline-flex items-center justify-center px-4 py-2 rounded text-sm font-semibold transition-colors disabled:opacity-40 disabled:pointer-events-none';
+  const styles = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700',
+    secondary: 'border border-gray-300 bg-white text-gray-800 hover:bg-gray-100',
+    ghost: 'text-gray-500 underline underline-offset-2 hover:text-gray-800',
+  };
+  return (
+    <button
+      type="button"
+      className={`${base} ${styles[variant]}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
+}
+
+// Story 1: Custom "Apply filters" + "Reset" — single-submit pattern
+function CustomActionsExample() {
+  const [committed, setCommitted] = React.useState<string[]>([]);
+  return (
+    <div
+      style={{
+        fontFamily: 'Public Sans, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 16,
+      }}
+    >
+      <ChipGroup
+        options={FILTER_OPTIONS}
+        mode="multiselect"
+        pending
+        onApply={setCommitted}
+        renderActions={({ selected, apply, clearAll, isDirty }) => (
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', paddingTop: 4 }}>
+            <StoryButton onClick={apply} disabled={!isDirty}>
+              Apply filters ({selected.length})
+            </StoryButton>
+            <StoryButton variant="ghost" onClick={clearAll}>
+              Reset all
+            </StoryButton>
+          </div>
+        )}
+      />
+      {committed.length > 0 ? (
+        <p style={{ fontSize: 13, color: '#555', margin: 0 }}>
+          Applied: <strong>{committed.join(', ')}</strong>
+        </p>
+      ) : (
+        <p style={{ fontSize: 13, color: '#aaa', margin: 0 }}>No filters applied yet.</p>
+      )}
+    </div>
+  );
+}
+
+export const CustomActions: Story = {
+  name: 'Custom Actions — renderActions',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Pass `renderActions` to replace the built-in Apply / Clear row with any UI you like. ' +
+          'The render prop receives `{ selected, apply, clear, clearAll, isDirty }` — ' +
+          'wire your own buttons directly to those handlers. ' +
+          'Here a custom "Apply filters (n)" button and a "Reset all" ghost link replace the defaults.',
+      },
+    },
+  },
+  render: () => <CustomActionsExample />,
+};
+
+// Story 2: Two custom submit actions — "Save Draft" + "Publish"
+function TwoActionsExample() {
+  const [draft, setDraft] = React.useState<string | null>(null);
+  const [published, setPublished] = React.useState<string | null>(null);
+
+  return (
+    <div
+      style={{
+        fontFamily: 'Public Sans, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 16,
+      }}
+    >
+      <ChipGroup
+        options={FILTER_OPTIONS}
+        mode="multiselect"
+        renderActions={({ selected, clearAll }) => (
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', paddingTop: 4 }}>
+            <StoryButton
+              variant="secondary"
+              onClick={() => setDraft(`[${selected.join(', ')}]`)}
+              disabled={selected.length === 0}
+            >
+              Save draft
+            </StoryButton>
+            <StoryButton
+              onClick={() => setPublished(`[${selected.join(', ')}]`)}
+              disabled={selected.length === 0}
+            >
+              Publish
+            </StoryButton>
+            <StoryButton variant="ghost" onClick={clearAll}>
+              Clear
+            </StoryButton>
+          </div>
+        )}
+      />
+      <div
+        style={{ fontSize: 13, color: '#555', display: 'flex', flexDirection: 'column', gap: 4 }}
+      >
+        {draft && (
+          <span>
+            Draft saved: <strong>{draft}</strong>
+          </span>
+        )}
+        {published && (
+          <span>
+            Published: <strong>{published}</strong>
+          </span>
+        )}
+        {!draft && !published && (
+          <span style={{ color: '#aaa' }}>Select chips, then Save or Publish.</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export const TwoCustomActions: Story = {
+  name: 'Two Custom Actions — Save Draft + Publish',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A `renderActions` example with two distinct submit-style buttons: ' +
+          '"Save draft" (secondary) and "Publish" (primary), plus a ghost "Clear". ' +
+          'All three are wired to handlers from the render prop context — no built-in actions at all.',
+      },
+    },
+  },
+  render: () => <TwoActionsExample />,
+};

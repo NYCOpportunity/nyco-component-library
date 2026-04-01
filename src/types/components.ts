@@ -100,6 +100,23 @@ export interface ChipProps {
 
 // *** ChipGroup Types ***
 
+/**
+ * Context object passed to the `renderActions` render prop.
+ * Use it to wire your custom buttons to ChipGroup's internal state.
+ */
+export interface ChipGroupActionsContext {
+  /** Current draft selection (what the user has clicked — not yet committed in pending mode). */
+  selected: string[];
+  /** Commits the draft and fires `onApply`. Same as pressing the built-in Apply button. */
+  apply: () => void;
+  /** Reverts the draft to the last committed value. Same as pressing the built-in Clear button. */
+  clear: () => void;
+  /** Wipes both draft and committed to `[]` and fires `onChange`. */
+  clearAll: () => void;
+  /** `true` when draft differs from committed (only meaningful in `pending` mode). */
+  isDirty: boolean;
+}
+
 /** A single option available in a ChipGroup. */
 export interface ChipOption {
   /** Unique identifier — also used as the value in `value` / `onChange`. */
@@ -156,6 +173,22 @@ export interface ChipGroupProps {
   applyLabel?: string;
   /** Override the Clear button label. Defaults to `"Clear"`. */
   clearLabel?: string;
+  /**
+   * Render prop that completely replaces the built-in action row with your own UI.
+   * Receives a `ChipGroupActionsContext` object exposing current state and action handlers:
+   *
+   * ```tsx
+   * renderActions={({ selected, apply, clear, clearAll, isDirty }) => (
+   *   <>
+   *     <Button onClick={apply} disabled={!isDirty}>Save ({selected.length})</Button>
+   *     <Button variant="ghost" onClick={clearAll}>Reset</Button>
+   *   </>
+   * )}
+   * ```
+   *
+   * When omitted, the built-in Apply / Clear (pending mode) or "Clear all" (live mode) is shown.
+   */
+  renderActions?: (ctx: ChipGroupActionsContext) => React.ReactNode;
   /**
    * Per-slot class name overrides. All slots already have sensible defaults —
    * use these to tweak layout without wrapping the component.

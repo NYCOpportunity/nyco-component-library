@@ -59,6 +59,7 @@ export function ChipGroup({
   onApply,
   applyLabel = 'Apply',
   clearLabel = 'Clear',
+  renderActions,
   componentStyle,
   className,
 }: ChipGroupProps) {
@@ -215,9 +216,21 @@ export function ChipGroup({
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Pending mode (multiselect only): Apply / Clear actions               */}
+      {/* Actions row — custom renderActions or built-in fallback             */}
       {/* ------------------------------------------------------------------ */}
-      {mode === 'multiselect' && pending && (
+
+      {/* Custom render prop: completely replaces built-in buttons for any mode */}
+      {renderActions &&
+        renderActions({
+          selected: draft,
+          apply: handleApply,
+          clear: handleClear,
+          clearAll: handleClearAll,
+          isDirty,
+        })}
+
+      {/* Built-in: Pending mode Apply / Clear (multiselect only) */}
+      {!renderActions && mode === 'multiselect' && pending && (
         <div className={cx('flex items-center gap-2 pt-1', componentStyle?.actions)}>
           <ActionButton variant="primary" onClick={handleApply} disabled={!isDirty}>
             {applyLabel}
@@ -232,10 +245,8 @@ export function ChipGroup({
         </div>
       )}
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Live multiselect: optional "Clear all" when something is selected    */}
-      {/* ------------------------------------------------------------------ */}
-      {mode === 'multiselect' && !pending && displaySelected.length > 0 && (
+      {/* Built-in: Live multiselect "Clear all" */}
+      {!renderActions && mode === 'multiselect' && !pending && displaySelected.length > 0 && (
         <div className={cx('flex items-center gap-2 pt-1', componentStyle?.actions)}>
           <ActionButton variant="secondary" onClick={handleClearAll}>
             Clear all
