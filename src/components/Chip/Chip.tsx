@@ -157,58 +157,66 @@ function SelectableChip({
 
 // ---------------------------------------------------------------------------
 // Chip — Dismissible variant
-// Shell is a non-interactive wrapper; only the × button is interactive.
+// The entire chip is the dismiss button; × icon is visual-only.
 // ---------------------------------------------------------------------------
 function DismissibleChip({
   label,
+  selected = false,
   onDismiss,
-  tooltip,
-  tooltipTitle,
   disabled,
   className,
-}: Omit<ChipProps, 'variant' | 'selected' | 'defaultSelected' | 'onSelectedChange'>) {
+}: Omit<
+  ChipProps,
+  'variant' | 'defaultSelected' | 'onSelectedChange' | 'tooltip' | 'tooltipTitle'
+>) {
+  const { flashing, handlePointerDown } = useFlash(disabled);
+
   const chipClasses = cx(
     SHELL,
-    'bg-[var(--color-neutral-white)] border-[var(--color-border-default)]',
-    disabled && 'opacity-30',
+    'cursor-pointer',
+    'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]',
+    disabled && 'opacity-30 pointer-events-none',
+    !disabled &&
+      selected &&
+      cx(
+        'bg-[var(--color-primary-light)] border-[var(--color-primary-light)]',
+        '[@media(hover:hover)]:hover:bg-[#d5d5fd] [@media(hover:hover)]:hover:border-[#d5d5fd]',
+        flashing && '[@media(hover:none)]:bg-[#d5d5fd] [@media(hover:none)]:border-[#d5d5fd]'
+      ),
+    !disabled &&
+      !selected &&
+      cx(
+        'bg-[var(--color-neutral-white)] border-[var(--color-border-default)]',
+        '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)] [@media(hover:hover)]:hover:border-[var(--color-neutral-100)]',
+        flashing &&
+          '[@media(hover:none)]:bg-[var(--color-neutral-100)] [@media(hover:none)]:border-[var(--color-neutral-100)]'
+      ),
     className
   );
 
   return (
-    <span className={chipClasses}>
-      {tooltip && (
-        <Tooltip content={tooltip} title={tooltipTitle} placement="top">
-          <span
-            tabIndex={disabled ? -1 : 0}
-            className="flex items-center cursor-help focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-[var(--color-border-focus)] rounded-[4px]"
-            aria-label="More information"
-          >
-            <InfoIcon />
-          </span>
-        </Tooltip>
-      )}
+    <button
+      type="button"
+      aria-label={`Remove ${label}`}
+      disabled={disabled}
+      className={chipClasses}
+      onClick={onDismiss}
+      onPointerDown={handlePointerDown}
+    >
       {/* Label */}
-      <span className="px-[6px] py-[2px] text-[16px] leading-[1.5] font-normal whitespace-nowrap text-[var(--color-neutral-black)]">
+      <span
+        className={cx(
+          'px-[6px] py-[2px] text-[16px] leading-[1.5] font-normal whitespace-nowrap',
+          selected ? 'text-[var(--color-neutral-900)]' : 'text-[var(--color-neutral-black)]'
+        )}
+      >
         {label}
       </span>
-      {/* Dismiss button — icon container: pr-[2px] */}
-      <span className="flex items-center pr-[2px]">
-        <button
-          type="button"
-          aria-label={`Remove ${label}`}
-          disabled={disabled}
-          className={cx(
-            'inline-flex items-center justify-center cursor-pointer',
-            'text-[var(--color-neutral-700)] [@media(hover:hover)]:hover:text-[var(--color-neutral-black)]',
-            'focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-[var(--color-border-focus)] rounded-[4px]',
-            'disabled:pointer-events-none'
-          )}
-          onClick={onDismiss}
-        >
-          <DismissIcon />
-        </button>
+      {/* × icon — visual only, not interactive */}
+      <span className="flex items-center pr-[2px]" aria-hidden="true">
+        <DismissIcon />
       </span>
-    </span>
+    </button>
   );
 }
 

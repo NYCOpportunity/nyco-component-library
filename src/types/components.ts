@@ -80,11 +80,10 @@ export interface ChipProps {
   /**
    * Optional tooltip content. When provided an info icon appears inside the chip
    * and a tooltip is shown on hover / focus.
-   * - Selectable: tooltip trigger is the entire chip button.
-   * - Dismissible: tooltip trigger is the info icon only.
+   * Only applicable to the `selectable` variant.
    */
   tooltip?: React.ReactNode;
-  /** Optional bold title shown at the top of the tooltip. */
+  /** Optional bold title shown at the top of the tooltip. Only applicable to the `selectable` variant. */
   tooltipTitle?: string;
   /** Controlled selected state (selectable variant). */
   selected?: boolean;
@@ -92,7 +91,7 @@ export interface ChipProps {
   defaultSelected?: boolean;
   /** Called when the selected state should change (selectable variant). */
   onSelectedChange?: (selected: boolean) => void;
-  /** Called when the × button is clicked (dismissible variant). */
+  /** Called when the chip is clicked (dismissible variant). The entire chip surface is the dismiss trigger. */
   onDismiss?: () => void;
   disabled?: boolean;
   className?: string;
