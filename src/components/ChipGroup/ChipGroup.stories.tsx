@@ -52,8 +52,8 @@ const meta: Meta<typeof ChipGroup> = {
           '---\n\n' +
           '### `singleselect`\n' +
           'Renders the same chip row but enforces a maximum of one active chip at a time. ' +
-          'Once a chip is selected, all other chips become disabled. ' +
-          'Clicking the active chip again deselects it and re-enables all options. ' +
+          'Clicking a chip selects it and deselects any previously active chip. ' +
+          'Clicking the active chip again deselects it. ' +
           '`onChange` always fires immediately — `pending` is not supported in this mode. ' +
           '`onChange` receives an array of 0 or 1 items.\n\n' +
           '---\n\n' +
@@ -72,7 +72,7 @@ const meta: Meta<typeof ChipGroup> = {
           '---\n\n' +
           '## Edge cases\n\n' +
           '- **Disabled options**: Set `disabled: true` on any `ChipOption`. ' +
-          'In `singleselect`, the disabled flag from `options` combines with the group-level disabled state (all-but-active).\n' +
+          'In `singleselect`, only the per-option `disabled` flag applies — other chips remain interactive.\n' +
           '- **Empty `value` in dismissible mode**: Renders an empty chip row — the caller is responsible for showing a fallback.\n' +
           '- **`value` item not in `options`**: Dismissible mode silently skips it (no label/tooltip can be looked up). ' +
           'Ensure `options` always contains metadata for every active `value`.\n' +
@@ -96,7 +96,7 @@ const meta: Meta<typeof ChipGroup> = {
       options: ['multiselect', 'singleselect', 'dismissible'],
       description:
         '`multiselect` — selectable chips, manages selection. ' +
-        '`singleselect` — one chip at a time; selecting one disables the rest until it is deselected. ' +
+        '`singleselect` — one chip at a time; clicking another switches the selection. ' +
         '`dismissible` — renders externally-provided items as dismissible chips (no selection logic).',
     },
     pending: {
@@ -195,7 +195,7 @@ function SingleselectExample() {
             Active: <strong>{selected[0]}</strong>
           </>
         ) : (
-          'Select one option — the rest will be disabled until it is deselected.'
+          'Select one option — clicking another switches the selection.'
         )}
       </p>
     </div>
@@ -208,8 +208,8 @@ export const Singleselect: Story = {
     docs: {
       description: {
         story:
-          'Only one chip can be active at a time. Once selected, all other chips become disabled. ' +
-          'Clicking the active chip again deselects it and re-enables all options. ' +
+          'Only one chip can be active at a time. Clicking a chip selects it and deselects the previous one. ' +
+          'Clicking the active chip again deselects it. ' +
           '`onChange` always receives an array of 0 or 1 items.',
       },
     },

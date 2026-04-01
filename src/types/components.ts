@@ -145,7 +145,8 @@ export interface ChipGroupProps {
    * Supports `pending` mode with Apply / Clear buttons.
    *
    * `'singleselect'` — same chip row, but only one option can be active at a time.
-   * Once a chip is selected, all others become disabled until it is deselected (toggled off).
+   * Clicking a chip selects it and deselects any previously active chip.
+   * Clicking the active chip again deselects it (toggles off).
    * Always fires `onChange` immediately (no `pending` support).
    *
    * `'dismissible'` — renders only the currently active items (from `value`) as dismissible chips.

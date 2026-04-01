@@ -159,7 +159,7 @@ export function ChipGroup({
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Singleselect: one active at a time; rest disabled when one chosen    */}
+      {/* Singleselect: one active at a time; clicking another switches selection */}
       {/* ------------------------------------------------------------------ */}
       {mode === 'singleselect' && (
         <div
@@ -169,7 +169,6 @@ export function ChipGroup({
         >
           {options.map((opt) => {
             const isSelected = displaySelected[0] === opt.value;
-            const isDisabled = opt.disabled || (displaySelected.length > 0 && !isSelected);
             return (
               <Chip
                 key={opt.value}
@@ -178,7 +177,7 @@ export function ChipGroup({
                 tooltip={opt.tooltip}
                 tooltipTitle={opt.tooltipTitle}
                 selected={isSelected}
-                disabled={isDisabled}
+                disabled={opt.disabled}
                 className={componentStyle?.chip}
                 onSelectedChange={() => handleSingleSelect(opt.value)}
               />
