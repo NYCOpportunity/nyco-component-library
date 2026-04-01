@@ -156,6 +156,23 @@ export interface ChipGroupProps {
   applyLabel?: string;
   /** Override the Clear button label. Defaults to `"Clear"`. */
   clearLabel?: string;
+  /**
+   * Per-slot class name overrides. All slots already have sensible defaults —
+   * use these to tweak layout without wrapping the component.
+   *
+   * | Slot | Default classes | Example use |
+   * |---|---|---|
+   * | `chips` | `flex flex-wrap gap-2` | `'flex-col'` for vertical stack |
+   * | `actions` | `flex items-center gap-2 pt-1` | `'justify-end'` to right-align buttons |
+   */
+  componentStyle?: {
+    /** The wrapping container of the chip row. Defaults to `flex flex-wrap gap-2`. */
+    chipContainer?: string;
+    /** Applied to every individual `Chip` inside the group via its `className` prop. */
+    chip?: string;
+    /** The Apply / Clear or "Clear all" button row. Defaults to `flex items-center gap-2 pt-1`. */
+    actions?: string;
+  };
   className?: string;
 }
 

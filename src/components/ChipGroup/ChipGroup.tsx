@@ -59,6 +59,7 @@ export function ChipGroup({
   onApply,
   applyLabel = 'Apply',
   clearLabel = 'Clear',
+  componentStyle,
   className,
 }: ChipGroupProps) {
   const isControlled = controlledValue !== undefined;
@@ -135,7 +136,11 @@ export function ChipGroup({
       {/* Multiselect: all options as selectable chips                         */}
       {/* ------------------------------------------------------------------ */}
       {mode === 'multiselect' && (
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter options">
+        <div
+          className={cx('flex flex-wrap gap-2', componentStyle?.chipContainer)}
+          role="group"
+          aria-label="Filter options"
+        >
           {options.map((opt) => (
             <Chip
               key={opt.value}
@@ -145,6 +150,7 @@ export function ChipGroup({
               tooltipTitle={opt.tooltipTitle}
               selected={displaySelected.includes(opt.value)}
               disabled={opt.disabled}
+              className={componentStyle?.chip}
               onSelectedChange={() => handleToggle(opt.value)}
             />
           ))}
@@ -155,7 +161,11 @@ export function ChipGroup({
       {/* Singleselect: one active at a time; rest disabled when one chosen    */}
       {/* ------------------------------------------------------------------ */}
       {mode === 'singleselect' && (
-        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Filter options">
+        <div
+          className={cx('flex flex-wrap gap-2', componentStyle?.chipContainer)}
+          role="radiogroup"
+          aria-label="Filter options"
+        >
           {options.map((opt) => {
             const isSelected = displaySelected[0] === opt.value;
             const isDisabled = opt.disabled || (displaySelected.length > 0 && !isSelected);
@@ -168,6 +178,7 @@ export function ChipGroup({
                 tooltipTitle={opt.tooltipTitle}
                 selected={isSelected}
                 disabled={isDisabled}
+                className={componentStyle?.chip}
                 onSelectedChange={() => handleSingleSelect(opt.value)}
               />
             );
@@ -179,7 +190,11 @@ export function ChipGroup({
       {/* Dismissible: render only the active items — source is always external */}
       {/* ------------------------------------------------------------------ */}
       {mode === 'dismissible' && (
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Active filters">
+        <div
+          className={cx('flex flex-wrap gap-2', componentStyle?.chipContainer)}
+          role="group"
+          aria-label="Active filters"
+        >
           {displaySelected.map((val) => {
             const opt = options.find((o) => o.value === val);
             if (!opt) return null;
@@ -191,6 +206,7 @@ export function ChipGroup({
                 tooltip={opt.tooltip}
                 tooltipTitle={opt.tooltipTitle}
                 disabled={opt.disabled}
+                className={componentStyle?.chip}
                 onDismiss={() => handleDismiss(val)}
               />
             );
@@ -202,7 +218,7 @@ export function ChipGroup({
       {/* Pending mode (multiselect only): Apply / Clear actions               */}
       {/* ------------------------------------------------------------------ */}
       {mode === 'multiselect' && pending && (
-        <div className="flex items-center gap-2 pt-1">
+        <div className={cx('flex items-center gap-2 pt-1', componentStyle?.actions)}>
           <ActionButton variant="primary" onClick={handleApply} disabled={!isDirty}>
             {applyLabel}
           </ActionButton>
@@ -220,7 +236,7 @@ export function ChipGroup({
       {/* Live multiselect: optional "Clear all" when something is selected    */}
       {/* ------------------------------------------------------------------ */}
       {mode === 'multiselect' && !pending && displaySelected.length > 0 && (
-        <div className="flex items-center gap-2 pt-1">
+        <div className={cx('flex items-center gap-2 pt-1', componentStyle?.actions)}>
           <ActionButton variant="secondary" onClick={handleClearAll}>
             Clear all
           </ActionButton>
