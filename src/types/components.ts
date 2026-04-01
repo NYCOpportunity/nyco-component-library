@@ -115,13 +115,23 @@ export interface ChipOption {
 }
 
 export interface ChipGroupProps {
-  /** Full set of selectable options. */
+  /**
+   * Metadata registry for all possible items — provides `label`, `tooltip`, and `disabled`
+   * per `value` key. Used by both modes.
+   *
+   * - `multiselect`: all options are rendered as selectable chips.
+   * - `dismissible`: only items whose `value` appears in `value` prop are rendered;
+   *   `options` is used purely for label / tooltip lookup.
+   */
   options: ChipOption[];
   /**
-   * `'multiselect'` (default) — all options rendered as selectable chips in one row.
-   * `'picker'` — options row + a second row of selected items rendered as dismissible chips.
+   * `'multiselect'` (default) — renders all options as selectable chips. Manages selection state.
+   *
+   * `'dismissible'` — renders only the currently active items (from `value`) as dismissible chips.
+   * The source of which items are active is entirely external (e.g. a dropdown, URL params, API).
+   * Clicking × fires `onChange` with the item removed.
    */
-  mode?: 'multiselect' | 'picker';
+  mode?: 'multiselect' | 'dismissible';
   /**
    * When true, selection changes are buffered until the user clicks Apply.
    * Renders Apply / Clear buttons below the chips.

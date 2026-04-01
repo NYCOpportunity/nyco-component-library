@@ -37,12 +37,12 @@ const meta: Meta<typeof ChipGroup> = {
     docs: {
       description: {
         component:
-          'A managed group of chips that handles multi-selection state. ' +
-          'Two modes control the visual layout:\n\n' +
-          '- **`multiselect`** (default) — all options in one row of selectable chips.\n' +
-          '- **`picker`** — options row + a second row of selected items as dismissible chips.\n\n' +
-          'Add the **`pending`** prop to buffer changes and commit them with an Apply button ' +
-          '(form use case). Without it, `onChange` fires on every click (live / instant use case).',
+          'A managed group of chips. Two modes:\n\n' +
+          '- **`multiselect`** (default) — renders all `options` as selectable chips. ' +
+          'Manages selection state internally. Add `pending` to buffer changes behind an Apply button.\n' +
+          '- **`dismissible`** — renders only the items currently in `value` as dismissible chips. ' +
+          'The source of which items are active is entirely external (dropdown, URL params, API, etc.). ' +
+          'Clicking × fires `onChange` with the item removed — no selection logic, purely display + removal.',
       },
     },
   },
@@ -54,10 +54,10 @@ const meta: Meta<typeof ChipGroup> = {
   argTypes: {
     mode: {
       control: 'radio',
-      options: ['multiselect', 'picker'],
+      options: ['multiselect', 'dismissible'],
       description:
-        '`multiselect` — one row of selectable chips. ' +
-        '`picker` — options row + dismiss row for selected items.',
+        '`multiselect` — selectable chips, manages selection. ' +
+        '`dismissible` — renders externally-provided items as dismissible chips (no selection logic).',
     },
     pending: {
       control: 'boolean',
@@ -97,7 +97,7 @@ export const Playground: Story = {
       description: {
         story:
           'Try every prop from the **Controls** panel. ' +
-          'Switch `mode` to `picker`, enable `pending`, or set a `defaultValue` to see all behaviors.',
+          'Switch `mode` between `multiselect` and `dismissible`, enable `pending`, or set a `defaultValue`.',
       },
     },
   },
@@ -172,77 +172,74 @@ export const MultiselectPending: Story = {
 };
 
 // ---------------------------------------------------------------------------
-// Picker — Live
+// Dismissible — fed from external source
 // ---------------------------------------------------------------------------
-function PickerLiveExample() {
-  const [selected, setSelected] = React.useState<string[]>([]);
+function DismissibleExample() {
+  // Simulates an external source (e.g. a dropdown or API) that feeds selected values.
+  // ChipGroup dismissible mode is purely a display + removal layer.
+  const [active, setActive] = React.useState<string[]>(['poverty', 'unemployment']);
+
+  const available = FILTER_OPTIONS.filter((o) => !active.includes(o.value));
+
   return (
-    <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
-      <ChipGroup options={FILTER_OPTIONS} mode="picker" onChange={setSelected} />
-      {selected.length > 0 && (
-        <p style={{ marginTop: 16, fontSize: 13, color: '#555' }}>
-          Active: <strong>{selected.join(', ')}</strong>
-        </p>
+    <div
+      style={{
+        fontFamily: 'Public Sans, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 16,
+      }}
+    >
+      {/* Simulated external source */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+        <span style={{ fontSize: 12, color: '#aaa', marginRight: 4 }}>
+          Add from external source:
+        </span>
+        {available.map((o) => (
+          <button
+            key={o.value}
+            onClick={() => setActive((prev) => [...prev, o.value])}
+            style={{
+              fontSize: 12,
+              padding: '3px 10px',
+              cursor: 'pointer',
+              border: '1px solid #ddd',
+              borderRadius: 4,
+              background: '#fff',
+            }}
+          >
+            + {o.label}
+          </button>
+        ))}
+        {available.length === 0 && <span style={{ fontSize: 12, color: '#aaa' }}>All added</span>}
+      </div>
+
+      {/* Dismissible ChipGroup — only renders + removes */}
+      <ChipGroup options={FILTER_OPTIONS} mode="dismissible" value={active} onChange={setActive} />
+
+      {active.length === 0 && (
+        <p style={{ fontSize: 13, color: '#aaa', margin: 0 }}>No active filters.</p>
       )}
     </div>
   );
 }
 
-export const PickerLive: Story = {
-  name: 'Picker — Live',
+export const Dismissible: Story = {
+  name: 'Dismissible — externally sourced',
   parameters: {
+    layout: 'padded',
     docs: {
       description: {
         story:
-          'Clicking a chip moves it into a dismissible row below. ' +
-          'Clicking × removes it from the selection and deselects it in the options row. ' +
-          'Changes fire `onChange` immediately.',
+          '`mode="dismissible"` renders the items in `value` as dismissible chips — nothing more. ' +
+          'The source of the items is entirely external: in real usage it could be a dropdown, ' +
+          'URL params, or an API response (a dropdown component will be built to pair with this). ' +
+          'The simulated "Add" buttons stand in for that future source. ' +
+          'Clicking × fires `onChange` with the item removed.',
       },
     },
   },
-  render: () => <PickerLiveExample />,
-};
-
-// ---------------------------------------------------------------------------
-// Picker — Pending (form)
-// ---------------------------------------------------------------------------
-function PickerPendingExample() {
-  const [committed, setCommitted] = React.useState<string[]>([]);
-  return (
-    <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
-      <ChipGroup
-        options={FILTER_OPTIONS}
-        mode="picker"
-        pending
-        defaultValue={['poverty', 'unemployment']}
-        onApply={setCommitted}
-      />
-      {committed.length > 0 && (
-        <p style={{ marginTop: 16, fontSize: 13, color: '#555' }}>
-          Applied: <strong>{committed.join(', ')}</strong>
-        </p>
-      )}
-      {committed.length === 0 && (
-        <p style={{ marginTop: 16, fontSize: 13, color: '#aaa' }}>
-          Select chips and click Apply to commit.
-        </p>
-      )}
-    </div>
-  );
-}
-
-export const PickerPending: Story = {
-  name: 'Picker — Pending (form)',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Picker layout with `pending` mode. Pre-loaded with two default selections via `defaultValue`. ' +
-          'Changes are buffered until Apply.',
-      },
-    },
-  },
-  render: () => <PickerPendingExample />,
+  render: () => <DismissibleExample />,
 };
 
 // ---------------------------------------------------------------------------

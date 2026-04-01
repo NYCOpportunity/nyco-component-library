@@ -88,6 +88,13 @@ export function ChipGroup({
     }
   };
 
+  // Dismissible mode: remove a single item and propagate immediately
+  const handleDismiss = (value: string) => {
+    const next = draft.filter((v) => v !== value);
+    if (!isControlled) setDraft(next);
+    onChange?.(next);
+  };
+
   const handleApply = () => {
     setCommitted(draft);
     onApply?.(draft);
@@ -118,32 +125,30 @@ export function ChipGroup({
   return (
     <div className={cx('flex flex-col gap-3', className)}>
       {/* ------------------------------------------------------------------ */}
-      {/* Options row — always rendered                                        */}
+      {/* Multiselect: all options as selectable chips                         */}
       {/* ------------------------------------------------------------------ */}
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter options">
-        {options.map((opt) => (
-          <Chip
-            key={opt.value}
-            variant="selectable"
-            label={opt.label}
-            tooltip={opt.tooltip}
-            tooltipTitle={opt.tooltipTitle}
-            selected={displaySelected.includes(opt.value)}
-            disabled={opt.disabled}
-            onSelectedChange={() => handleToggle(opt.value)}
-          />
-        ))}
-      </div>
+      {mode === 'multiselect' && (
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter options">
+          {options.map((opt) => (
+            <Chip
+              key={opt.value}
+              variant="selectable"
+              label={opt.label}
+              tooltip={opt.tooltip}
+              tooltipTitle={opt.tooltipTitle}
+              selected={displaySelected.includes(opt.value)}
+              disabled={opt.disabled}
+              onSelectedChange={() => handleToggle(opt.value)}
+            />
+          ))}
+        </div>
+      )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Picker: selected items as dismissible chips                          */}
+      {/* Dismissible: render only the active items — source is always external */}
       {/* ------------------------------------------------------------------ */}
-      {mode === 'picker' && displaySelected.length > 0 && (
-        <div
-          className="flex flex-wrap gap-2 pt-2 border-t border-[var(--color-border-default)]"
-          role="group"
-          aria-label="Selected filters"
-        >
+      {mode === 'dismissible' && (
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Active filters">
           {displaySelected.map((val) => {
             const opt = options.find((o) => o.value === val);
             if (!opt) return null;
@@ -154,7 +159,8 @@ export function ChipGroup({
                 label={opt.label}
                 tooltip={opt.tooltip}
                 tooltipTitle={opt.tooltipTitle}
-                onDismiss={() => handleToggle(val)}
+                disabled={opt.disabled}
+                onDismiss={() => handleDismiss(val)}
               />
             );
           })}
@@ -162,9 +168,9 @@ export function ChipGroup({
       )}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Pending mode: Apply / Clear actions                                  */}
+      {/* Pending mode (multiselect only): Apply / Clear actions               */}
       {/* ------------------------------------------------------------------ */}
-      {pending && (
+      {mode === 'multiselect' && pending && (
         <div className="flex items-center gap-2 pt-1">
           <ActionButton variant="primary" onClick={handleApply} disabled={!isDirty}>
             {applyLabel}
@@ -182,7 +188,7 @@ export function ChipGroup({
       {/* ------------------------------------------------------------------ */}
       {/* Live multiselect: optional "Clear all" when something is selected    */}
       {/* ------------------------------------------------------------------ */}
-      {!pending && mode === 'multiselect' && displaySelected.length > 0 && (
+      {mode === 'multiselect' && !pending && displaySelected.length > 0 && (
         <div className="flex items-center gap-2 pt-1">
           <ActionButton variant="secondary" onClick={handleClearAll}>
             Clear all
