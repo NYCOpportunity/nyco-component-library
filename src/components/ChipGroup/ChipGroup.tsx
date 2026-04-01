@@ -204,8 +204,6 @@ export function ChipGroup({
                 key={val}
                 variant="dismissible"
                 label={opt.label}
-                tooltip={opt.tooltip}
-                tooltipTitle={opt.tooltipTitle}
                 disabled={opt.disabled}
                 className={componentStyle?.chip}
                 onDismiss={() => handleDismiss(val)}
