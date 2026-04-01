@@ -126,12 +126,17 @@ export interface ChipGroupProps {
   options: ChipOption[];
   /**
    * `'multiselect'` (default) — renders all options as selectable chips. Manages selection state.
+   * Supports `pending` mode with Apply / Clear buttons.
+   *
+   * `'singleselect'` — same chip row, but only one option can be active at a time.
+   * Once a chip is selected, all others become disabled until it is deselected (toggled off).
+   * Always fires `onChange` immediately (no `pending` support).
    *
    * `'dismissible'` — renders only the currently active items (from `value`) as dismissible chips.
    * The source of which items are active is entirely external (e.g. a dropdown, URL params, API).
    * Clicking × fires `onChange` with the item removed.
    */
-  mode?: 'multiselect' | 'dismissible';
+  mode?: 'multiselect' | 'singleselect' | 'dismissible';
   /**
    * When true, selection changes are buffered until the user clicks Apply.
    * Renders Apply / Clear buttons below the chips.

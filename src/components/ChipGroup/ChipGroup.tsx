@@ -88,6 +88,13 @@ export function ChipGroup({
     }
   };
 
+  // Singleselect: clicking the active chip deselects; clicking another selects only it
+  const handleSingleSelect = (value: string) => {
+    const next = draft[0] === value ? [] : [value];
+    if (!isControlled) setDraft(next);
+    onChange?.(next);
+  };
+
   // Dismissible mode: remove a single item and propagate immediately
   const handleDismiss = (value: string) => {
     const next = draft.filter((v) => v !== value);
@@ -141,6 +148,30 @@ export function ChipGroup({
               onSelectedChange={() => handleToggle(opt.value)}
             />
           ))}
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Singleselect: one active at a time; rest disabled when one chosen    */}
+      {/* ------------------------------------------------------------------ */}
+      {mode === 'singleselect' && (
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Filter options">
+          {options.map((opt) => {
+            const isSelected = displaySelected[0] === opt.value;
+            const isDisabled = opt.disabled || (displaySelected.length > 0 && !isSelected);
+            return (
+              <Chip
+                key={opt.value}
+                variant="selectable"
+                label={opt.label}
+                tooltip={opt.tooltip}
+                tooltipTitle={opt.tooltipTitle}
+                selected={isSelected}
+                disabled={isDisabled}
+                onSelectedChange={() => handleSingleSelect(opt.value)}
+              />
+            );
+          })}
         </div>
       )}
 

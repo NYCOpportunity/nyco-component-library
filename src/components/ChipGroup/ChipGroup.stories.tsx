@@ -54,9 +54,10 @@ const meta: Meta<typeof ChipGroup> = {
   argTypes: {
     mode: {
       control: 'radio',
-      options: ['multiselect', 'dismissible'],
+      options: ['multiselect', 'singleselect', 'dismissible'],
       description:
         '`multiselect` — selectable chips, manages selection. ' +
+        '`singleselect` — one chip at a time; selecting one disables the rest until it is deselected. ' +
         '`dismissible` — renders externally-provided items as dismissible chips (no selection logic).',
     },
     pending: {
@@ -97,7 +98,7 @@ export const Playground: Story = {
       description: {
         story:
           'Try every prop from the **Controls** panel. ' +
-          'Switch `mode` between `multiselect` and `dismissible`, enable `pending`, or set a `defaultValue`.',
+          'Switch `mode` between `multiselect`, `singleselect`, and `dismissible`, enable `pending`, or set a `defaultValue`.',
       },
     },
   },
@@ -132,6 +133,49 @@ export const MultiselectLive: Story = {
     },
   },
   render: () => <MultiselectLiveExample />,
+};
+
+// ---------------------------------------------------------------------------
+// Singleselect
+// ---------------------------------------------------------------------------
+function SingleselectExample() {
+  const [selected, setSelected] = React.useState<string[]>([]);
+  return (
+    <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
+      <ChipGroup options={FILTER_OPTIONS} mode="singleselect" onChange={setSelected} />
+      <p
+        style={{
+          marginTop: 16,
+          fontSize: 13,
+          color: selected.length ? '#555' : '#aaa',
+          margin: '12px 0 0',
+        }}
+      >
+        {selected.length ? (
+          <>
+            Active: <strong>{selected[0]}</strong>
+          </>
+        ) : (
+          'Select one option — the rest will be disabled until it is deselected.'
+        )}
+      </p>
+    </div>
+  );
+}
+
+export const Singleselect: Story = {
+  name: 'Singleselect',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Only one chip can be active at a time. Once selected, all other chips become disabled. ' +
+          'Clicking the active chip again deselects it and re-enables all options. ' +
+          '`onChange` always receives an array of 0 or 1 items.',
+      },
+    },
+  },
+  render: () => <SingleselectExample />,
 };
 
 // ---------------------------------------------------------------------------
