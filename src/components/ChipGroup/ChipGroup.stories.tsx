@@ -37,9 +37,13 @@ const meta: Meta<typeof ChipGroup> = {
     docs: {
       description: {
         component:
-          'A managed group of chips. Two modes:\n\n' +
+          'A managed group of chips. Three modes:\n\n' +
           '- **`multiselect`** (default) — renders all `options` as selectable chips. ' +
-          'Manages selection state internally. Add `pending` to buffer changes behind an Apply button.\n' +
+          'Manages selection state internally. Multiple chips can be active simultaneously. ' +
+          'Add `pending` to buffer changes behind an Apply button.\n' +
+          '- **`singleselect`** — same chip row, but only one option can be active at a time. ' +
+          'Once a chip is selected, all others become disabled until it is deselected (toggled off). ' +
+          'Always fires `onChange` immediately — `pending` is not supported.\n' +
           '- **`dismissible`** — renders only the items currently in `value` as dismissible chips. ' +
           'The source of which items are active is entirely external (dropdown, URL params, API, etc.). ' +
           'Clicking × fires `onChange` with the item removed — no selection logic, purely display + removal.',
