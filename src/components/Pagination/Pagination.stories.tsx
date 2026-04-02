@@ -10,6 +10,13 @@ const meta: Meta<typeof Pagination> = {
   title: 'Components/Pagination',
   component: Pagination,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ minHeight: 200, display: 'flex', alignItems: 'flex-start' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     layout: 'padded',
     docs: {

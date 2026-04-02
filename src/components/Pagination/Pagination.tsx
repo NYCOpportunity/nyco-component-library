@@ -124,7 +124,7 @@ function buildPageItems(page: number, totalPages: number): RangeItem[] {
 // ---------------------------------------------------------------------------
 
 const PAGE_BTN =
-  'inline-flex items-center justify-center size-[40px] rounded-[8px] text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-black)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] [@media(hover:hover)]:transition-colors';
+  'inline-flex items-center justify-center size-[40px] rounded-[8px] text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-black)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] transition-colors duration-200';
 
 function PageButton({
   page,
@@ -180,7 +180,7 @@ function NavButton({
         'inline-flex items-center justify-center size-[40px] rounded-[4px]',
         'text-[var(--color-neutral-black)]',
         'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]',
-        '[@media(hover:hover)]:transition-colors',
+        'transition-colors duration-200',
         disabled
           ? 'opacity-30 pointer-events-none'
           : cx(
@@ -240,7 +240,7 @@ function EllipsisButton({
 
       {isOpen && (
         <div
-          className="absolute top-[calc(100%+8px)] left-0 z-10 flex flex-col bg-[var(--color-neutral-white)] rounded-[4px] p-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.08)]"
+          className="absolute top-[calc(100%+8px)] left-0 z-10 flex flex-col gap-[4px] bg-[var(--color-neutral-white)] rounded-[4px] p-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.08)] max-h-[96px] overflow-y-auto"
           role="listbox"
           aria-label="Hidden pages"
         >
@@ -287,11 +287,11 @@ export function Pagination({ page, totalPages, onChange, className }: Pagination
     <nav aria-label="Pagination" className={cx('flex items-center', className)}>
       <NavButton direction="prev" disabled={page <= 1} onClick={() => onChange(page - 1)} />
 
-      {range.map((item) => {
+      {range.map((item, index) => {
         if (item.type === 'page') {
           return (
             <PageButton
-              key={item.page}
+              key={`slot-${index}`}
               page={item.page}
               isCurrent={item.page === page}
               onClick={() => handlePageSelect(item.page)}
@@ -301,7 +301,7 @@ export function Pagination({ page, totalPages, onChange, className }: Pagination
 
         return (
           <EllipsisButton
-            key={item.id}
+            key={`slot-${index}`}
             item={item}
             isOpen={openEllipsis === item.id}
             onToggle={() => setOpenEllipsis((prev) => (prev === item.id ? null : item.id))}
