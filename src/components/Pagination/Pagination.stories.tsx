@@ -77,9 +77,6 @@ function PlaygroundWrapper(args: { page?: number; totalPages?: number }) {
   return (
     <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
       <Pagination page={page} totalPages={args.totalPages ?? 10} onChange={setPage} />
-      <p style={{ marginTop: 12, fontSize: 13, color: '#555' }}>
-        Page <strong>{page}</strong> of <strong>{args.totalPages ?? 10}</strong>
-      </p>
     </div>
   );
 }
@@ -108,18 +105,8 @@ export const Playground: Story = {
 function FewPagesExample() {
   const [page, setPage] = React.useState(2);
   return (
-    <div
-      style={{
-        fontFamily: 'Public Sans, sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-      }}
-    >
+    <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
       <Pagination page={page} totalPages={5} onChange={setPage} />
-      <p style={{ fontSize: 13, color: '#555', margin: 0 }}>
-        Page <strong>{page}</strong> of <strong>5</strong>
-      </p>
     </div>
   );
 }
@@ -144,18 +131,8 @@ export const FewPages: Story = {
 function ManyPagesExample() {
   const [page, setPage] = React.useState(10);
   return (
-    <div
-      style={{
-        fontFamily: 'Public Sans, sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
-      }}
-    >
+    <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
       <Pagination page={page} totalPages={20} onChange={setPage} />
-      <p style={{ fontSize: 13, color: '#555', margin: 0 }}>
-        Page <strong>{page}</strong> of <strong>20</strong>
-      </p>
     </div>
   );
 }
