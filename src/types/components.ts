@@ -243,5 +243,14 @@ export interface PaginationProps {
    * When `false` (default), the ellipsis is a static indicator with no hover or popup.
    */
   expandableEllipsis?: boolean;
+  /**
+   * Current page size (items per page). Provide together with `pageSizeOptions` and
+   * `onPageSizeChange` to render a "Results per page" dropdown beside the pagination bar.
+   */
+  pageSize?: number;
+  /** Options for the page-size dropdown (e.g. `[10, 25, 50, 100]`). */
+  pageSizeOptions?: number[];
+  /** Called when the user selects a new page size. */
+  onPageSizeChange?: (size: number) => void;
   className?: string;
 }

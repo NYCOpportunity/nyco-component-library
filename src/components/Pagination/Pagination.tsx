@@ -57,6 +57,38 @@ function EllipsisIcon() {
   );
 }
 
+function CaretUpIcon() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      style={{ display: 'block' }}
+    >
+      <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
+    </svg>
+  );
+}
+
+function CaretDownIcon() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      style={{ display: 'block' }}
+    >
+      <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+    </svg>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Page range algorithm — always exactly 7 visible items
 //
@@ -214,7 +246,7 @@ function EllipsisButton({
   React.useEffect(() => {
     if (!isOpen) return;
     const handle = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (containerRef.current && !containerRef.current.contains(e.target as globalThis.Node)) {
         onToggle();
       }
     };
@@ -270,6 +302,7 @@ function EllipsisButton({
               className={cx(
                 PAGE_BTN,
                 'w-full',
+                'p-4',
                 'bg-[var(--color-neutral-white)]',
                 '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]'
               )}
@@ -284,6 +317,90 @@ function EllipsisButton({
 }
 
 // ---------------------------------------------------------------------------
+// PageSizeSelect
+// ---------------------------------------------------------------------------
+
+function PageSizeSelect({
+  value,
+  options,
+  onChange,
+}: {
+  value: number;
+  options: number[];
+  onChange: (size: number) => void;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const handle = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as globalThis.Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handle);
+    return () => document.removeEventListener('mousedown', handle);
+  }, [open]);
+
+  return (
+    <div ref={containerRef} className="flex items-center gap-[8px]">
+      <span className="text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-700,#777)] whitespace-nowrap">
+        Results per page:
+      </span>
+      <div className="relative">
+        <button
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          className="flex items-center bg-[var(--color-neutral-white)] border border-[var(--color-neutral-300,#ddd)] rounded-[8px] px-[10px] py-[8px] text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-black)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] transition-colors duration-200 gap-[2px] [@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]"
+        >
+          <span className="px-[6px] py-[2px]">{value}</span>
+          <span className="flex items-center justify-center pr-[2px]">
+            {open ? <CaretUpIcon /> : <CaretDownIcon />}
+          </span>
+        </button>
+
+        {open && (
+          <div
+            className="absolute top-[calc(100%+4px)] left-0 z-10 flex flex-col bg-[var(--color-neutral-white)] rounded-[4px] p-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.08)] min-w-full"
+            role="listbox"
+            aria-label="Items per page"
+          >
+            {options.map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                role="option"
+                aria-selected={opt === value}
+                onClick={() => {
+                  onChange(opt);
+                  setOpen(false);
+                }}
+                className={cx(
+                  PAGE_BTN,
+                  'w-full',
+                  opt === value
+                    ? 'bg-[var(--color-neutral-100)]'
+                    : cx(
+                        'bg-[var(--color-neutral-white)]',
+
+                        '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]'
+                      )
+                )}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Pagination
 // ---------------------------------------------------------------------------
 
@@ -292,6 +409,9 @@ export function Pagination({
   totalPages,
   onChange,
   expandableEllipsis = false,
+  pageSize,
+  pageSizeOptions,
+  onPageSizeChange,
   className,
 }: PaginationProps) {
   const [openEllipsis, setOpenEllipsis] = React.useState<'left' | 'right' | null>(null);
@@ -303,8 +423,11 @@ export function Pagination({
     onChange(p);
   };
 
-  return (
-    <nav aria-label="Pagination" className={cx('flex items-center', className)}>
+  const showPageSize =
+    pageSize !== undefined && pageSizeOptions !== undefined && onPageSizeChange !== undefined;
+
+  const nav = (
+    <nav aria-label="Pagination" className="flex items-center">
       <NavButton direction="prev" disabled={page <= 1} onClick={() => onChange(page - 1)} />
 
       {range.map((item, index) => {
@@ -337,6 +460,17 @@ export function Pagination({
         onClick={() => onChange(page + 1)}
       />
     </nav>
+  );
+
+  if (!showPageSize) {
+    return <div className={cx('inline-flex items-center', className)}>{nav}</div>;
+  }
+
+  return (
+    <div className={cx('inline-flex items-center gap-[16px]', className)}>
+      {nav}
+      <PageSizeSelect value={pageSize} options={pageSizeOptions} onChange={onPageSizeChange} />
+    </div>
   );
 }
 

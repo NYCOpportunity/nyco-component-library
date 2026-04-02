@@ -64,6 +64,19 @@ const meta: Meta<typeof Pagination> = {
       description:
         'When `true`, clicking the ellipsis opens a dropdown of hidden pages. When `false` (default), the ellipsis is a static indicator.',
     },
+    pageSize: {
+      control: { type: 'number', min: 1 },
+      description:
+        'Current page size (items per page). Provide together with `pageSizeOptions` and `onPageSizeChange` to render a "Results per page" dropdown.',
+    },
+    pageSizeOptions: {
+      control: 'object',
+      description: 'Options for the page-size dropdown (e.g. `[10, 25, 50, 100]`).',
+    },
+    onPageSizeChange: {
+      action: 'onPageSizeChange',
+      description: 'Called when the user selects a new page size.',
+    },
   },
 };
 
@@ -216,4 +229,44 @@ export const ExpandableEllipsis: Story = {
     },
   },
   render: () => <ExpandableEllipsisExample />,
+};
+
+// ---------------------------------------------------------------------------
+// Results per page dropdown
+// ---------------------------------------------------------------------------
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
+
+function ResultsPerPageExample() {
+  const [page, setPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+  return (
+    <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
+      <Pagination
+        page={page}
+        totalPages={20}
+        onChange={setPage}
+        pageSize={pageSize}
+        pageSizeOptions={PAGE_SIZE_OPTIONS}
+        onPageSizeChange={(size) => {
+          setPageSize(size);
+          setPage(1);
+        }}
+      />
+    </div>
+  );
+}
+
+export const ResultsPerPage: Story = {
+  name: 'Results Per Page',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Pass `pageSize`, `pageSizeOptions`, and `onPageSizeChange` to render a ' +
+          '"Results per page" dropdown beside the pagination bar. Changing the page size ' +
+          'resets to page 1.',
+      },
+    },
+  },
+  render: () => <ResultsPerPageExample />,
 };
