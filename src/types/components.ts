@@ -229,3 +229,14 @@ export interface TooltipProps {
   children?: React.ReactElement;
   className?: string;
 }
+
+// *** Pagination Types ***
+export interface PaginationProps {
+  /** Current page number (1-indexed). */
+  page: number;
+  /** Total number of pages. */
+  totalPages: number;
+  /** Called when the user navigates to a different page. */
+  onChange: (page: number) => void;
+  className?: string;
+}

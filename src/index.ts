@@ -20,3 +20,6 @@ export type { ChipProps, ChipVariant } from './types/components';
 
 export { ChipGroup } from './components/ChipGroup';
 export type { ChipGroupProps, ChipGroupActionsContext, ChipOption } from './types/components';
+
+export { Pagination } from './components/Pagination';
+export type { PaginationProps } from './types/components';
