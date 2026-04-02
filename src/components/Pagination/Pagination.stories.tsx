@@ -59,6 +59,11 @@ const meta: Meta<typeof Pagination> = {
       action: 'onChange',
       description: 'Called when the user navigates to a different page.',
     },
+    expandableEllipsis: {
+      control: 'boolean',
+      description:
+        'When `true`, clicking the ellipsis opens a dropdown of hidden pages. When `false` (default), the ellipsis is a static indicator.',
+    },
   },
 };
 
@@ -185,4 +190,30 @@ export const LastPage: Story = {
       },
     },
   },
+};
+
+// ---------------------------------------------------------------------------
+// Expandable ellipsis
+// ---------------------------------------------------------------------------
+function ExpandableEllipsisExample() {
+  const [page, setPage] = React.useState(10);
+  return (
+    <div style={{ fontFamily: 'Public Sans, sans-serif' }}>
+      <Pagination page={page} totalPages={20} expandableEllipsis onChange={setPage} />
+    </div>
+  );
+}
+
+export const ExpandableEllipsis: Story = {
+  name: 'Expandable Ellipsis',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With `expandableEllipsis={true}`, clicking the `...` opens a scrollable dropdown ' +
+          'listing the hidden page numbers. Click any to navigate there.',
+      },
+    },
+  },
+  render: () => <ExpandableEllipsisExample />,
 };

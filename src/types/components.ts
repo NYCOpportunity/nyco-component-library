@@ -238,5 +238,10 @@ export interface PaginationProps {
   totalPages: number;
   /** Called when the user navigates to a different page. */
   onChange: (page: number) => void;
+  /**
+   * When `true`, clicking an ellipsis opens a dropdown of hidden page numbers.
+   * When `false` (default), the ellipsis is a static indicator with no hover or popup.
+   */
+  expandableEllipsis?: boolean;
   className?: string;
 }

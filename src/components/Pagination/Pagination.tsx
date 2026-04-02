@@ -196,11 +196,13 @@ function NavButton({
 
 function EllipsisButton({
   item,
+  expandable,
   isOpen,
   onToggle,
   onPageSelect,
 }: {
   item: EllipsisItem;
+  expandable: boolean;
   isOpen: boolean;
   onToggle: () => void;
   onPageSelect: (page: number) => void;
@@ -219,6 +221,17 @@ function EllipsisButton({
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
   }, [isOpen, onToggle]);
+
+  if (!expandable) {
+    return (
+      <span
+        aria-hidden="true"
+        className="inline-flex items-end justify-center size-[40px] pb-[10px] text-[var(--color-neutral-black)] cursor-default select-none"
+      >
+        <EllipsisIcon />
+      </span>
+    );
+  }
 
   return (
     <div ref={containerRef} className="relative">
@@ -240,7 +253,7 @@ function EllipsisButton({
 
       {isOpen && (
         <div
-          className="absolute top-[calc(100%+8px)] left-0 z-10 flex flex-col gap-[4px] bg-[var(--color-neutral-white)] rounded-[4px] p-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.08)] max-h-[96px] overflow-y-auto"
+          className="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 z-10 flex flex-col gap-[4px] bg-[var(--color-neutral-white)] rounded-[4px] p-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.08)] max-h-[96px] overflow-y-auto min-w-[72px]"
           role="listbox"
           aria-label="Hidden pages"
         >
@@ -256,6 +269,7 @@ function EllipsisButton({
               }}
               className={cx(
                 PAGE_BTN,
+                'w-full',
                 'bg-[var(--color-neutral-white)]',
                 '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]'
               )}
@@ -273,7 +287,13 @@ function EllipsisButton({
 // Pagination
 // ---------------------------------------------------------------------------
 
-export function Pagination({ page, totalPages, onChange, className }: PaginationProps) {
+export function Pagination({
+  page,
+  totalPages,
+  onChange,
+  expandableEllipsis = false,
+  className,
+}: PaginationProps) {
   const [openEllipsis, setOpenEllipsis] = React.useState<'left' | 'right' | null>(null);
 
   const range = buildPageItems(page, totalPages);
@@ -303,6 +323,7 @@ export function Pagination({ page, totalPages, onChange, className }: Pagination
           <EllipsisButton
             key={`slot-${index}`}
             item={item}
+            expandable={expandableEllipsis}
             isOpen={openEllipsis === item.id}
             onToggle={() => setOpenEllipsis((prev) => (prev === item.id ? null : item.id))}
             onPageSelect={handlePageSelect}
