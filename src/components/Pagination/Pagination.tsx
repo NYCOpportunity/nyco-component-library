@@ -216,8 +216,10 @@ function NavButton({
         disabled
           ? 'opacity-30 pointer-events-none'
           : cx(
-              'bg-[var(--color-neutral-white)] [@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]',
-              flashing && '[@media(hover:none)]:bg-[var(--color-neutral-100)]'
+              'bg-[var(--color-neutral-white)]',
+              '[@media(hover:hover)]:hover:bg-[var(--color-neutral-200)]',
+              '[@media(hover:hover)]:active:bg-[var(--color-neutral-300)]',
+              flashing && '[@media(hover:none)]:bg-[var(--color-neutral-200)]'
             )
       )}
     >
