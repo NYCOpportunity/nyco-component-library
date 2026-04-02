@@ -275,6 +275,7 @@ function EllipsisButton({
         onPointerDown={handlePointerDown}
         className={cx(
           PAGE_BTN,
+          '!items-end !pb-[10px]',
           'bg-[var(--color-neutral-white)]',
           '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]',
           flashing && '[@media(hover:none)]:bg-[var(--color-neutral-100)]'
