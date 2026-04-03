@@ -182,6 +182,7 @@ function PageButton({
           : cx(
               'bg-[var(--color-neutral-white)]',
               '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]',
+              '[@media(hover:hover)]:active:bg-[var(--color-neutral-200)]',
               flashing && '[@media(hover:none)]:bg-[var(--color-neutral-100)]'
             )
       )}
@@ -209,7 +210,7 @@ function NavButton({
       onClick={onClick}
       onPointerDown={handlePointerDown}
       className={cx(
-        'inline-flex items-center justify-center size-[40px] rounded-[4px]',
+        'inline-flex items-center justify-center size-[40px] rounded-[8px]',
         'text-[var(--color-neutral-black)]',
         'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]',
         'transition-colors duration-200',
@@ -217,9 +218,9 @@ function NavButton({
           ? 'opacity-30 pointer-events-none'
           : cx(
               'bg-[var(--color-neutral-white)]',
-              '[@media(hover:hover)]:hover:bg-[var(--color-neutral-200)]',
-              '[@media(hover:hover)]:active:bg-[var(--color-neutral-300)]',
-              flashing && '[@media(hover:none)]:bg-[var(--color-neutral-200)]'
+              '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]',
+              '[@media(hover:hover)]:active:bg-[var(--color-neutral-200)]',
+              flashing && '[@media(hover:none)]:bg-[var(--color-neutral-100)]'
             )
       )}
     >
