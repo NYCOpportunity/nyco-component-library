@@ -229,3 +229,28 @@ export interface TooltipProps {
   children?: React.ReactElement;
   className?: string;
 }
+
+// *** Pagination Types ***
+export interface PaginationProps {
+  /** Current page number (1-indexed). */
+  page: number;
+  /** Total number of pages. */
+  totalPages: number;
+  /** Called when the user navigates to a different page. */
+  onChange: (page: number) => void;
+  /**
+   * When `true`, clicking an ellipsis opens a dropdown of hidden page numbers.
+   * When `false` (default), the ellipsis is a static indicator with no hover or popup.
+   */
+  expandableEllipsis?: boolean;
+  /**
+   * Current page size (items per page). Provide together with `pageSizeOptions` and
+   * `onPageSizeChange` to render a "Results per page" dropdown beside the pagination bar.
+   */
+  pageSize?: number;
+  /** Options for the page-size dropdown (e.g. `[10, 25, 50, 100]`). */
+  pageSizeOptions?: number[];
+  /** Called when the user selects a new page size. */
+  onPageSizeChange?: (size: number) => void;
+  className?: string;
+}
