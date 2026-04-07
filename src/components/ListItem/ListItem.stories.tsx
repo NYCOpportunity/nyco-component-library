@@ -47,8 +47,30 @@ const meta = {
           'Wire multiple `radio` items by sharing an external value and passing `selected={value === id}` ' +
           'with `onSelectedChange={() => setValue(id)}` to each item. ' +
           'The `radio` type never calls `onSelectedChange(false)`, so the active item can only change by selecting another.\n\n' +
+          '## Styling\n\n' +
+          'Two props give you Tailwind-level control over every part of the component:\n\n' +
+          '**`className`** — applied to the root `<button>`. Use Tailwind modifiers to override hover/press colors:\n\n' +
+          '```tsx\n' +
+          '// Override hover and press background colors using CSS-variable overrides\n' +
+          '<ListItem\n' +
+          '  label="Sky theme"\n' +
+          '  className="[--color-neutral-100:theme(colors.sky.50)] [--color-neutral-200:theme(colors.sky.100)]"\n' +
+          '/>\n' +
+          '```\n\n' +
+          '**`slots`** — per-slot overrides. Target the icon, main label, primary label, or secondary label individually:\n\n' +
+          '```tsx\n' +
+          '<ListItem\n' +
+          '  label="Custom item"\n' +
+          '  type="checkbox"\n' +
+          '  slots={{\n' +
+          '    icon: "text-violet-600",          // icon fill color\n' +
+          '    label: "font-semibold text-lg",   // main label text\n' +
+          '    primaryLabel: "text-violet-400",  // overline text color\n' +
+          '    secondaryLabel: "italic",         // underline text style\n' +
+          '  }}\n' +
+          '/>\n' +
+          '```\n\n' +
           '---\n\n' +
-          '## Design tokens\n\n' +
           '| Property | CSS Variable | Default |\n' +
           '|---|---|---|\n' +
           '| Default text | `--color-neutral-black` | `#191919` |\n' +
@@ -119,7 +141,19 @@ const meta = {
     },
     className: {
       control: 'text',
-      description: 'Additional CSS classes merged onto the root `<button>` element.',
+      description:
+        'Tailwind classes on the root `<button>`. Supports any modifier (`hover:*`, `active:*`, `focus-visible:*`). ' +
+        'Override hover/press palette with CSS-variable overrides, e.g. ' +
+        '`[--color-neutral-100:#e0f2fe] [--color-neutral-200:#bae6fd]`.',
+    },
+    slots: {
+      control: false,
+      description:
+        'Per-slot Tailwind class overrides. Pass an object with any combination of:\n\n' +
+        '- `icon` — icon wrapper `<span>` (sets fill color via `text-*`, e.g. `text-violet-600`)\n' +
+        '- `label` — main label `<span>`\n' +
+        '- `primaryLabel` — overline text `<span>`\n' +
+        '- `secondaryLabel` — underline text `<span>`',
     },
   },
 } satisfies Meta<typeof ListItem>;
@@ -247,6 +281,122 @@ export const Disabled: Story = {
       },
     },
   },
+};
+
+// ---------------------------------------------------------------------------
+// Custom styles
+// ---------------------------------------------------------------------------
+
+const CustomStylesDemo = () => {
+  const [violetChecked, setVioletChecked] = React.useState(false);
+  const [skyChecked, setSkyChecked] = React.useState(false);
+  const [roseChecked, setRoseChecked] = React.useState(false);
+
+  const col: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 4 };
+  const heading: React.CSSProperties = {
+    fontFamily: 'Public Sans, sans-serif',
+    fontSize: 11,
+    fontWeight: 700,
+    color: '#aaa',
+    marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+  };
+
+  return (
+    <div style={{ display: 'flex', gap: 32, fontFamily: 'Public Sans, sans-serif' }}>
+      {/* Violet — icon + label color */}
+      <div>
+        <p style={heading}>Icon &amp; label color</p>
+        <div style={{ ...col, width: 260 }}>
+          <ListItem
+            label="Violet option"
+            type="checkbox"
+            selected={violetChecked}
+            onSelectedChange={setVioletChecked}
+            slots={{
+              icon: 'text-violet-600',
+              label: 'text-violet-900 font-medium',
+            }}
+          />
+          <ListItem
+            label="With labels"
+            primaryLabel="Category"
+            secondaryLabel="A supporting hint"
+            type="checkbox"
+            slots={{
+              icon: 'text-violet-600',
+              label: 'text-violet-900 font-medium',
+              primaryLabel: 'text-violet-400',
+              secondaryLabel: 'text-violet-400 italic',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Sky — hover/press color via CSS-variable override */}
+      <div>
+        <p style={heading}>Hover &amp; press color</p>
+        <div style={{ ...col, width: 260 }}>
+          <ListItem
+            label="Sky hover palette"
+            type="checkbox"
+            selected={skyChecked}
+            onSelectedChange={setSkyChecked}
+            className="[--color-neutral-100:theme(colors.sky.50)] [--color-neutral-200:theme(colors.sky.100)]"
+            slots={{ icon: 'text-sky-500' }}
+          />
+          <ListItem
+            label="Sky hover palette"
+            type="radio"
+            className="[--color-neutral-100:theme(colors.sky.50)] [--color-neutral-200:theme(colors.sky.100)]"
+            slots={{ icon: 'text-sky-500' }}
+          />
+        </div>
+      </div>
+
+      {/* Rose — combined */}
+      <div>
+        <p style={heading}>Combined</p>
+        <div style={{ ...col, width: 260 }}>
+          <ListItem
+            label="Rose item"
+            primaryLabel="Danger zone"
+            type="multi-standard"
+            selected={roseChecked}
+            onSelectedChange={setRoseChecked}
+            className="[--color-neutral-100:theme(colors.rose.50)] [--color-neutral-200:theme(colors.rose.100)]"
+            slots={{
+              icon: 'text-rose-500',
+              label: 'text-rose-900',
+              primaryLabel: 'text-rose-400',
+            }}
+          />
+          <ListItem
+            label="Rose disabled"
+            type="multi-standard"
+            disabled
+            slots={{ label: 'line-through' }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const CustomStyles: Story = {
+  name: 'Custom Styles',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use `className` to override hover/press background colors via CSS-variable overrides ' +
+          '(`[--color-neutral-100:…]`), and `slots` to target individual slots ' +
+          '(`icon`, `label`, `primaryLabel`, `secondaryLabel`) with any Tailwind class.',
+      },
+    },
+  },
+  render: () => <CustomStylesDemo />,
 };
 
 // ---------------------------------------------------------------------------

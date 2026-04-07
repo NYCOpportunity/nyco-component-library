@@ -102,6 +102,7 @@ export function ListItem({
   onClick,
   disabled = false,
   className,
+  slots = {},
 }: ListItemProps) {
   const isControlled = controlledSelected !== undefined;
   const [internalSelected, setInternalSelected] = React.useState(defaultSelected);
@@ -160,7 +161,12 @@ export function ListItem({
     >
       {/* Left icon — checkbox or radio */}
       {hasLeftIcon && (
-        <span className="flex items-center justify-center p-[8px] shrink-0 rounded-full">
+        <span
+          className={cx(
+            'flex items-center justify-center p-[8px] shrink-0 rounded-full',
+            slots.icon
+          )}
+        >
           {type === 'checkbox' ? (
             selected ? (
               <CheckboxCheckedIcon />
@@ -181,18 +187,22 @@ export function ListItem({
           <span
             className={cx(
               'block text-[14px] leading-[1.6] font-normal',
-              !disabled && 'text-[var(--color-neutral-700)]'
+              !disabled && 'text-[var(--color-neutral-700)]',
+              slots.primaryLabel
             )}
           >
             {primaryLabel}
           </span>
         )}
-        <span className="block text-[16px] leading-[1.5] font-normal">{label}</span>
+        <span className={cx('block text-[16px] leading-[1.5] font-normal', slots.label)}>
+          {label}
+        </span>
         {secondaryLabel && (
           <span
             className={cx(
               'block text-[14px] leading-[1.6] font-normal',
-              !disabled && 'text-[var(--color-neutral-700)]'
+              !disabled && 'text-[var(--color-neutral-700)]',
+              slots.secondaryLabel
             )}
           >
             {secondaryLabel}
@@ -202,7 +212,12 @@ export function ListItem({
 
       {/* Right icon — multi-standard checkmark (always reserve space to prevent layout shift) */}
       {hasRightIcon && (
-        <span className="flex items-center justify-center p-[8px] shrink-0 rounded-full">
+        <span
+          className={cx(
+            'flex items-center justify-center p-[8px] shrink-0 rounded-full',
+            slots.icon
+          )}
+        >
           <span className={selected ? 'visible' : 'invisible'}>
             <CheckIcon />
           </span>

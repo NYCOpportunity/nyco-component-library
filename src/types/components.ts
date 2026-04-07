@@ -263,7 +263,29 @@ export interface ListItemProps {
   /** Called on every click (all types). */
   onClick?: () => void;
   disabled?: boolean;
+  /** Tailwind classes applied to the root `<button>`. Use `hover:*` / `active:*` modifiers here,
+   *  or CSS-variable overrides like `[--color-neutral-100:#e0f2fe]` to retheme hover/press colors. */
   className?: string;
+  /**
+   * Slot-level Tailwind class overrides.
+   *
+   * | Slot | What it targets | Example use |
+   * |---|---|---|
+   * | `icon` | Icon wrapper `<span>` (checkbox, radio, checkmark) | `'text-violet-600'` to change icon color |
+   * | `label` | Main label `<span>` | `'font-semibold text-lg'` |
+   * | `primaryLabel` | Overline text `<span>` | `'text-violet-400'` |
+   * | `secondaryLabel` | Underline text `<span>` | `'italic'` |
+   */
+  slots?: {
+    /** Icon wrapper `<span>`. Icons inherit `currentColor`, so `text-*` sets fill color. */
+    icon?: string;
+    /** Main label `<span>`. */
+    label?: string;
+    /** Overline text `<span>` — visible only when `primaryLabel` is provided. */
+    primaryLabel?: string;
+    /** Underline text `<span>` — visible only when `secondaryLabel` is provided. */
+    secondaryLabel?: string;
+  };
 }
 
 // *** Pagination Types ***
