@@ -200,10 +200,12 @@ export function ListItem({
         )}
       </span>
 
-      {/* Right icon — multi-standard checkmark */}
+      {/* Right icon — multi-standard checkmark (always reserve space to prevent layout shift) */}
       {hasRightIcon && (
         <span className="flex items-center justify-center p-[8px] shrink-0 rounded-full">
-          {selected && <CheckIcon />}
+          <span className={selected ? 'visible' : 'invisible'}>
+            <CheckIcon />
+          </span>
         </span>
       )}
     </button>

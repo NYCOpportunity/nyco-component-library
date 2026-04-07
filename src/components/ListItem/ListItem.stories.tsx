@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { ListItem } from './ListItem';
+import { useState } from 'react';
 
 const meta = {
   title: 'Components/ListItem',
@@ -82,14 +83,12 @@ export const Disabled: Story = {
 // All types — States
 // ---------------------------------------------------------------------------
 
-export const AllTypes: Story = {
-  name: 'All Types',
-  render: () => {
-    const [checkboxSelected, setCheckboxSelected] = React.useState(false);
-    const [radioSelected, setRadioSelected] = React.useState(false);
-    const [multiSelected, setMultiSelected] = React.useState(false);
+const AllTypesDemo = () => {
+  const [checkboxSelected, setCheckboxSelected] = React.useState(false);
+  const [radioSelected, setRadioSelected] = React.useState(false);
+  const [multiSelected, setMultiSelected] = React.useState(false);
 
-    return (
+  return (
       <div style={{ display: 'flex', gap: 32, fontFamily: 'Public Sans, sans-serif' }}>
         <div>
           <p
@@ -180,7 +179,11 @@ export const AllTypes: Story = {
         </div>
       </div>
     );
-  },
+};
+
+export const AllTypes: Story = {
+  name: 'All Types',
+  render: () => <AllTypesDemo />,
 };
 
 // ---------------------------------------------------------------------------
@@ -253,50 +256,58 @@ export const LabelsGrid: Story = {
 // Interactive list example
 // ---------------------------------------------------------------------------
 
+const RadioGroupDemo = () => {
+  const options = ['Option A', 'Option B', 'Option C'];
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <div style={listStyle}>
+      {options.map((opt) => (
+        <ListItem
+          key={opt}
+          label={opt}
+          type="radio"
+          selected={value === opt}
+          onSelectedChange={() => setValue(opt)}
+        />
+      ))}
+    </div>
+  );
+};
+
 export const RadioGroup: Story = {
   name: 'Radio Group (interactive)',
-  render: () => {
-    const options = ['Option A', 'Option B', 'Option C'];
-    const [value, setValue] = React.useState<string | null>(null);
-    return (
-      <div style={listStyle}>
-        {options.map((opt) => (
-          <ListItem
-            key={opt}
-            label={opt}
-            type="radio"
-            selected={value === opt}
-            onSelectedChange={() => setValue(opt)}
-          />
-        ))}
-      </div>
-    );
-  },
+  render: () => <RadioGroupDemo />,
+};
+
+const CheckboxGroupDemo = () => {
+  const options = ['Option A', 'Option B', 'Option C'];
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const toggle = (opt: string) =>
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(opt)) {
+        next.delete(opt);
+      } else {
+        next.add(opt);
+      }
+      return next;
+    });
+  return (
+    <div style={listStyle}>
+      {options.map((opt) => (
+        <ListItem
+          key={opt}
+          label={opt}
+          type="checkbox"
+          selected={selected.has(opt)}
+          onSelectedChange={() => toggle(opt)}
+        />
+      ))}
+    </div>
+  );
 };
 
 export const CheckboxGroup: Story = {
   name: 'Checkbox Group (interactive)',
-  render: () => {
-    const options = ['Option A', 'Option B', 'Option C'];
-    const [selected, setSelected] = React.useState<Set<string>>(new Set());
-    const toggle = (opt: string) =>
-      setSelected((prev) => {
-        const next = new Set(prev);
-        next.has(opt) ? next.delete(opt) : next.add(opt);
-        return next;
-      });
-    return (
-      <div style={listStyle}>
-        {options.map((opt) => (
-          <ListItem
-            key={opt}
-            label={opt}
-            type="checkbox"
-            selected={selected.has(opt)}
-            onSelectedChange={() => toggle(opt)}
-          />
-        ))}
-      </div>
-    );
-  },
+  render: () => <CheckboxGroupDemo />,
 };
