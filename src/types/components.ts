@@ -312,3 +312,61 @@ export interface PaginationProps {
   onPageSizeChange?: (size: number) => void;
   className?: string;
 }
+
+// *** Select Types ***
+
+/** A single option in a `Select` dropdown. */
+export interface SelectOption {
+  /** Unique value identifier — used in `value` and `onChange`. */
+  value: string;
+  /** Display label shown in the trigger and dropdown. */
+  label: string;
+  /** Prevents this option from being selected. */
+  disabled?: boolean;
+}
+
+export interface SelectProps {
+  /** Options displayed in the dropdown. */
+  options: SelectOption[];
+  /**
+   * Controlled selected value(s).
+   * - Single-select (`multiple: false`): pass a `string`
+   * - Multi-select (`multiple: true`): pass `string[]`
+   */
+  value?: string | string[];
+  /** Initial value when uncontrolled. */
+  defaultValue?: string | string[];
+  /**
+   * Called when the selection changes.
+   * - Single-select: receives a `string`
+   * - Multi-select: receives `string[]`
+   */
+  onChange?: (value: string | string[]) => void;
+  /**
+   * When `true`, multiple options can be selected simultaneously; checkboxes are shown.
+   * Defaults to `false`.
+   */
+  multiple?: boolean;
+  /** Text shown in the trigger when no option is selected. Defaults to `'Select...'`. */
+  placeholder?: string;
+  /**
+   * Trigger visual style:
+   * - `'underlined'` (default) — inline text field with a bottom border divider
+   * - `'outlined'` — bordered pill/box button
+   */
+  variant?: 'underlined' | 'outlined';
+  /** When `true`, the trigger is non-interactive and visually dimmed. */
+  disabled?: boolean;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Initial open state when uncontrolled. Defaults to `false`. */
+  defaultOpen?: boolean;
+  /** Called when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
+  /** `aria-label` on the trigger button. */
+  'aria-label'?: string;
+  /** `aria-labelledby` on the trigger button. */
+  'aria-labelledby'?: string;
+  /** Tailwind classes applied to the root wrapper `<div>`. */
+  className?: string;
+}
