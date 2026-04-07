@@ -230,6 +230,42 @@ export interface TooltipProps {
   className?: string;
 }
 
+// *** ListItem Types ***
+export type ListItemType = 'standard' | 'multi-standard' | 'checkbox' | 'radio';
+
+export interface ListItemProps {
+  /** Main label text displayed in the list item. */
+  label: string;
+  /**
+   * Small overline text (14px, neutral-700) rendered above the main label.
+   * Only available on `'standard'` type.
+   */
+  primaryLabel?: string;
+  /**
+   * Small underline text (14px, neutral-700) rendered below the main label.
+   * Only available on `'standard'` type.
+   */
+  secondaryLabel?: string;
+  /**
+   * Visual type of the list item:
+   * - `'standard'` — plain text row, no selection icon (default)
+   * - `'multi-standard'` — shows a checkmark on the right when selected
+   * - `'checkbox'` — checkbox icon on the left, toggles on click
+   * - `'radio'` — radio icon on the left, selects (does not deselect) on click
+   */
+  type?: ListItemType;
+  /** Controlled selected state (for `multi-standard`, `checkbox`, and `radio` types). */
+  selected?: boolean;
+  /** Initial selected state when uncontrolled. Defaults to `false`. */
+  defaultSelected?: boolean;
+  /** Called when the selected state changes. */
+  onSelectedChange?: (selected: boolean) => void;
+  /** Called on every click (all types). */
+  onClick?: () => void;
+  disabled?: boolean;
+  className?: string;
+}
+
 // *** Pagination Types ***
 export interface PaginationProps {
   /** Current page number (1-indexed). */

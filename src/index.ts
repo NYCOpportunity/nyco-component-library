@@ -23,3 +23,6 @@ export type { ChipGroupProps, ChipGroupActionsContext, ChipOption } from './type
 
 export { Pagination } from './components/Pagination';
 export type { PaginationProps } from './types/components';
+
+export { ListItem } from './components/ListItem';
+export type { ListItemProps, ListItemType } from './types/components';
