@@ -81,7 +81,8 @@ const meta: Meta<typeof Select> = {
           '- The panel has `role="listbox"` and `aria-multiselectable` when `multiple` is true.\n' +
           '- Press `Escape` anywhere in the dropdown to close and return focus to the trigger.\n' +
           '- Pass `aria-label` or `aria-labelledby` to give the trigger an accessible name ' +
-          'when there is no associated visible label.\n\n' +
+          'when there is no associated visible label. ' +
+          'When `label` is provided, the trigger is automatically connected via `aria-labelledby`.\n\n' +
           '---\n\n' +
           '| Property | CSS Variable | Default |\n' +
           '|---|---|---|\n' +
@@ -108,6 +109,19 @@ const meta: Meta<typeof Select> = {
         '`value` must be unique — it is used as the key and in `onChange`. ' +
         '`disabled: true` prevents that option from being selected.',
     },
+    label: {
+      control: 'text',
+      description:
+        'Optional form label shown above the trigger (14px, neutral-700). ' +
+        'When provided, the trigger is automatically associated via `aria-labelledby`. ' +
+        'Matches the MUI TextField `label` prop pattern.',
+    },
+    helperText: {
+      control: 'text',
+      description:
+        'Optional helper text shown below the trigger (14px, neutral-700). ' +
+        'Rendered after the bottom divider on `underlined` variant, below the button on `outlined`.',
+    },
     variant: {
       control: 'radio',
       options: ['underlined', 'outlined'],
@@ -127,7 +141,9 @@ const meta: Meta<typeof Select> = {
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the trigger and prevents opening the dropdown.',
+      description:
+        'Disables the trigger and prevents opening the dropdown. ' +
+        'Applies `opacity: 20%` and `pointer-events: none` to the root wrapper.',
     },
     value: {
       control: false,
@@ -188,6 +204,8 @@ export const Playground: Story = {
   args: {
     variant: 'underlined',
     placeholder: 'Select an option',
+    label: '',
+    helperText: '',
     multiple: false,
     disabled: false,
   },
@@ -395,7 +413,9 @@ export const Disabled: Story = {
       description: {
         story:
           'Both variants in the `disabled` state. ' +
-          'The trigger is non-interactive, visually muted, and `pointer-events: none`.',
+          'The trigger is non-interactive and fully dimmed (`opacity: 20%`). ' +
+          'Disabled state is applied at the wrapper level so all child elements ' +
+          '(label, chevron, divider, helper text) fade uniformly.',
       },
     },
   },
@@ -434,6 +454,59 @@ export const WithDefaultValue: Story = {
           'Top: single-select underlined with `defaultValue="income"`. ' +
           'Bottom: multi-select outlined with three items pre-selected via `defaultValue={[...]}`. ' +
           'Since there are three items, the trigger shows them comma-separated.',
+      },
+    },
+  },
+};
+
+// ---------------------------------------------------------------------------
+// With label and helper text
+// ---------------------------------------------------------------------------
+export const WithLabelAndHelperText: Story = {
+  name: 'With label and helper text',
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 32,
+        width: 280,
+        paddingBottom: 280,
+        fontFamily: 'Public Sans, sans-serif',
+      }}
+    >
+      <Select
+        options={FILTER_OPTIONS}
+        variant="underlined"
+        label="Indicator"
+        helperText="Choose one social indicator"
+        placeholder="Select..."
+      />
+      <Select
+        options={FILTER_OPTIONS}
+        variant="outlined"
+        label="Indicator"
+        helperText="Choose one social indicator"
+        placeholder="Select..."
+      />
+      <Select
+        options={FILTER_OPTIONS}
+        variant="underlined"
+        label="Indicator"
+        helperText="Option is required"
+        multiple
+        placeholder="Select indicators"
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Both variants with `label` and `helperText`. ' +
+          'The label is rendered above the trigger at 14px in `--color-neutral-700`. ' +
+          'When `label` is provided, the trigger is automatically connected to it via `aria-labelledby`. ' +
+          '`helperText` renders below the divider (underlined) or below the button (outlined).',
       },
     },
   },

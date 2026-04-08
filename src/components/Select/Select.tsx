@@ -32,6 +32,8 @@ export function Select({
   defaultValue,
   onChange,
   multiple = false,
+  label,
+  helperText,
   placeholder = 'Select...',
   variant = 'underlined',
   disabled = false,
@@ -45,6 +47,7 @@ export function Select({
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const panelId = React.useId();
+  const labelId = React.useId();
 
   // Normalize any value form to string[]
   const normalizeValue = (v: string | string[] | undefined): string[] => {
@@ -136,18 +139,16 @@ export function Select({
         }
       }}
       className={cx(
-        'absolute z-50 left-0 w-full bg-[var(--color-neutral-white)] rounded-[8px]',
-        variant === 'outlined'
-          ? 'top-full mt-[4px] p-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.15)]'
-          : 'top-full'
+        'absolute z-50 left-0 w-full bg-[var(--color-neutral-white)] rounded-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.15)]',
+        variant === 'outlined' ? 'top-full mt-[4px] p-[8px]' : 'top-full'
       )}
     >
       {options.map((option) => (
         <ListItem
           key={option.value}
           label={option.label}
-          type={multiple ? 'checkbox' : 'standard'}
-          selected={multiple ? selectedValues.includes(option.value) : undefined}
+          type={multiple ? 'checkbox' : 'multi-standard'}
+          selected={selectedValues.includes(option.value)}
           disabled={option.disabled}
           onClick={() => handleSelect(option.value)}
         />
@@ -156,10 +157,74 @@ export function Select({
   );
 
   return (
-    <div ref={wrapperRef} className={cx('relative w-full', className)}>
+    <div
+      ref={wrapperRef}
+      className={cx('relative w-full', disabled && 'opacity-20 pointer-events-none', className)}
+    >
       {variant === 'underlined' ? (
         // ── Underlined trigger ──────────────────────────────────────────────
+        <div
+          className={cx(
+            'flex flex-col rounded-[4px]',
+            '[&:has(:focus-visible)]:ring-[3px] [&:has(:focus-visible)]:ring-[var(--color-border-focus)]',
+            isOpen && 'ring-[3px] ring-[var(--color-border-focus)]'
+          )}
+        >
+          {label && (
+            <span
+              id={labelId}
+              className="text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-700)]"
+            >
+              {label}
+            </span>
+          )}
+          <div className="flex flex-col gap-[4px]">
+            <button
+              ref={triggerRef}
+              type="button"
+              disabled={disabled}
+              aria-haspopup="listbox"
+              aria-expanded={isOpen}
+              aria-controls={isOpen ? panelId : undefined}
+              aria-label={ariaLabel}
+              aria-labelledby={
+                !ariaLabel ? (ariaLabelledby ?? (label ? labelId : undefined)) : undefined
+              }
+              onClick={togglePanel}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') closePanel();
+              }}
+              className={cx(
+                'flex h-[32px] items-center py-[4px] w-full text-left',
+                'text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-black)]',
+                '[@media(hover:hover)]:hover:text-[var(--color-neutral-700)]',
+                'focus-visible:outline-none'
+              )}
+            >
+              <span className="flex-1 min-w-0 truncate">{triggerText}</span>
+              <span className="shrink-0">
+                <ChevronIcon open={isOpen} />
+              </span>
+            </button>
+            <Divider />
+          </div>
+          {helperText && (
+            <span className="text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-700)] pt-[3px]">
+              {helperText}
+            </span>
+          )}
+        </div>
+      ) : (
+        // ── Outlined trigger ────────────────────────────────────────────────
         <div className="flex flex-col gap-[4px]">
+          {label && (
+            <span
+              id={labelId}
+              className="text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-700)]"
+            >
+              {label}
+            </span>
+          )}
           <button
             ref={triggerRef}
             type="button"
@@ -168,61 +233,35 @@ export function Select({
             aria-expanded={isOpen}
             aria-controls={isOpen ? panelId : undefined}
             aria-label={ariaLabel}
-            aria-labelledby={ariaLabelledby}
+            aria-labelledby={
+              !ariaLabel ? (ariaLabelledby ?? (label ? labelId : undefined)) : undefined
+            }
             onClick={togglePanel}
             onKeyDown={(e) => {
               if (e.key === 'Escape') closePanel();
             }}
             className={cx(
-              'flex h-[32px] items-center py-[4px] w-full text-left',
-              'text-[16px] leading-[1.5] font-normal',
-              disabled
-                ? 'text-[var(--color-neutral-300)] pointer-events-none'
-                : 'text-[var(--color-neutral-black)]',
+              'flex items-center overflow-hidden rounded-[8px] w-full text-left',
+              'bg-[var(--color-neutral-white)] border px-[10px] py-[8px] transition-colors',
+              'border-[var(--color-neutral-300)] text-[var(--color-neutral-black)]',
+              '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)] [@media(hover:hover)]:hover:border-[var(--color-neutral-100)]',
+              isOpen && 'ring-[3px] ring-[var(--color-border-focus)]',
               'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]'
             )}
           >
-            <span className="flex-1 min-w-0 truncate">{triggerText}</span>
-            <span className="shrink-0">
-              <ChevronIcon open={isOpen} />
+            <span className="flex-1 min-w-0 px-[6px] py-[2px] text-[16px] leading-[1.5] font-normal truncate">
+              {triggerText}
+            </span>
+            <span className="pr-[2px] shrink-0">
+              <ChevronIcon open={isOpen} size={22} />
             </span>
           </button>
-          <Divider />
-        </div>
-      ) : (
-        // ── Outlined trigger ────────────────────────────────────────────────
-        <button
-          ref={triggerRef}
-          type="button"
-          disabled={disabled}
-          aria-haspopup="listbox"
-          aria-expanded={isOpen}
-          aria-controls={isOpen ? panelId : undefined}
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledby}
-          onClick={togglePanel}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') closePanel();
-          }}
-          className={cx(
-            'flex items-center overflow-hidden rounded-[8px] w-full text-left',
-            'border px-[10px] py-[8px] transition-colors',
-            disabled
-              ? 'border-[var(--color-neutral-200)] text-[var(--color-neutral-300)] pointer-events-none'
-              : cx(
-                  'border-[var(--color-neutral-300)] text-[var(--color-neutral-black)]',
-                  '[@media(hover:hover)]:hover:border-[var(--color-neutral-500)]'
-                ),
-            'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]'
+          {helperText && (
+            <span className="text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-700)]">
+              {helperText}
+            </span>
           )}
-        >
-          <span className="flex-1 min-w-0 px-[6px] py-[2px] text-[16px] leading-[1.5] font-normal truncate">
-            {triggerText}
-          </span>
-          <span className="pr-[2px] shrink-0">
-            <ChevronIcon open={isOpen} size={22} />
-          </span>
-        </button>
+        </div>
       )}
 
       {isOpen && panelContent}

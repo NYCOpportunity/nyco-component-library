@@ -355,7 +355,17 @@ export interface SelectProps {
    * - `'outlined'` — bordered pill/box button
    */
   variant?: 'underlined' | 'outlined';
-  /** When `true`, the trigger is non-interactive and visually dimmed. */
+  /**
+   * Optional form label shown above the trigger (14px, neutral-700).
+   * When provided the trigger is automatically associated via `aria-labelledby`.
+   */
+  label?: string;
+  /**
+   * Optional helper text shown below the trigger (14px, neutral-700).
+   * Rendered after the bottom divider on `underlined` variant, below the button on `outlined`.
+   */
+  helperText?: string;
+  /** When `true`, the trigger is non-interactive and visually dimmed (`opacity: 20%`). */
   disabled?: boolean;
   /** Controlled open state. */
   open?: boolean;
