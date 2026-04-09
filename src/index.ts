@@ -27,5 +27,5 @@ export type { PaginationProps } from './types/components';
 export { ListItem } from './components/ListItem';
 export type { ListItemProps, ListItemType } from './types/components';
 
-export { Select } from './components/Select';
-export type { SelectProps, SelectOption } from './types/components';
+export { Dropdown } from './components/Dropdown';
+export type { DropdownProps, DropdownOption } from './types/components';

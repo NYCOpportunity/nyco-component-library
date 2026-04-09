@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SelectProps } from '../../types/components';
+import { DropdownProps } from '../../types/components';
 import { cx } from '../../utils/cx';
 import { ListItem } from '../ListItem/ListItem';
 import { Divider } from '../Divider/Divider';
@@ -26,7 +26,7 @@ function ChevronIcon({ open, size = 24 }: { open: boolean; size?: number }) {
 // Select
 // ---------------------------------------------------------------------------
 
-export function Select({
+export function Dropdown({
   options,
   value: controlledValue,
   defaultValue,
@@ -43,7 +43,7 @@ export function Select({
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
   className,
-}: SelectProps) {
+}: DropdownProps) {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const panelId = React.useId();

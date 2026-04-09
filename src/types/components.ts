@@ -313,10 +313,10 @@ export interface PaginationProps {
   className?: string;
 }
 
-// *** Select Types ***
+// *** Dropdown Types ***
 
-/** A single option in a `Select` dropdown. */
-export interface SelectOption {
+/** A single option in a `Dropdown`. */
+export interface DropdownOption {
   /** Unique value identifier — used in `value` and `onChange`. */
   value: string;
   /** Display label shown in the trigger and dropdown. */
@@ -325,9 +325,9 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-export interface SelectProps {
+export interface DropdownProps {
   /** Options displayed in the dropdown. */
-  options: SelectOption[];
+  options: DropdownOption[];
   /**
    * Controlled selected value(s).
    * - Single-select (`multiple: false`): pass a `string`
@@ -348,7 +348,7 @@ export interface SelectProps {
    */
   multiple?: boolean;
   /** Text shown in the trigger when no option is selected. Defaults to `'Select...'`. */
-  placeholder?: string;
+  placeholder?: string; // default text only, component is named Dropdown
   /**
    * Trigger visual style:
    * - `'underlined'` (default) — inline text field with a bottom border divider

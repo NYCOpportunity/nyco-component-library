@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { Select } from './Select';
+import { Dropdown } from './Dropdown';
 
 // ---------------------------------------------------------------------------
 // Sample options
@@ -28,16 +28,16 @@ const YEAR_OPTIONS = [
 // ---------------------------------------------------------------------------
 // Meta
 // ---------------------------------------------------------------------------
-const meta: Meta<typeof Select> = {
-  title: 'Components/Select',
-  component: Select,
+const meta: Meta<typeof Dropdown> = {
+  title: 'Components/Dropdown',
+  component: Dropdown,
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          '`Select` is a dropdown input that lets users choose one or more options from a list. ' +
+          '`Dropdown` is a dropdown input that lets users choose one or more options from a list. ' +
           'It reuses `ListItem` internally for its option rows and supports two visual trigger styles.\n\n' +
           '---\n\n' +
           '## Variants\n\n' +
@@ -62,14 +62,14 @@ const meta: Meta<typeof Select> = {
           '**Uncontrolled**: Omit `value`. Optionally pass `defaultValue` (a `string` for single-select ' +
           'or `string[]` for multi-select) to pre-seed the selection on mount.\n\n' +
           '```tsx\n' +
-          '<Select options={options} defaultValue="income" />\n' +
+          '<Dropdown options={options} defaultValue="income" />\n' +
           '```\n\n' +
           '**Controlled**: Pass `value` + `onChange`. ' +
           'For single-select, `value` is a `string` and `onChange` receives a `string`. ' +
           'For multi-select, both are `string[]`.\n\n' +
           '```tsx\n' +
           "const [val, setVal] = useState('');\n" +
-          '<Select options={options} value={val} onChange={(v) => setVal(v as string)} />\n' +
+          '<Dropdown options={options} value={val} onChange={(v) => setVal(v as string)} />\n' +
           '```\n\n' +
           '---\n\n' +
           '## Open state\n\n' +
@@ -194,7 +194,7 @@ const meta: Meta<typeof Select> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Select>;
+type Story = StoryObj<typeof Dropdown>;
 
 // ---------------------------------------------------------------------------
 // Playground
@@ -230,11 +230,11 @@ export const Playground: Story = {
 // ---------------------------------------------------------------------------
 // Underlined — single select
 // ---------------------------------------------------------------------------
-function UnderlinedSingleSelectDemo() {
+function UnderlinedSingleDropdownDemo() {
   const [value, setValue] = React.useState('');
   return (
     <div style={{ width: 280, paddingBottom: 280, fontFamily: 'Public Sans, sans-serif' }}>
-      <Select
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="underlined"
         placeholder="Select indicator"
@@ -250,9 +250,9 @@ function UnderlinedSingleSelectDemo() {
   );
 }
 
-export const UnderlinedSingleSelect: Story = {
+export const UnderlinedSingleDropdown: Story = {
   name: 'Underlined — Single select',
-  render: () => <UnderlinedSingleSelectDemo />,
+  render: () => <UnderlinedSingleDropdownDemo />,
   parameters: {
     docs: {
       description: {
@@ -268,11 +268,11 @@ export const UnderlinedSingleSelect: Story = {
 // ---------------------------------------------------------------------------
 // Outlined — single select (year picker, matching the Figma right panel)
 // ---------------------------------------------------------------------------
-function OutlinedSingleSelectDemo() {
+function OutlinedSingleDropdownDemo() {
   const [value, setValue] = React.useState('2023');
   return (
     <div style={{ width: 160, paddingBottom: 280, fontFamily: 'Public Sans, sans-serif' }}>
-      <Select
+      <Dropdown
         options={YEAR_OPTIONS}
         variant="outlined"
         value={value}
@@ -283,9 +283,9 @@ function OutlinedSingleSelectDemo() {
   );
 }
 
-export const OutlinedSingleSelect: Story = {
+export const OutlinedSingleDropdown: Story = {
   name: 'Outlined — Single select',
-  render: () => <OutlinedSingleSelectDemo />,
+  render: () => <OutlinedSingleDropdownDemo />,
   parameters: {
     docs: {
       description: {
@@ -301,11 +301,11 @@ export const OutlinedSingleSelect: Story = {
 // ---------------------------------------------------------------------------
 // Underlined — multi-select (matches Figma left panel)
 // ---------------------------------------------------------------------------
-function UnderlinedMultiSelectDemo() {
+function UnderlinedMultiDropdownDemo() {
   const [values, setValues] = React.useState<string[]>([]);
   return (
     <div style={{ width: 280, paddingBottom: 320, fontFamily: 'Public Sans, sans-serif' }}>
-      <Select
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="underlined"
         multiple
@@ -325,9 +325,9 @@ function UnderlinedMultiSelectDemo() {
   );
 }
 
-export const UnderlinedMultiSelect: Story = {
+export const UnderlinedMultiDropdown: Story = {
   name: 'Underlined — Multi-select',
-  render: () => <UnderlinedMultiSelectDemo />,
+  render: () => <UnderlinedMultiDropdownDemo />,
   parameters: {
     docs: {
       description: {
@@ -345,11 +345,11 @@ export const UnderlinedMultiSelect: Story = {
 // ---------------------------------------------------------------------------
 // Outlined — multi-select
 // ---------------------------------------------------------------------------
-function OutlinedMultiSelectDemo() {
+function OutlinedMultiDropdownDemo() {
   const [values, setValues] = React.useState<string[]>([]);
   return (
     <div style={{ width: 280, paddingBottom: 320, fontFamily: 'Public Sans, sans-serif' }}>
-      <Select
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="outlined"
         multiple
@@ -369,9 +369,9 @@ function OutlinedMultiSelectDemo() {
   );
 }
 
-export const OutlinedMultiSelect: Story = {
+export const OutlinedMultiDropdown: Story = {
   name: 'Outlined — Multi-select',
-  render: () => <OutlinedMultiSelectDemo />,
+  render: () => <OutlinedMultiDropdownDemo />,
   parameters: {
     docs: {
       description: {
@@ -399,13 +399,18 @@ export const Disabled: Story = {
         fontFamily: 'Public Sans, sans-serif',
       }}
     >
-      <Select
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="underlined"
         placeholder="Select indicator"
         disabled
       />
-      <Select options={FILTER_OPTIONS} variant="outlined" placeholder="Select indicator" disabled />
+      <Dropdown
+        options={FILTER_OPTIONS}
+        variant="outlined"
+        placeholder="Select indicator"
+        disabled
+      />
     </div>
   ),
   parameters: {
@@ -437,8 +442,8 @@ export const WithDefaultValue: Story = {
         fontFamily: 'Public Sans, sans-serif',
       }}
     >
-      <Select options={FILTER_OPTIONS} variant="underlined" defaultValue="income" />
-      <Select
+      <Dropdown options={FILTER_OPTIONS} variant="underlined" defaultValue="income" />
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="outlined"
         defaultValue={['poverty', 'housing', 'food']}
@@ -475,21 +480,21 @@ export const WithLabelAndHelperText: Story = {
         fontFamily: 'Public Sans, sans-serif',
       }}
     >
-      <Select
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="underlined"
         label="Indicator"
         helperText="Choose one social indicator"
         placeholder="Select..."
       />
-      <Select
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="outlined"
         label="Indicator"
         helperText="Choose one social indicator"
         placeholder="Select..."
       />
-      <Select
+      <Dropdown
         options={FILTER_OPTIONS}
         variant="underlined"
         label="Indicator"
