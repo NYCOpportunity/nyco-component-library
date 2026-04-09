@@ -114,7 +114,7 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
     // Central close handler — always calls onClose then returns focus to trigger
     const handleClose = React.useCallback(() => {
       onClose();
-      requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
         (triggerRef as React.RefObject<HTMLElement> | undefined)?.current?.focus();
       });
     }, [onClose, triggerRef]);
