@@ -166,8 +166,7 @@ export function Select({
         <div
           className={cx(
             'flex flex-col rounded-[4px]',
-            '[&:has(:focus-visible)]:ring-[3px] [&:has(:focus-visible)]:ring-[var(--color-border-focus)]',
-            isOpen && 'ring-[3px] ring-[var(--color-border-focus)]'
+            '[&:has(:focus-visible)]:ring-[3px] [&:has(:focus-visible)]:ring-[var(--color-border-focus)]'
           )}
         >
           {label && (
@@ -245,7 +244,6 @@ export function Select({
               'bg-[var(--color-neutral-white)] border px-[10px] py-[8px] transition-colors',
               'border-[var(--color-neutral-300)] text-[var(--color-neutral-black)]',
               '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)] [@media(hover:hover)]:hover:border-[var(--color-neutral-100)]',
-              isOpen && 'ring-[3px] ring-[var(--color-border-focus)]',
               'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]'
             )}
           >
