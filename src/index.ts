@@ -32,3 +32,6 @@ export type { DropdownProps, DropdownOption } from './types/components';
 
 export { GlobalNavigation } from './components/GlobalNavigation';
 export type { GlobalNavigationProps } from './types/components';
+
+export { NavItem } from './components/NavItem';
+export type { NavItemProps } from './types/components';

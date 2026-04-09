@@ -288,6 +288,36 @@ export interface ListItemProps {
   };
 }
 
+// *** NavItem Types ***
+export interface NavItemProps {
+  /** Text label displayed in the nav item. */
+  label: string;
+  /**
+   * URL the item navigates to.
+   * Renders as an `<a>` element when provided, `<button>` otherwise.
+   */
+  href?: string;
+  /**
+   * Marks this item as the current/active page.
+   * Renders a 5 px solid bottom border in `--color-primary-base`.
+   * Also sets `aria-current="page"` on anchors.
+   */
+  active?: boolean;
+  /**
+   * Adds an `expand_more` chevron icon on the right.
+   * Use for nav items that open a dropdown / mega-menu.
+   */
+  hasDropdown?: boolean;
+  /**
+   * Renders the item in link color (`--color-text-link`) with a `north_east` arrow icon.
+   * Use for external links that open outside the current site.
+   */
+  external?: boolean;
+  /** Called on click. Receives the native mouse event. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  className?: string;
+}
+
 // *** GlobalNavigation Types ***
 export interface GlobalNavigationProps {
   /**
