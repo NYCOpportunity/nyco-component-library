@@ -38,3 +38,6 @@ export type { NavItemProps } from './types/components';
 
 export { SiteNavigation } from './components/SiteNavigation';
 export type { SiteNavigationProps, SiteNavItem } from './types/components';
+
+export { NavDrawer } from './components/NavDrawer';
+export type { NavDrawerProps } from './types/components';

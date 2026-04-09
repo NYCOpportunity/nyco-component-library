@@ -288,6 +288,32 @@ export interface ListItemProps {
   };
 }
 
+// *** NavDrawer Types ***
+export interface NavDrawerProps {
+  /** Whether the drawer is visible. */
+  isOpen: boolean;
+  /** Called when the drawer requests to close (close button, backdrop click, or Escape). */
+  onClose: () => void;
+  /** Navigation items rendered as large display links. */
+  navItems?: SiteNavItem[];
+  /** Optional logo rendered at the bottom of the drawer. */
+  logo?: React.ReactNode;
+  /**
+   * `id` applied to the drawer element.
+   * Use this as the `aria-controls` value on the trigger button.
+   * Defaults to `"nav-drawer"`.
+   */
+  id?: string;
+  /**
+   * When provided, focus is returned to this element after the drawer closes.
+   * Typically a ref to the hamburger / trigger button.
+   */
+  triggerRef?: React.RefObject<HTMLElement>;
+  /** Accessible label for the drawer `role="dialog"`. Defaults to `"Navigation menu"`. */
+  label?: string;
+  className?: string;
+}
+
 // *** SiteNavigation Types ***
 
 /** A single item in the `SiteNavigation` nav link list. */
