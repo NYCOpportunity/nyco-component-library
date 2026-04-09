@@ -288,6 +288,68 @@ export interface ListItemProps {
   };
 }
 
+// *** SiteNavigation Types ***
+
+/** A single item in the `SiteNavigation` nav link list. */
+export interface SiteNavItem {
+  /** Text displayed for the link. */
+  label: string;
+  /**
+   * URL the item navigates to.
+   * Renders as an `<a>` element when provided, `<button>` otherwise.
+   */
+  href?: string;
+  /**
+   * Marks this item as the current/active page.
+   * Desktop: renders a 5 px primary-base bottom border.
+   * Sets `aria-current="page"` on anchors.
+   */
+  active?: boolean;
+  /**
+   * Renders the item in link color (`--color-text-link`) with a north-east arrow.
+   * Desktop: uses the `NavItem` external variant.
+   * Mobile drawer: large display text + 40 px arrow icon.
+   */
+  external?: boolean;
+  /**
+   * Adds a chevron icon on the right (desktop NavItem only).
+   * Use for items that trigger a dropdown / mega-menu.
+   */
+  hasDropdown?: boolean;
+  /** Called on click. Receives the native mouse event. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  className?: string;
+}
+
+export interface SiteNavigationProps {
+  /**
+   * Logo rendered on the left side of the bar and at the bottom of the mobile drawer.
+   * Accepts any React node — typically a logo mark + wordmark.
+   */
+  logo: React.ReactNode;
+  /** Navigation items. Desktop: `NavItem` links. Mobile drawer: large display-style links. */
+  navItems?: SiteNavItem[];
+  /**
+   * When `true`, shows a search icon button in the mobile bar to the left of the hamburger.
+   * Defaults to `false`.
+   */
+  showSearch?: boolean;
+  /** Called when the mobile search icon button is clicked. */
+  onSearchClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Accessible label for the mobile hamburger button.
+   * Defaults to `'Open navigation menu'`.
+   */
+  mobileMenuLabel?: string;
+  /**
+   * Seeds the internal open/closed state of the mobile drawer.
+   * Useful for Storybook stories and SSR scenarios.
+   * Defaults to `false`.
+   */
+  defaultOpen?: boolean;
+  className?: string;
+}
+
 // *** NavItem Types ***
 export interface NavItemProps {
   /** Text label displayed in the nav item. */

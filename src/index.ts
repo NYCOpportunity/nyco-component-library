@@ -35,3 +35,6 @@ export type { GlobalNavigationProps } from './types/components';
 
 export { NavItem } from './components/NavItem';
 export type { NavItemProps } from './types/components';
+
+export { SiteNavigation } from './components/SiteNavigation';
+export type { SiteNavigationProps, SiteNavItem } from './types/components';
