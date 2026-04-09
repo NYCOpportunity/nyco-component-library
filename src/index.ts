@@ -41,3 +41,6 @@ export type { SiteNavigationProps, SiteNavItem } from './types/components';
 
 export { NavDrawer } from './components/NavDrawer';
 export type { NavDrawerProps } from './types/components';
+
+export { Footer } from './components/Footer';
+export type { FooterProps, FooterLinkGroup, FooterLink } from './types/components';

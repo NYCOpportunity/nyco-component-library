@@ -288,6 +288,63 @@ export interface ListItemProps {
   };
 }
 
+// *** Footer Types ***
+
+/** A single link inside a footer link column. */
+export interface FooterLink {
+  /** Visible label text. */
+  label: string;
+  /** When provided, renders as an `<a>` element. */
+  href?: string;
+  /** Renders the label in semibold. Used for column headings like "311", "Website feedback". */
+  bold?: boolean;
+  /** Opens in a new tab and adds `rel="noopener noreferrer"`. */
+  external?: boolean;
+  /** Click handler. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+}
+
+/** A vertical column of footer links. */
+export interface FooterLinkGroup {
+  links: FooterLink[];
+}
+
+export interface FooterProps {
+  /**
+   * Logo rendered in the top-left of the footer.
+   * Accepts any React node — typically a logo mark + wordmark.
+   */
+  logo?: React.ReactNode;
+  /**
+   * Site navigation link groups for the top white section.
+   * Each group becomes one column. Desktop: up to 3 columns. Mobile: stacked.
+   */
+  siteNavGroups?: FooterLinkGroup[];
+  /**
+   * Heading for the CTA / newsletter sign-up block.
+   * Example: "Receive updates about the Workforce Data Portal".
+   */
+  connectTitle?: string;
+  /**
+   * Label for the CTA button. Defaults to `"Sign up"`.
+   */
+  connectButtonLabel?: string;
+  /** Called when the CTA button is clicked. Providing this prop renders the button. */
+  onConnectClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Heading for the nyc.gov links section. Defaults to `"More on nyc.gov"`.
+   */
+  nycSectionTitle?: string;
+  /**
+   * NYC.gov link groups for the bottom neutral-100 section.
+   * Desktop: up to 3 columns. Mobile: stacked.
+   */
+  nycLinkGroups?: FooterLinkGroup[];
+  /** Copyright line rendered at the very bottom. */
+  copyright?: string;
+  className?: string;
+}
+
 // *** NavDrawer Types ***
 export interface NavDrawerProps {
   /** Whether the drawer is visible. */
