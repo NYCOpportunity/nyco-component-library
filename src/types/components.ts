@@ -312,3 +312,71 @@ export interface PaginationProps {
   onPageSizeChange?: (size: number) => void;
   className?: string;
 }
+
+// *** Dropdown Types ***
+
+/** A single option in a `Dropdown`. */
+export interface DropdownOption {
+  /** Unique value identifier — used in `value` and `onChange`. */
+  value: string;
+  /** Display label shown in the trigger and dropdown. */
+  label: string;
+  /** Prevents this option from being selected. */
+  disabled?: boolean;
+}
+
+export interface DropdownProps {
+  /** Options displayed in the dropdown. */
+  options: DropdownOption[];
+  /**
+   * Controlled selected value(s).
+   * - Single-select (`multiple: false`): pass a `string`
+   * - Multi-select (`multiple: true`): pass `string[]`
+   */
+  value?: string | string[];
+  /** Initial value when uncontrolled. */
+  defaultValue?: string | string[];
+  /**
+   * Called when the selection changes.
+   * - Single-select: receives a `string`
+   * - Multi-select: receives `string[]`
+   */
+  onChange?: (value: string | string[]) => void;
+  /**
+   * When `true`, multiple options can be selected simultaneously; checkboxes are shown.
+   * Defaults to `false`.
+   */
+  multiple?: boolean;
+  /** Text shown in the trigger when no option is selected. Defaults to `'Select...'`. */
+  placeholder?: string; // default text only, component is named Dropdown
+  /**
+   * Trigger visual style:
+   * - `'underlined'` (default) — inline text field with a bottom border divider
+   * - `'outlined'` — bordered pill/box button
+   */
+  variant?: 'underlined' | 'outlined';
+  /**
+   * Optional form label shown above the trigger (14px, neutral-700).
+   * When provided the trigger is automatically associated via `aria-labelledby`.
+   */
+  label?: string;
+  /**
+   * Optional helper text shown below the trigger (14px, neutral-700).
+   * Rendered after the bottom divider on `underlined` variant, below the button on `outlined`.
+   */
+  helperText?: string;
+  /** When `true`, the trigger is non-interactive and visually dimmed (`opacity: 20%`). */
+  disabled?: boolean;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Initial open state when uncontrolled. Defaults to `false`. */
+  defaultOpen?: boolean;
+  /** Called when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
+  /** `aria-label` on the trigger button. */
+  'aria-label'?: string;
+  /** `aria-labelledby` on the trigger button. */
+  'aria-labelledby'?: string;
+  /** Tailwind classes applied to the root wrapper `<div>`. */
+  className?: string;
+}
