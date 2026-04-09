@@ -180,7 +180,15 @@ export const MobileWithSearch: Story = {
 export const DrawerOpen: Story = {
   args: { defaultOpen: true },
   parameters: {
-    viewport: { defaultViewport: 'mobile2' },
+    viewport: {
+      viewports: {
+        drawerCanvas: {
+          name: 'Drawer canvas',
+          styles: { width: '600px', height: '900px' },
+        },
+      },
+      defaultViewport: 'drawerCanvas',
+    },
     docs: {
       description: {
         story:
@@ -197,6 +205,14 @@ export const DrawerOpen: Story = {
 export const DrawerOpenWithSearch: Story = {
   args: { defaultOpen: true, showSearch: true },
   parameters: {
-    viewport: { defaultViewport: 'mobile2' },
+    viewport: {
+      viewports: {
+        drawerCanvas: {
+          name: 'Drawer canvas',
+          styles: { width: '600px', height: '900px' },
+        },
+      },
+      defaultViewport: 'drawerCanvas',
+    },
   },
 };
