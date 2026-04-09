@@ -288,6 +288,23 @@ export interface ListItemProps {
   };
 }
 
+// *** GlobalNavigation Types ***
+export interface GlobalNavigationProps {
+  /**
+   * When `true`, renders the language/translate toggle on the right (desktop) or
+   * in a separate row above the site text (mobile). Defaults to `true`.
+   */
+  showTranslate?: boolean;
+  /**
+   * Language label shown inside the translate toggle next to the icon.
+   * Defaults to `'English'`.
+   */
+  language?: string;
+  /** Called when the language toggle button is clicked. */
+  onLanguageClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+}
+
 // *** Pagination Types ***
 export interface PaginationProps {
   /** Current page number (1-indexed). */
