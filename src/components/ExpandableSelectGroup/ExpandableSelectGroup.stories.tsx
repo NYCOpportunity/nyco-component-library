@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { ExpandableSelectGroup } from './ExpandableSelectGroup';
+import { ChipGroup } from '../ChipGroup/ChipGroup';
 import type { ExpandableSelectGroupFilter } from '../../types/components';
 
 // ---------------------------------------------------------------------------
@@ -249,4 +250,95 @@ function InteractiveDemo() {
 export const Playground: Story = {
   parameters: { layout: 'padded' },
   render: () => <InteractiveDemo />,
+};
+
+// ---------------------------------------------------------------------------
+// WithDismissibleChips story
+// ---------------------------------------------------------------------------
+function WithDismissibleChipsDemo() {
+  const [selection, setSelection] = React.useState<Record<string, string[]>>({});
+
+  // Flatten selected values into a list of { filterId, value, label } objects
+  const selectedChips = Object.entries(selection).flatMap(([filterId, vals]) =>
+    vals.map((v) => ({
+      key: `${filterId}:${v}`,
+      filterId,
+      value: v,
+      filterLabel: demographicFilters.find((f) => f.id === filterId)?.label ?? filterId,
+      optionLabel: demographicOptions.find((o) => o.value === v)?.label ?? v,
+    }))
+  );
+
+  const dismiss = (filterId: string, value: string) => {
+    setSelection((prev) => {
+      const next = { ...prev, [filterId]: (prev[filterId] ?? []).filter((v) => v !== value) };
+      return next;
+    });
+  };
+
+  return (
+    <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+      {/* Filter panel */}
+      <div style={{ width: '345px', flexShrink: 0 }}>
+        <ExpandableSelectGroup
+          title="Segment by demographics (optional)"
+          subtitle="Select up to two categories"
+          filters={demographicFilters}
+          value={selection}
+          onChange={setSelection}
+        />
+      </div>
+
+      {/* Chip output */}
+      <div style={{ flex: '1', minWidth: '260px' }}>
+        <p
+          style={{
+            fontFamily: "'Public Sans', sans-serif",
+            fontWeight: 600,
+            fontSize: '14px',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--color-neutral-700, #777)',
+            margin: '0 0 12px',
+          }}
+        >
+          Active filters
+        </p>
+
+        {selectedChips.length === 0 ? (
+          <p
+            style={{
+              fontFamily: "'Public Sans', sans-serif",
+              fontSize: '14px',
+              color: 'var(--color-neutral-500, #aaa)',
+              margin: 0,
+            }}
+          >
+            No filters selected — open a category and pick some options.
+          </p>
+        ) : (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {selectedChips.map(({ key, filterId, value, filterLabel, optionLabel }) => (
+              <ChipGroup
+                key={key}
+                mode="dismissible"
+                options={[{ value, label: `${filterLabel}: ${optionLabel}` }]}
+                value={[value]}
+                onChange={() => dismiss(filterId, value)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Filter panel paired with dismissible chips — selecting an option creates a chip;
+ * clicking × on the chip removes it from the selection.
+ */
+export const WithDismissibleChips: Story = {
+  parameters: { layout: 'padded' },
+  render: () => <WithDismissibleChipsDemo />,
 };
