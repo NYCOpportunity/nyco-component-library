@@ -30,17 +30,8 @@ export type { ListItemProps, ListItemType } from './types/components';
 export { Dropdown } from './components/Dropdown';
 export type { DropdownProps, DropdownOption } from './types/components';
 
-export { GlobalNavigation } from './components/GlobalNavigation';
-export type { GlobalNavigationProps } from './types/components';
+export { ExpandableSelect } from './components/ExpandableSelect';
+export type { ExpandableSelectProps, ExpandableSelectOption } from './types/components';
 
-export { NavItem } from './components/NavItem';
-export type { NavItemProps } from './types/components';
-
-export { SiteNavigation } from './components/SiteNavigation';
-export type { SiteNavigationProps, SiteNavItem } from './types/components';
-
-export { NavDrawer } from './components/NavDrawer';
-export type { NavDrawerProps } from './types/components';
-
-export { Footer } from './components/Footer';
-export type { FooterProps, FooterLinkGroup, FooterLink } from './types/components';
+export { ExpandableSelectGroup } from './components/ExpandableSelectGroup';
+export type { ExpandableSelectGroupProps, ExpandableSelectGroupFilter } from './types/components';

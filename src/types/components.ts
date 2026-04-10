@@ -572,3 +572,91 @@ export interface DropdownProps {
   /** Tailwind classes applied to the root wrapper `<div>`. */
   className?: string;
 }
+
+// *** ExpandableSelect Types ***
+
+/** A single option in an `ExpandableSelect`. */
+export interface ExpandableSelectOption {
+  /** Unique value identifier. */
+  value: string;
+  /** Display label shown in the checkbox row. */
+  label: string;
+  /** Prevents this option from being toggled. */
+  disabled?: boolean;
+}
+
+export interface ExpandableSelectProps {
+  /** Options displayed when the panel is open. */
+  options: ExpandableSelectOption[];
+  /** Controlled selected values. */
+  value?: string[];
+  /** Initial selected values when uncontrolled. Defaults to `[]`. */
+  defaultValue?: string[];
+  /** Called when the selection changes. */
+  onChange?: (value: string[]) => void;
+  /**
+   * Text shown in the trigger button — typically the category or filter name.
+   * Defaults to `'Select...'`.
+   */
+  label?: string;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Initial open state when uncontrolled. Defaults to `false`. */
+  defaultOpen?: boolean;
+  /** Called when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
+  /** When `true`, the trigger is non-interactive and visually dimmed. */
+  disabled?: boolean;
+  /** `id` on the root wrapper `<div>`. */
+  id?: string;
+  /** `aria-label` on the trigger button. */
+  'aria-label'?: string;
+  /** `aria-labelledby` on the trigger button. */
+  'aria-labelledby'?: string;
+  /** Tailwind classes applied to the root wrapper `<div>`. */
+  className?: string;
+}
+
+// *** ExpandableSelectGroup Types ***
+
+/** A single filter row inside an `ExpandableSelectGroup`. */
+export interface ExpandableSelectGroupFilter {
+  /** Unique identifier — used as the key in the `value` map. */
+  id: string;
+  /** Label shown in the trigger button for this row. */
+  label: string;
+  /** Checkbox options displayed when the row is open. */
+  options: ExpandableSelectOption[];
+  /** Prevents this row's trigger from being interacted with. */
+  disabled?: boolean;
+}
+
+export interface ExpandableSelectGroupProps {
+  /** Filter rows to render inside the panel. */
+  filters: ExpandableSelectGroupFilter[];
+  /** Optional card heading (semibold 18 px). */
+  title?: string;
+  /** Optional subtitle rendered below the heading (regular 16 px, neutral-700). */
+  subtitle?: string;
+  /**
+   * Controlled selection state — a map of filter `id` → `string[]` of selected values.
+   * Partial maps are allowed; missing keys fall back to uncontrolled state.
+   */
+  value?: Record<string, string[]>;
+  /** Initial selection state when uncontrolled. Defaults to `{}`. */
+  defaultValue?: Record<string, string[]>;
+  /** Called whenever any filter's selection changes. Receives the full updated map. */
+  onChange?: (value: Record<string, string[]>) => void;
+  /**
+   * The `id` of the filter that starts open (uncontrolled).
+   * Only meaningful when `accordion` is `true` (the default).
+   */
+  defaultOpenId?: string;
+  /**
+   * When `true` (default), opening one filter automatically closes all others.
+   * Set to `false` to allow multiple filters to be open simultaneously.
+   */
+  accordion?: boolean;
+  /** Tailwind classes applied to the root card `<div>`. */
+  className?: string;
+}
