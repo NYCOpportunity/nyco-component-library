@@ -29,3 +29,6 @@ export type { ListItemProps, ListItemType } from './types/components';
 
 export { Dropdown } from './components/Dropdown';
 export type { DropdownProps, DropdownOption } from './types/components';
+
+export { ExpandableSelect } from './components/ExpandableSelect';
+export type { ExpandableSelectProps, ExpandableSelectOption } from './types/components';

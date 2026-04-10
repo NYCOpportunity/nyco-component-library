@@ -380,3 +380,47 @@ export interface DropdownProps {
   /** Tailwind classes applied to the root wrapper `<div>`. */
   className?: string;
 }
+
+// *** ExpandableSelect Types ***
+
+/** A single option in an `ExpandableSelect`. */
+export interface ExpandableSelectOption {
+  /** Unique value identifier. */
+  value: string;
+  /** Display label shown in the checkbox row. */
+  label: string;
+  /** Prevents this option from being toggled. */
+  disabled?: boolean;
+}
+
+export interface ExpandableSelectProps {
+  /** Options displayed when the panel is open. */
+  options: ExpandableSelectOption[];
+  /** Controlled selected values. */
+  value?: string[];
+  /** Initial selected values when uncontrolled. Defaults to `[]`. */
+  defaultValue?: string[];
+  /** Called when the selection changes. */
+  onChange?: (value: string[]) => void;
+  /**
+   * Text shown in the trigger button — typically the category or filter name.
+   * Defaults to `'Select...'`.
+   */
+  label?: string;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Initial open state when uncontrolled. Defaults to `false`. */
+  defaultOpen?: boolean;
+  /** Called when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
+  /** When `true`, the trigger is non-interactive and visually dimmed. */
+  disabled?: boolean;
+  /** `id` on the root wrapper `<div>`. */
+  id?: string;
+  /** `aria-label` on the trigger button. */
+  'aria-label'?: string;
+  /** `aria-labelledby` on the trigger button. */
+  'aria-labelledby'?: string;
+  /** Tailwind classes applied to the root wrapper `<div>`. */
+  className?: string;
+}
