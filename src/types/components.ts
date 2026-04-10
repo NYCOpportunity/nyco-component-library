@@ -288,6 +288,198 @@ export interface ListItemProps {
   };
 }
 
+// *** Footer Types ***
+
+/** A single link inside a footer link column. */
+export interface FooterLink {
+  /** Visible label text. */
+  label: string;
+  /** When provided, renders as an `<a>` element. */
+  href?: string;
+  /** Renders the label in semibold. Used for column headings like "311", "Website feedback". */
+  bold?: boolean;
+  /** Opens in a new tab and adds `rel="noopener noreferrer"`. */
+  external?: boolean;
+  /** Click handler. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+}
+
+/** A vertical column of footer links. */
+export interface FooterLinkGroup {
+  links: FooterLink[];
+}
+
+export interface FooterProps {
+  /**
+   * Logo rendered in the top-left of the footer.
+   * Accepts any React node — typically a logo mark + wordmark.
+   */
+  logo?: React.ReactNode;
+  /**
+   * Site navigation link groups for the top white section.
+   * Each group becomes one column. Desktop: up to 3 columns. Mobile: stacked.
+   */
+  siteNavGroups?: FooterLinkGroup[];
+  /**
+   * Heading for the CTA / newsletter sign-up block.
+   * Example: "Receive updates about the Workforce Data Portal".
+   */
+  connectTitle?: string;
+  /**
+   * Label for the CTA button. Defaults to `"Sign up"`.
+   */
+  connectButtonLabel?: string;
+  /** Called when the CTA button is clicked. Providing this prop renders the button. */
+  onConnectClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Heading for the nyc.gov links section. Defaults to `"More on nyc.gov"`.
+   */
+  nycSectionTitle?: string;
+  /**
+   * NYC.gov link groups for the bottom neutral-100 section.
+   * Desktop: up to 3 columns. Mobile: stacked.
+   */
+  nycLinkGroups?: FooterLinkGroup[];
+  /** Copyright line rendered at the very bottom. */
+  copyright?: string;
+  className?: string;
+}
+
+// *** NavDrawer Types ***
+export interface NavDrawerProps {
+  /** Whether the drawer is visible. */
+  isOpen: boolean;
+  /** Called when the drawer requests to close (close button, backdrop click, or Escape). */
+  onClose: () => void;
+  /** Navigation items rendered as large display links. */
+  navItems?: SiteNavItem[];
+  /** Optional logo rendered at the bottom of the drawer. */
+  logo?: React.ReactNode;
+  /**
+   * `id` applied to the drawer element.
+   * Use this as the `aria-controls` value on the trigger button.
+   * Defaults to `"nav-drawer"`.
+   */
+  id?: string;
+  /**
+   * When provided, focus is returned to this element after the drawer closes.
+   * Typically a ref to the hamburger / trigger button.
+   */
+  triggerRef?: React.RefObject<HTMLElement>;
+  /** Accessible label for the drawer `role="dialog"`. Defaults to `"Navigation menu"`. */
+  label?: string;
+  className?: string;
+}
+
+// *** SiteNavigation Types ***
+
+/** A single item in the `SiteNavigation` nav link list. */
+export interface SiteNavItem {
+  /** Text displayed for the link. */
+  label: string;
+  /**
+   * URL the item navigates to.
+   * Renders as an `<a>` element when provided, `<button>` otherwise.
+   */
+  href?: string;
+  /**
+   * Marks this item as the current/active page.
+   * Desktop: renders a 5 px primary-base bottom border.
+   * Sets `aria-current="page"` on anchors.
+   */
+  active?: boolean;
+  /**
+   * Renders the item in link color (`--color-text-link`) with a north-east arrow.
+   * Desktop: uses the `NavItem` external variant.
+   * Mobile drawer: large display text + 40 px arrow icon.
+   */
+  external?: boolean;
+  /**
+   * Adds a chevron icon on the right (desktop NavItem only).
+   * Use for items that trigger a dropdown / mega-menu.
+   */
+  hasDropdown?: boolean;
+  /** Called on click. Receives the native mouse event. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  className?: string;
+}
+
+export interface SiteNavigationProps {
+  /**
+   * Logo rendered on the left side of the bar and at the bottom of the mobile drawer.
+   * Accepts any React node — typically a logo mark + wordmark.
+   */
+  logo: React.ReactNode;
+  /** Navigation items. Desktop: `NavItem` links. Mobile drawer: large display-style links. */
+  navItems?: SiteNavItem[];
+  /**
+   * When `true`, shows a search icon button in the mobile bar to the left of the hamburger.
+   * Defaults to `false`.
+   */
+  showSearch?: boolean;
+  /** Called when the mobile search icon button is clicked. */
+  onSearchClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Accessible label for the mobile hamburger button.
+   * Defaults to `'Open navigation menu'`.
+   */
+  mobileMenuLabel?: string;
+  /**
+   * Seeds the internal open/closed state of the mobile drawer.
+   * Useful for Storybook stories and SSR scenarios.
+   * Defaults to `false`.
+   */
+  defaultOpen?: boolean;
+  className?: string;
+}
+
+// *** NavItem Types ***
+export interface NavItemProps {
+  /** Text label displayed in the nav item. */
+  label: string;
+  /**
+   * URL the item navigates to.
+   * Renders as an `<a>` element when provided, `<button>` otherwise.
+   */
+  href?: string;
+  /**
+   * Marks this item as the current/active page.
+   * Renders a 5 px solid bottom border in `--color-primary-base`.
+   * Also sets `aria-current="page"` on anchors.
+   */
+  active?: boolean;
+  /**
+   * Adds an `expand_more` chevron icon on the right.
+   * Use for nav items that open a dropdown / mega-menu.
+   */
+  hasDropdown?: boolean;
+  /**
+   * Renders the item in link color (`--color-text-link`) with a `north_east` arrow icon.
+   * Use for external links that open outside the current site.
+   */
+  external?: boolean;
+  /** Called on click. Receives the native mouse event. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  className?: string;
+}
+
+// *** GlobalNavigation Types ***
+export interface GlobalNavigationProps {
+  /**
+   * When `true`, renders the language/translate toggle on the right (desktop) or
+   * in a separate row above the site text (mobile). Defaults to `true`.
+   */
+  showTranslate?: boolean;
+  /**
+   * Language label shown inside the translate toggle next to the icon.
+   * Defaults to `'English'`.
+   */
+  language?: string;
+  /** Called when the language toggle button is clicked. */
+  onLanguageClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+}
+
 // *** Pagination Types ***
 export interface PaginationProps {
   /** Current page number (1-indexed). */
