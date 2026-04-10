@@ -169,3 +169,133 @@ function StackedFiltersDemo() {
 export const StackedFilters: Story = {
   render: () => <StackedFiltersDemo />,
 };
+
+// ---------------------------------------------------------------------------
+// Filter panel — matches Figma node 6132:31730
+// ---------------------------------------------------------------------------
+const demographicOptions = [
+  { value: 'age', label: 'Age' },
+  { value: 'sex', label: 'Sex' },
+  { value: 'race', label: 'Race / ethnicity' },
+  { value: 'disability', label: 'Disability status' },
+  { value: 'nativity', label: 'Nativity' },
+];
+
+const filterGroups = [
+  { label: 'Age', options: demographicOptions },
+  { label: 'Sex', options: demographicOptions },
+  { label: 'Race / ethnicity', options: demographicOptions },
+  { label: 'Disability status', options: demographicOptions },
+  { label: 'Nativity', options: demographicOptions },
+  { label: 'Borough', options: demographicOptions },
+];
+
+interface FilterPanelProps {
+  /** Index (0-based) of the filter that starts open. Pass -1 for all collapsed. */
+  openIndex?: number;
+}
+
+function FilterPanel({ openIndex = -1 }: FilterPanelProps) {
+  const [openIdx, setOpenIdx] = React.useState<number>(openIndex);
+
+  return (
+    <div
+      style={{
+        backgroundColor: 'white',
+        border: '2px solid var(--color-neutral-300, #ddd)',
+        borderRadius: '8px',
+        paddingTop: '24px',
+        paddingBottom: '24px',
+        width: '345px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '24px',
+      }}
+    >
+      {/* Title + subtitle */}
+      <div
+        style={{
+          paddingLeft: '24px',
+          paddingRight: '24px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "'Public Sans', sans-serif",
+            fontWeight: 600,
+            fontSize: '18px',
+            lineHeight: 1.6,
+            color: 'var(--color-neutral-black, #191919)',
+            margin: 0,
+          }}
+        >
+          Segment by demographics (optional)
+        </p>
+        <p
+          style={{
+            fontFamily: "'Public Sans', sans-serif",
+            fontWeight: 400,
+            fontSize: '16px',
+            lineHeight: 1.6,
+            color: 'var(--color-neutral-700, #777)',
+            margin: 0,
+          }}
+        >
+          Select up to two categories
+        </p>
+      </div>
+
+      {/* Stacked filters */}
+      <div style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+        {filterGroups.map((group, i) => (
+          <ExpandableSelect
+            key={group.label}
+            label={group.label}
+            options={group.options}
+            open={openIdx === i}
+            onOpenChange={(next) => setOpenIdx(next ? i : -1)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Filter panel card — all filters collapsed (left panel in Figma). */
+export const FilterPanelAllCollapsed: Story = {
+  parameters: { layout: 'centered' },
+  render: () => <FilterPanel openIndex={-1} />,
+};
+
+/** Filter panel card — second filter open (right panel in Figma). */
+export const FilterPanelOneOpen: Story = {
+  parameters: { layout: 'centered' },
+  render: () => <FilterPanel openIndex={1} />,
+};
+
+/** Side-by-side — both states shown together, exactly as in Figma. */
+function FilterPanelPairDemo() {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        gap: '32px',
+        alignItems: 'flex-start',
+        padding: '40px',
+        backgroundColor: 'var(--color-neutral-100, #f5f5f5)',
+      }}
+    >
+      <FilterPanel openIndex={-1} />
+      <FilterPanel openIndex={1} />
+    </div>
+  );
+}
+
+/** Both panel states as a pair — mirrors the Figma canvas exactly. */
+export const FilterPanelPair: Story = {
+  parameters: { layout: 'fullscreen' },
+  render: () => <FilterPanelPairDemo />,
+};
