@@ -132,3 +132,121 @@ export const WithDisabledFilter: Story = {
     filters: demographicFilters.map((f) => ({ ...f, disabled: f.id === 'nativity' })),
   },
 };
+
+// ---------------------------------------------------------------------------
+// Interactive playground — shows live selection output
+// ---------------------------------------------------------------------------
+function InteractiveDemo() {
+  const [selection, setSelection] = React.useState<Record<string, string[]>>({});
+
+  const allSelected = Object.entries(selection).filter(([, vals]) => vals.length > 0);
+
+  return (
+    <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+      {/* Panel */}
+      <div style={{ width: '345px', flexShrink: 0 }}>
+        <ExpandableSelectGroup
+          title="Segment by demographics (optional)"
+          subtitle="Select up to two categories"
+          filters={demographicFilters}
+          value={selection}
+          onChange={setSelection}
+          accordion={false}
+        />
+      </div>
+
+      {/* Output */}
+      <div style={{ flex: '1', minWidth: '260px' }}>
+        <p
+          style={{
+            fontFamily: "'Public Sans', sans-serif",
+            fontWeight: 600,
+            fontSize: '14px',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--color-neutral-700, #777)',
+            margin: '0 0 12px',
+          }}
+        >
+          Selected values
+        </p>
+
+        {allSelected.length === 0 ? (
+          <p
+            style={{
+              fontFamily: "'Public Sans', sans-serif",
+              fontSize: '14px',
+              color: 'var(--color-neutral-500, #aaa)',
+              margin: 0,
+            }}
+          >
+            Nothing selected yet — open a filter and pick some options.
+          </p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {allSelected.map(([filterId, vals]) => (
+              <div key={filterId}>
+                <p
+                  style={{
+                    fontFamily: "'Public Sans', sans-serif",
+                    fontWeight: 600,
+                    fontSize: '14px',
+                    color: 'var(--color-neutral-black, #191919)',
+                    margin: '0 0 4px',
+                  }}
+                >
+                  {demographicFilters.find((f) => f.id === filterId)?.label ?? filterId}
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {vals.map((v) => (
+                    <span
+                      key={v}
+                      style={{
+                        fontFamily: "'Public Sans', sans-serif",
+                        fontSize: '13px',
+                        padding: '2px 10px',
+                        borderRadius: '99px',
+                        backgroundColor: 'var(--color-primary-base, #050560)',
+                        color: '#fff',
+                      }}
+                    >
+                      {demographicOptions.find((o) => o.value === v)?.label ?? v}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Raw output for copy-paste */}
+        {allSelected.length > 0 && (
+          <pre
+            style={{
+              marginTop: '20px',
+              padding: '12px 16px',
+              backgroundColor: 'var(--color-neutral-100, #f5f5f5)',
+              borderRadius: '6px',
+              fontFamily: "'SFMono-Regular', Consolas, monospace",
+              fontSize: '12px',
+              color: 'var(--color-neutral-black, #191919)',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
+            }}
+          >
+            {JSON.stringify(selection, null, 2)}
+          </pre>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Interactive playground — pick values across filters and see the JSON output live.
+ * Useful for understanding the `value` / `onChange` API shape.
+ */
+export const Playground: Story = {
+  parameters: { layout: 'padded' },
+  render: () => <InteractiveDemo />,
+};
