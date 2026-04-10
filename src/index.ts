@@ -32,3 +32,6 @@ export type { DropdownProps, DropdownOption } from './types/components';
 
 export { ExpandableSelect } from './components/ExpandableSelect';
 export type { ExpandableSelectProps, ExpandableSelectOption } from './types/components';
+
+export { ExpandableSelectGroup } from './components/ExpandableSelectGroup';
+export type { ExpandableSelectGroupProps, ExpandableSelectGroupFilter } from './types/components';

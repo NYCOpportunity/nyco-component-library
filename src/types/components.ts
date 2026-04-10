@@ -424,3 +424,47 @@ export interface ExpandableSelectProps {
   /** Tailwind classes applied to the root wrapper `<div>`. */
   className?: string;
 }
+
+// *** ExpandableSelectGroup Types ***
+
+/** A single filter row inside an `ExpandableSelectGroup`. */
+export interface ExpandableSelectGroupFilter {
+  /** Unique identifier — used as the key in the `value` map. */
+  id: string;
+  /** Label shown in the trigger button for this row. */
+  label: string;
+  /** Checkbox options displayed when the row is open. */
+  options: ExpandableSelectOption[];
+  /** Prevents this row's trigger from being interacted with. */
+  disabled?: boolean;
+}
+
+export interface ExpandableSelectGroupProps {
+  /** Filter rows to render inside the panel. */
+  filters: ExpandableSelectGroupFilter[];
+  /** Optional card heading (semibold 18 px). */
+  title?: string;
+  /** Optional subtitle rendered below the heading (regular 16 px, neutral-700). */
+  subtitle?: string;
+  /**
+   * Controlled selection state — a map of filter `id` → `string[]` of selected values.
+   * Partial maps are allowed; missing keys fall back to uncontrolled state.
+   */
+  value?: Record<string, string[]>;
+  /** Initial selection state when uncontrolled. Defaults to `{}`. */
+  defaultValue?: Record<string, string[]>;
+  /** Called whenever any filter's selection changes. Receives the full updated map. */
+  onChange?: (value: Record<string, string[]>) => void;
+  /**
+   * The `id` of the filter that starts open (uncontrolled).
+   * Only meaningful when `accordion` is `true` (the default).
+   */
+  defaultOpenId?: string;
+  /**
+   * When `true` (default), opening one filter automatically closes all others.
+   * Set to `false` to allow multiple filters to be open simultaneously.
+   */
+  accordion?: boolean;
+  /** Tailwind classes applied to the root card `<div>`. */
+  className?: string;
+}
