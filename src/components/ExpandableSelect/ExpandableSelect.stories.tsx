@@ -211,35 +211,3 @@ export const FilterPanelOneOpen: Story = {
     </div>
   ),
 };
-
-/** Both panel states side-by-side — mirrors the Figma canvas exactly. */
-export const FilterPanelPair: Story = {
-  parameters: { layout: 'fullscreen' },
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-        gap: '32px',
-        alignItems: 'flex-start',
-        padding: '40px',
-        backgroundColor: 'var(--color-neutral-100, #f5f5f5)',
-      }}
-    >
-      <div style={{ width: '345px' }}>
-        <ExpandableSelectGroup
-          title="Segment by demographics (optional)"
-          subtitle="Select up to two categories"
-          filters={demographicFilters}
-        />
-      </div>
-      <div style={{ width: '345px' }}>
-        <ExpandableSelectGroup
-          title="Segment by demographics (optional)"
-          subtitle="Select up to two categories"
-          filters={demographicFilters}
-          defaultOpenId="sex"
-        />
-      </div>
-    </div>
-  ),
-};
