@@ -131,7 +131,12 @@ export const ExpandableSelect = React.forwardRef<HTMLDivElement, ExpandableSelec
             </div>
 
             {/* Checkbox option list */}
-            <div id={panelId} role="group" aria-label={ariaLabel ?? label}>
+            <div
+              id={panelId}
+              role="group"
+              aria-label={ariaLabel ?? label}
+              className="overflow-hidden rounded-[8px]"
+            >
               {options.map((option) => (
                 <ListItem
                   key={option.value}
