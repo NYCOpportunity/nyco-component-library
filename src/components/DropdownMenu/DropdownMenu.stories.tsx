@@ -200,6 +200,60 @@ const meta: Meta<typeof DropdownMenu> = {
   },
 };
 
+// ---------------------------------------------------------------------------
+// Dev helpers
+// ---------------------------------------------------------------------------
+
+/** Renders the current value in a small code block — useful for engineers. */
+function ValueOutput({
+  value,
+  multiple,
+}: {
+  value: string | string[] | undefined;
+  multiple?: boolean;
+}) {
+  const isEmpty = value === undefined || (Array.isArray(value) && value.length === 0);
+  const display = isEmpty ? (multiple ? '[]' : 'undefined') : JSON.stringify(value);
+  return (
+    <pre
+      style={{ marginTop: 10 }}
+      className="px-[12px] py-[8px] rounded-[6px] bg-[var(--color-neutral-100)] text-[12px] font-mono leading-[1.5] overflow-x-auto"
+    >
+      <span className="text-[var(--color-neutral-500)]">onChange value: </span>
+      <span className="text-[var(--color-neutral-black)]">{display}</span>
+    </pre>
+  );
+}
+
+/**
+ * Controlled wrapper that tracks selection state and renders a ValueOutput below.
+ * Used in most stories so engineers can see the current value at a glance.
+ */
+function Demo({
+  multiple,
+  defaultValue,
+  onChange: onChangeProp,
+  ...rest
+}: React.ComponentProps<typeof DropdownMenu>) {
+  const [value, setValue] = React.useState<string | string[] | undefined>(
+    defaultValue !== undefined ? defaultValue : multiple ? [] : undefined
+  );
+  return (
+    <div>
+      <DropdownMenu
+        {...rest}
+        multiple={multiple}
+        value={value}
+        onChange={(v) => {
+          setValue(v);
+          onChangeProp?.(v);
+        }}
+      />
+      <ValueOutput value={value} multiple={multiple} />
+    </div>
+  );
+}
+
 export default meta;
 type Story = StoryObj<typeof DropdownMenu>;
 
@@ -215,7 +269,7 @@ export const Playground: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -228,7 +282,7 @@ export const ContainedNoBorder: Story = {
   args: { type: 'contained', border: false },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -238,7 +292,7 @@ export const ContainedWithBorder: Story = {
   args: { type: 'contained', border: true },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -248,7 +302,7 @@ export const Uncontained: Story = {
   args: { type: 'uncontained' },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -265,7 +319,7 @@ export const WithLabel: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -279,7 +333,7 @@ export const WithLabelAndBorder: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -294,7 +348,7 @@ export const WithHelperText: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -312,7 +366,7 @@ export const WithCategories: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -329,7 +383,7 @@ export const SingleSelectWithValue: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -344,7 +398,7 @@ export const MultiSelect: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -360,7 +414,7 @@ export const MultiSelectWithCategories: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -378,7 +432,7 @@ export const Disabled: Story = {
   },
   render: (args) => (
     <div style={{ width: 280 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -397,7 +451,7 @@ export const YearFilter: Story = {
   },
   render: (args) => (
     <div style={{ width: 180 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -415,7 +469,7 @@ export const OpenByDefault: Story = {
   },
   render: (args) => (
     <div style={{ width: 280, paddingBottom: 300 }}>
-      <DropdownMenu {...args} />
+      <Demo {...args} />
     </div>
   ),
 };
@@ -429,23 +483,23 @@ export const AllVariants: Story = {
     <div className="flex flex-col gap-6" style={{ width: 320 }}>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">Contained</p>
-        <DropdownMenu options={FILTER_OPTIONS} type="contained" border={false} />
+        <Demo options={FILTER_OPTIONS} type="contained" border={false} />
       </div>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">Contained + border</p>
-        <DropdownMenu options={FILTER_OPTIONS} type="contained" border={true} />
+        <Demo options={FILTER_OPTIONS} type="contained" border={true} />
       </div>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">Uncontained</p>
-        <DropdownMenu options={FILTER_OPTIONS} type="uncontained" />
+        <Demo options={FILTER_OPTIONS} type="uncontained" />
       </div>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">With label</p>
-        <DropdownMenu options={FILTER_OPTIONS} label="Category" type="contained" border={false} />
+        <Demo options={FILTER_OPTIONS} label="Category" type="contained" border={false} />
       </div>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">With label + border</p>
-        <DropdownMenu options={FILTER_OPTIONS} label="Category" type="contained" border={true} />
+        <Demo options={FILTER_OPTIONS} label="Category" type="contained" border={true} />
       </div>
     </div>
   ),
@@ -457,7 +511,7 @@ export const CustomColors: Story = {
     <div className="flex flex-col gap-6" style={{ width: 320 }}>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">Custom blue palette</p>
-        <DropdownMenu
+        <Demo
           options={FILTER_OPTIONS}
           label="Category"
           triggerBgColor="#dbeafe"
@@ -467,7 +521,7 @@ export const CustomColors: Story = {
       </div>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">Custom green palette</p>
-        <DropdownMenu
+        <Demo
           options={FILTER_OPTIONS}
           triggerBgColor="#dcfce7"
           triggerHoverBgColor="#bbf7d0"
@@ -476,7 +530,7 @@ export const CustomColors: Story = {
       </div>
       <div>
         <p className="text-sm text-[var(--color-neutral-700)] mb-2">Custom via CSS variables</p>
-        <DropdownMenu
+        <Demo
           options={FILTER_OPTIONS}
           type="contained"
           border={true}
