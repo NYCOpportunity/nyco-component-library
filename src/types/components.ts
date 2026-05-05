@@ -638,6 +638,59 @@ export interface DropdownMenuProps {
   className?: string;
 }
 
+// *** Card Types ***
+
+/** Layout orientation of the card. */
+export type CardOrientation = 'vertical' | 'horizontal';
+
+export interface CardProps {
+  /** URL of the card image. */
+  image: string;
+  /** Alt text for the card image. Defaults to `""`. */
+  imageAlt?: string;
+  /** Card heading text. Wraps naturally; each wrapped line is underlined on hover. */
+  title: string;
+  /**
+   * Optional body text shown below the title. Clamped to 2 lines.
+   * Hidden when omitted.
+   */
+  description?: string;
+  /** Optional read-time label shown below the description (e.g. `"7 min"`). */
+  readTime?: string;
+  /**
+   * Optional data-date chip label (e.g. `"2023 data"`).
+   * - **Vertical**: rendered as an overlay inside the image that slides into view on hover.
+   * - **Horizontal**: rendered statically at the top of the content area.
+   */
+  dataDate?: string;
+  /**
+   * URL the data chip navigates to when clicked (e.g. a findings page pre-filtered to this
+   * data year). Renders the chip as an `<a>` element. The chip click does **not** propagate
+   * to the card's own click target.
+   *
+   * Prefer `onChipClick` over `chipHref` when the card itself also has an `href`, to avoid
+   * nesting `<a>` elements.
+   */
+  chipHref?: string;
+  /**
+   * Click handler fired when the data chip is clicked. Renders the chip as a `<button>`.
+   * The click does **not** propagate to the card's own click target.
+   */
+  onChipClick?: React.MouseEventHandler<HTMLElement>;
+  /**
+   * Card layout orientation.
+   * - `'vertical'` (default) — stacked image + content, used for desktop/mobile grids.
+   * - `'horizontal'` — image on the left, content on the right.
+   */
+  orientation?: CardOrientation;
+  /** When provided the entire card renders as an `<a>` element. */
+  href?: string;
+  /** Click handler. Combined with `href` it fires alongside navigation. */
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  /** Tailwind classes applied to the root element. */
+  className?: string;
+}
+
 // *** ExpandableSelect Types ***
 
 /** A single option in an `ExpandableSelect`. */
