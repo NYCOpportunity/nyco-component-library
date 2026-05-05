@@ -109,9 +109,8 @@ export function Card({
   const isInteractive = !!(href || onClick);
 
   const rootClasses = cx(
-    'group flex items-start gap-[16px] relative',
+    'group flex items-start gap-[16px] relative cursor-pointer',
     isHorizontal ? 'flex-row' : 'flex-col',
-    isInteractive && 'cursor-pointer',
     className
   );
 
