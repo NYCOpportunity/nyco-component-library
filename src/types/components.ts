@@ -505,7 +505,7 @@ export interface PaginationProps {
   className?: string;
 }
 
-// *** Dropdown Types ***
+// *** Dropdown Types (legacy) ***
 
 /** A single option in a `Dropdown`. */
 export interface DropdownOption {
@@ -520,6 +520,51 @@ export interface DropdownOption {
 export interface DropdownProps {
   /** Options displayed in the dropdown. */
   options: DropdownOption[];
+  value?: string | string[];
+  defaultValue?: string | string[];
+  onChange?: (value: string | string[]) => void;
+  multiple?: boolean;
+  placeholder?: string;
+  variant?: 'underlined' | 'outlined';
+  label?: string;
+  helperText?: string;
+  disabled?: boolean;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
+  className?: string;
+}
+
+// *** DropdownMenu Types ***
+
+/**
+ * Trigger visual style:
+ * - `'contained'` (default) — gray-background pill trigger
+ * - `'uncontained'` — transparent trigger with hover fill
+ */
+export type DropdownMenuTriggerType = 'contained' | 'uncontained';
+
+/** A single option in a `DropdownMenu`. */
+export interface DropdownMenuOption {
+  /** Unique value identifier — used in `value` and `onChange`. */
+  value: string;
+  /** Display label shown in the trigger and menu. */
+  label: string;
+  /**
+   * Optional category name for grouping options under a header in the menu.
+   * Options with the same `category` string are grouped together in the order
+   * they first appear. Options without a `category` are in an unnamed group.
+   */
+  category?: string;
+  /** Prevents this option from being selected. */
+  disabled?: boolean;
+}
+
+export interface DropdownMenuProps {
+  /** Options displayed in the dropdown menu. */
+  options: DropdownMenuOption[];
   /**
    * Controlled selected value(s).
    * - Single-select (`multiple: false`): pass a `string`
@@ -540,24 +585,27 @@ export interface DropdownProps {
    */
   multiple?: boolean;
   /** Text shown in the trigger when no option is selected. Defaults to `'Select...'`. */
-  placeholder?: string; // default text only, component is named Dropdown
+  placeholder?: string;
   /**
    * Trigger visual style:
-   * - `'underlined'` (default) — inline text field with a bottom border divider
-   * - `'outlined'` — bordered pill/box button
+   * - `'contained'` (default) — gray-background `var(--color-neutral-100)` pill
+   * - `'uncontained'` — transparent background with hover fill
    */
-  variant?: 'underlined' | 'outlined';
+  type?: DropdownMenuTriggerType;
+  /**
+   * When `true` and `type="contained"`, renders a visible `var(--color-neutral-300)` border
+   * around the trigger instead of the borderless default.
+   * Defaults to `false`.
+   */
+  border?: boolean;
   /**
    * Optional form label shown above the trigger (14px, neutral-700).
    * When provided the trigger is automatically associated via `aria-labelledby`.
    */
   label?: string;
-  /**
-   * Optional helper text shown below the trigger (14px, neutral-700).
-   * Rendered after the bottom divider on `underlined` variant, below the button on `outlined`.
-   */
+  /** Optional helper text shown below the trigger (14px, neutral-700). */
   helperText?: string;
-  /** When `true`, the trigger is non-interactive and visually dimmed (`opacity: 20%`). */
+  /** When `true`, the trigger is non-interactive and visually dimmed. */
   disabled?: boolean;
   /** Controlled open state. */
   open?: boolean;
@@ -569,6 +617,23 @@ export interface DropdownProps {
   'aria-label'?: string;
   /** `aria-labelledby` on the trigger button. */
   'aria-labelledby'?: string;
+  /**
+   * Background color of the trigger in its normal (idle) state.
+   * Accepts any valid CSS color value, e.g. `'var(--color-neutral-100)'`, `'#f0f0f0'`.
+   * Defaults to `var(--color-neutral-100)` for `contained` (no border),
+   * `var(--color-neutral-white)` for `contained` with border, and `transparent` for `uncontained`.
+   */
+  triggerBgColor?: string;
+  /**
+   * Background color of the trigger when hovered.
+   * Defaults to `var(--color-neutral-100)`.
+   */
+  triggerHoverBgColor?: string;
+  /**
+   * Background color of the trigger when pressed (pointer-down flash).
+   * Defaults to `var(--color-neutral-200)`.
+   */
+  triggerPressBgColor?: string;
   /** Tailwind classes applied to the root wrapper `<div>`. */
   className?: string;
 }
