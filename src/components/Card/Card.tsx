@@ -16,16 +16,25 @@ function DataChip({
   label,
   href,
   onClick,
+  cardFlashing = false,
 }: {
   label: string;
   href?: string;
   onClick?: React.MouseEventHandler<HTMLElement>;
+  /** When true the parent card is in its press-flash state — chip matches the card bg. */
+  cardFlashing?: boolean;
 }) {
   const isInteractive = !!(href || onClick);
   const { flashing, handlePointerDown } = useFlash(!isInteractive);
   const [isHovered, setIsHovered] = React.useState(false);
 
-  const bgColor = flashing ? CHIP_PRESS_BG : isHovered ? CHIP_HOVER_BG : CHIP_BG;
+  const bgColor = cardFlashing
+    ? 'var(--color-primary-light)'
+    : flashing
+      ? CHIP_PRESS_BG
+      : isHovered
+        ? CHIP_HOVER_BG
+        : CHIP_BG;
 
   const sharedClasses = cx(
     'flex items-center justify-center px-[24px] py-[6px] rounded-[8px] shrink-0',
@@ -106,13 +115,18 @@ export function Card({
   className,
 }: CardProps) {
   const isHorizontal = orientation === 'horizontal';
-  const isInteractive = !!(href || onClick);
+
+  const { flashing: cardFlashing, handlePointerDown: handleCardPointerDown } = useFlash();
 
   const rootClasses = cx(
-    'group flex items-start gap-[16px] relative cursor-pointer',
+    'group flex items-start relative cursor-pointer rounded-[8px]',
     isHorizontal ? 'flex-row' : 'flex-col',
     className
   );
+
+  const rootStyle: React.CSSProperties = cardFlashing
+    ? { backgroundColor: 'var(--color-primary-light)' }
+    : {};
 
   const imageSection = (
     <div
@@ -130,7 +144,12 @@ export function Card({
       {/* Vertical only: chip hidden below image in default, slides up on hover */}
       {dataDate && !isHorizontal && (
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[-34px] group-hover:bottom-[16px] transition-all duration-200 ease-in-out flex gap-[8px] items-start">
-          <DataChip label={dataDate} href={chipHref} onClick={onChipClick} />
+          <DataChip
+            label={dataDate}
+            href={chipHref}
+            onClick={onChipClick}
+            cardFlashing={cardFlashing}
+          />
         </div>
       )}
     </div>
@@ -139,13 +158,20 @@ export function Card({
   const contentSection = (
     <div
       className={cx(
-        'flex flex-col gap-[16px] items-start',
-        isHorizontal ? 'flex-1 min-w-0 pr-[24px]' : 'w-full shrink-0'
+        'flex flex-col items-start',
+        isHorizontal
+          ? 'flex-1 min-w-0 gap-[16px] px-[16px] pt-[16px] pb-[24px]'
+          : 'w-full shrink-0 justify-between p-4'
       )}
     >
       {/* Horizontal: chip lives in content area, always visible */}
       {dataDate && isHorizontal && (
-        <DataChip label={dataDate} href={chipHref} onClick={onChipClick} />
+        <DataChip
+          label={dataDate}
+          href={chipHref}
+          onClick={onChipClick}
+          cardFlashing={cardFlashing}
+        />
       )}
 
       {/* Title + Description */}
@@ -165,7 +191,7 @@ export function Card({
         </h3>
 
         {description && (
-          <p className="text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-700)] line-clamp-2 w-full pr-[12px] m-0">
+          <p className="text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-700)] line-clamp-2 w-full m-0">
             {description}
           </p>
         )}
@@ -173,7 +199,7 @@ export function Card({
 
       {/* Read time */}
       {readTime && (
-        <span className="text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-700)] whitespace-nowrap">
+        <span className="text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-700)] whitespace-nowrap">
           {readTime}
         </span>
       )}
@@ -185,7 +211,9 @@ export function Card({
       <a
         href={href}
         onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
+        onPointerDown={handleCardPointerDown}
         className={cx(rootClasses, 'no-underline text-inherit')}
+        style={rootStyle}
       >
         {imageSection}
         {contentSection}
@@ -196,8 +224,10 @@ export function Card({
   return (
     <div
       onClick={onClick as React.MouseEventHandler<HTMLDivElement>}
+      onPointerDown={handleCardPointerDown}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
+      style={rootStyle}
       className={rootClasses}
     >
       {imageSection}
