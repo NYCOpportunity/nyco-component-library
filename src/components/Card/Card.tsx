@@ -99,6 +99,10 @@ function DataChip({
  *
  * **Hover interaction (horizontal)**
  * - Only the title underline appears; the chip is statically visible in the content area.
+ *
+ * **Display types**
+ * - `story` (default): mobile full width, desktop fixed or grid-based width.
+ * - `carousel`: responsive width showing 1 full card + 1/5 of next card.
  */
 export function Card({
   image,
@@ -110,12 +114,14 @@ export function Card({
   chipHref,
   onChipClick,
   orientation = 'vertical',
+  type = 'story',
   href,
   onClick,
   className,
   style,
 }: CardProps) {
   const isHorizontal = orientation === 'horizontal';
+  const isCarousel = type === 'carousel';
 
   const { flashing: cardFlashing, handlePointerDown: handleCardPointerDown } = useFlash();
 
@@ -125,8 +131,13 @@ export function Card({
     className
   );
 
+  // Width calculation based on type
+  // Carousel: shows 1 full card + 1/5 of next = width: calc(100vw / 1.2)
+  const carouselWidth = isCarousel ? { width: 'calc(100vw / 1.2)' } : {};
+
   const rootStyle: React.CSSProperties = {
     backgroundColor: cardFlashing ? 'var(--color-primary-light)' : 'var(--color-neutral-white)',
+    ...carouselWidth,
   };
 
   const imageSection = (

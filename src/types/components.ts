@@ -643,6 +643,9 @@ export interface DropdownMenuProps {
 /** Layout orientation of the card. */
 export type CardOrientation = 'vertical' | 'horizontal';
 
+/** Display type for the card. */
+export type CardType = 'story' | 'carousel';
+
 export interface CardProps {
   /** URL of the card image. */
   image: string;
@@ -683,6 +686,12 @@ export interface CardProps {
    * - `'horizontal'` — image on the left, content on the right.
    */
   orientation?: CardOrientation;
+  /**
+   * Card display type.
+   * - `'story'` (default) — mobile full width, desktop fixed or grid-based width.
+   * - `'carousel'` — responsive width showing 1 full card + 1/5 of next card.
+   */
+  type?: CardType;
   /** When provided the entire card renders as an `<a>` element. */
   href?: string;
   /** Click handler. Combined with `href` it fires alongside navigation. */
