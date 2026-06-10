@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Card } from './Card';
 
 // ---------------------------------------------------------------------------
-// Sample image (Figma placeholder — replace with a real asset in production)
+// Sample image placeholder
 // ---------------------------------------------------------------------------
-const SAMPLE_IMAGE = 'https://www.figma.com/api/mcp/asset/7dd3d303-56a5-4233-95d3-3dd2fc60d4f3';
+const SAMPLE_IMAGE = 'https://picsum.photos/seed/nyco/640/340';
 
 // ---------------------------------------------------------------------------
 // Meta
@@ -16,6 +16,10 @@ const meta: Meta<typeof Card> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'padded',
+    backgrounds: {
+      default: 'grey',
+      values: [{ name: 'grey', value: '#eeeeee' }],
+    },
     docs: {
       description: {
         component:
@@ -84,231 +88,302 @@ export default meta;
 type Story = StoryObj<typeof Card>;
 
 // ---------------------------------------------------------------------------
-// Playground
+// 1. Original Card (full featured)
 // ---------------------------------------------------------------------------
-export const Playground: Story = {
-  name: 'Playground',
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// Default state — Desktop (Two-line title + description)
-// ---------------------------------------------------------------------------
-export const DefaultDesktop: Story = {
-  name: 'Default — Desktop',
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// No description
-// ---------------------------------------------------------------------------
-export const NoDescription: Story = {
-  name: 'No description',
-  args: { description: undefined },
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// No data chip
-// ---------------------------------------------------------------------------
-export const NoDataChip: Story = {
-  name: 'No data chip',
-  args: { dataDate: undefined },
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// Minimal (title + read time only)
-// ---------------------------------------------------------------------------
-export const Minimal: Story = {
-  name: 'Minimal (title + read time)',
-  args: { description: undefined, dataDate: undefined },
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// As link
-// ---------------------------------------------------------------------------
-export const AsLink: Story = {
-  name: 'As link (href)',
-  args: { href: '#' },
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// Chip as link to findings page (data year filter)
-// ---------------------------------------------------------------------------
-export const ChipAsLink: Story = {
-  name: 'Chip linked to findings page',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'The data year chip links to the findings page pre-filtered by data year. ' +
-          'The chip click does **not** bubble up to the card — both targets are independent. ' +
-          'Use `chipHref` when the card itself is not a link; use `onChipClick` when the card ' +
-          'also has an `href` (avoids nested `<a>` elements).',
-      },
-    },
-  },
-  args: {
-    chipHref: '/findings?dataYear=2023',
-  },
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-export const ChipWithClickHandler: Story = {
-  name: 'Chip with click handler (card also linked)',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'When the card has its own `href`, pass `onChipClick` instead of `chipHref` to avoid ' +
-          'nesting `<a>` inside `<a>`. The handler receives the click event; navigate ' +
-          'programmatically (e.g. `router.push`) from there.',
-      },
-    },
-  },
-  args: {
-    href: '#article',
-    onChipClick: undefined, // wired via actions in Storybook
-  },
-  render: (args) => (
-    <div style={{ width: 320 }}>
-      <Card
-        {...args}
-        onChipClick={(e) => {
-          e.stopPropagation();
-          // In a real app: router.push('/findings?dataYear=2023')
-          alert('Navigate to: /findings?dataYear=2023');
-        }}
-      />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// Horizontal layout
-// ---------------------------------------------------------------------------
-export const Horizontal: Story = {
-  name: 'Horizontal',
-  args: { orientation: 'horizontal' },
-  render: (args) => (
-    <div style={{ width: 690 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-export const HorizontalNoDescription: Story = {
-  name: 'Horizontal — no description',
-  args: { orientation: 'horizontal', description: undefined },
-  render: (args) => (
-    <div style={{ width: 690 }}>
-      <Card {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// Grid — 4-column desktop (mirrors the Figma overview layout)
-// ---------------------------------------------------------------------------
-export const GridDesktop: Story = {
-  name: 'Grid — 4 column desktop',
+export const OriginalCard: Story = {
+  name: '1. Original Card (title, desc, time)',
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 320px)', gap: 24 }}>
-      {/* Two-line + description */}
+    <div style={{ width: 320 }}>
       <Card
         image={SAMPLE_IMAGE}
+        imageAlt="Brooklyn brownstone buildings"
         title="COVID-19 Wage Loss Analysis across NYC"
         description="description value that has to be at least one line but can be two lines"
         readTime="7 min"
         dataDate="2023 data"
-      />
-      {/* Two-line, no description */}
-      <Card
-        image={SAMPLE_IMAGE}
-        title="COVID-19 Wage Loss Analysis across NYC"
-        readTime="7 min"
-        dataDate="2023 data"
-      />
-      {/* One-line, no description */}
-      <Card
-        image={SAMPLE_IMAGE}
-        title="COVID-19 Wage Loss Analysis"
-        readTime="7 min"
-        dataDate="2023 data"
-      />
-      {/* One-line + description */}
-      <Card
-        image={SAMPLE_IMAGE}
-        title="COVID-19 Wage Loss Analysis"
-        description="description value that has to be at least one line but can be two lines"
-        readTime="7 min"
-        dataDate="2023 data"
+        orientation="vertical"
       />
     </div>
   ),
 };
 
 // ---------------------------------------------------------------------------
-// Grid — horizontal cards
+// 2. Two Cards: Original + Overflow
 // ---------------------------------------------------------------------------
-export const GridHorizontal: Story = {
-  name: 'Grid — horizontal cards',
+export const TwoCardsOverflow: Story = {
+  name: '2. Two Cards (Original + Overflow)',
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      <Card
-        image={SAMPLE_IMAGE}
-        orientation="horizontal"
-        title="COVID-19 Wage Loss Analysis across NYC"
-        description="description value that has to be at least one line but can be two lines"
-        readTime="7 min"
-        dataDate="2023 data"
-      />
-      <Card
-        image={SAMPLE_IMAGE}
-        orientation="horizontal"
-        title="COVID-19 Wage Loss Analysis across NYC"
-        readTime="7 min"
-        dataDate="2023 data"
-      />
-      <Card
-        image={SAMPLE_IMAGE}
-        orientation="horizontal"
-        title="COVID-19 Wage Loss Analysis"
-        description="description value that has to be at least one line but can be two lines"
-        readTime="7 min"
-        dataDate="2023 data"
-      />
+    <div style={{ display: 'flex', gap: '24px' }}>
+      <div style={{ width: 320 }}>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Original</h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis across NYC"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+      <div style={{ width: 320 }}>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Overflow Title & Desc
+        </h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="This is a really long title that should wrap and then truncate at two lines to show ellipsis behavior"
+          description="This is a very long description that spans multiple lines and should be truncated at two lines with an ellipsis to show how the component handles overflow text gracefully"
+          readTime="12 min"
+          dataDate="2024 data"
+          orientation="vertical"
+        />
+      </div>
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// 3. Three Cards: Original + Minimal + Title Only
+// ---------------------------------------------------------------------------
+export const ThreeCardsVariants: Story = {
+  name: '3. Three Cards (Original + Minimal + Title Only)',
+  render: () => (
+    <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+      <div style={{ width: 320 }}>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Original (Full)</h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+      <div style={{ width: 320 }}>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Minimal (Title + Time)
+        </h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          readTime="5 min"
+          orientation="vertical"
+        />
+      </div>
+      <div style={{ width: 320 }}>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Title Only</h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Impact Study"
+          orientation="vertical"
+        />
+      </div>
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// 4. With Chip and Without
+// ---------------------------------------------------------------------------
+export const WithAndWithoutChip: Story = {
+  name: '4. With Chip and Without',
+  render: () => (
+    <div style={{ display: 'flex', gap: '24px' }}>
+      <div style={{ width: 320 }}>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>With Chip</h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+      <div style={{ width: 320 }}>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Without Chip</h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          orientation="vertical"
+        />
+      </div>
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// 5. Horizontal Examples
+// ---------------------------------------------------------------------------
+export const HorizontalExamples: Story = {
+  name: '5. Horizontal Examples',
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Horizontal (Full Featured)
+        </h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="horizontal"
+          style={{ maxWidth: '600px' }}
+        />
+      </div>
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Horizontal (Minimal)
+        </h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          readTime="5 min"
+          orientation="horizontal"
+          style={{ maxWidth: '600px' }}
+        />
+      </div>
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// 6. Grid with 8 Examples
+// ---------------------------------------------------------------------------
+export const GridEightExamples: Story = {
+  name: '6. Grid with 8 Examples',
+  render: () => (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gap: '24px',
+      }}
+    >
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>1. Full Featured</p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>
+          2. Title + Desc (No Time)
+        </p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>
+          3. Title + Time (No Desc)
+        </p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>4. Title Only</p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>
+          5. Long Title Overflow
+        </p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="This is a really long title that should wrap and then truncate at two lines"
+          description="description value"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>
+          6. Long Description Overflow
+        </p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          description="This is a very long description that spans multiple lines and should be truncated at two lines with an ellipsis"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>
+          7. With Clickable Chip
+        </p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          chipHref="#findings"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>8. As Link Card</p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Wage Loss Analysis"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          href="#detail"
+          orientation="vertical"
+        />
+      </div>
     </div>
   ),
 };

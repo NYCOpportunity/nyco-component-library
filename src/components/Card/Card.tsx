@@ -113,6 +113,7 @@ export function Card({
   href,
   onClick,
   className,
+  style,
 }: CardProps) {
   const isHorizontal = orientation === 'horizontal';
 
@@ -124,9 +125,9 @@ export function Card({
     className
   );
 
-  const rootStyle: React.CSSProperties = cardFlashing
-    ? { backgroundColor: 'var(--color-primary-light)' }
-    : {};
+  const rootStyle: React.CSSProperties = {
+    backgroundColor: cardFlashing ? 'var(--color-primary-light)' : 'var(--color-neutral-white)',
+  };
 
   const imageSection = (
     <div
@@ -143,7 +144,7 @@ export function Card({
 
       {/* Vertical only: chip hidden below image in default, slides up on hover */}
       {dataDate && !isHorizontal && (
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-34px] group-hover:bottom-[16px] transition-all duration-200 ease-in-out flex gap-[8px] items-start">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-34px] group-hover:bottom-[16px] opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 ease-in-out flex gap-[8px] items-start">
           <DataChip
             label={dataDate}
             href={chipHref}
@@ -161,7 +162,7 @@ export function Card({
         'flex flex-col items-start',
         isHorizontal
           ? 'flex-1 min-w-0 gap-[16px] px-[16px] pt-[16px] pb-[24px]'
-          : 'w-full shrink-0 justify-between p-4'
+          : 'w-full shrink-0 gap-[16px] p-4 h-[190px]'
       )}
     >
       {/* Horizontal: chip lives in content area, always visible */}
@@ -178,12 +179,12 @@ export function Card({
       <div
         className={cx(
           'flex flex-col items-start w-full shrink-0',
-          description ? 'gap-[8px]' : 'gap-[6px]'
+          description ? 'gap-[8px]' : 'gap-0'
         )}
       >
         <h3
           className={cx(
-            'text-[22px] font-semibold leading-[1.4] text-[var(--color-neutral-black)] m-0',
+            'text-[22px] font-semibold leading-[1.4] text-[var(--color-neutral-black)] m-0 line-clamp-2 w-full',
             'group-hover:underline group-hover:decoration-[2px] group-hover:underline-offset-[2px]'
           )}
         >
@@ -199,7 +200,7 @@ export function Card({
 
       {/* Read time */}
       {readTime && (
-        <span className="text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-700)] whitespace-nowrap">
+        <span className="text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-700)] whitespace-nowrap">
           {readTime}
         </span>
       )}
@@ -213,7 +214,7 @@ export function Card({
         onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
         onPointerDown={handleCardPointerDown}
         className={cx(rootClasses, 'no-underline text-inherit')}
-        style={rootStyle}
+        style={{ ...rootStyle, ...style }}
       >
         {imageSection}
         {contentSection}
@@ -227,7 +228,7 @@ export function Card({
       onPointerDown={handleCardPointerDown}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
-      style={rootStyle}
+      style={{ ...rootStyle, ...style }}
       className={rootClasses}
     >
       {imageSection}

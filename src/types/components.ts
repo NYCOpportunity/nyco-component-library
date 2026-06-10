@@ -689,6 +689,8 @@ export interface CardProps {
   onClick?: React.MouseEventHandler<HTMLElement>;
   /** Tailwind classes applied to the root element. */
   className?: string;
+  /** Inline styles applied to the root element. */
+  style?: React.CSSProperties;
 }
 
 // *** ExpandableSelect Types ***
