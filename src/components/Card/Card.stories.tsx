@@ -22,19 +22,94 @@ const meta: Meta<typeof Card> = {
     },
     docs: {
       description: {
-        component:
-          'Content card with image, title, optional description, read time, and a data-date chip.\n\n' +
-          '---\n\n' +
-          '## Hover behavior\n\n' +
-          '**Vertical** — on hover:\n' +
-          '- The data chip slides up from below the image into the image area.\n' +
-          '- The title gains a 2 px underline on each wrapped line.\n\n' +
-          '**Horizontal** — on hover:\n' +
-          '- Only the title underline appears; the chip is statically visible in the content area.\n\n' +
-          '---\n\n' +
-          '## Layout orientations\n\n' +
-          '`vertical` (default) — stacked image + content. Place in a CSS grid or flex row to control width.\n\n' +
-          '`horizontal` — image on the left (337 × 240 px), content on the right.',
+        component: [
+          'A clickable **content card** that pairs an image with a heading and optional supporting',
+          'text. Use it to surface an article, dataset, report, or any linked resource in grids,',
+          'rows, or carousels.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          'Every card is built from the same parts — only the heading and image are required:',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Image | `image`, `imageAlt` | ✅ / alt optional | Cover image; `imageAlt` describes it for screen readers. |',
+          '| Title | `title` | ✅ | Heading. Clamps to 2 lines; underlines on hover. |',
+          '| Description | `description` | — | Body text. Clamps to 2 lines. Hidden when omitted. |',
+          '| Read time | `readTime` | — | Small meta label, e.g. `"7 min"`. |',
+          '| Data chip | `dataDate` | — | Pill label, e.g. `"2023 data"`. Can be made clickable. |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { Card } from "@nycopportunity/component-library";',
+          '',
+          '// Minimal — image + title',
+          '<Card image={url} imageAlt="Brownstones" title="Wage loss analysis" />',
+          '',
+          '// Full — links the whole card and adds a clickable chip',
+          '<Card',
+          '  image={url}',
+          '  imageAlt="Brownstones"',
+          '  title="COVID-19 Wage Loss Analysis across NYC"',
+          '  description="How the pandemic affected wages across the five boroughs."',
+          '  readTime="7 min"',
+          '  dataDate="2023 data"',
+          '  href="/reports/wage-loss"',
+          '  onChipClick={() => openDataYear(2023)}',
+          '/>',
+          '```',
+          '',
+          '**Making it interactive**',
+          '- Pass `href` to render the whole card as an `<a>`.',
+          '- Pass `onClick` for a button-like card (adds `role="button"` and keyboard focus).',
+          '- For the chip, use `chipHref` **or** `onChipClick`. Prefer `onChipClick` when the card',
+          '  itself has an `href`, to avoid nesting anchors. Chip clicks never trigger the card.',
+          '',
+          '---',
+          '',
+          '## Orientation',
+          '',
+          '`orientation="vertical"` (default) — stacked image over content. Drop it into a CSS grid',
+          'or flex row to lay out multiple cards.',
+          '',
+          '`orientation="horizontal"` — image on the left (337 × 240 px), content on the right.',
+          'Good for dense lists and search results.',
+          '',
+          '## Responsive width',
+          '',
+          "Width adapts automatically so you usually don't set it yourself:",
+          '',
+          '| Context | Width |',
+          '| --- | --- |',
+          '| Desktop · vertical | Fixed **320 px** |',
+          '| Desktop · horizontal | Fills its container (image + content) |',
+          '| Mobile · `type="story"` (default) | Full width |',
+          '| Mobile · `type="carousel"` | 1 full card + a peek of the next (`100vw / 1.2`) |',
+          '',
+          'Use `type="carousel"` for horizontally-scrolling rows on mobile (see the',
+          '**CardCarousel** component, which wires this up for you).',
+          '',
+          '---',
+          '',
+          '## Hover behavior',
+          '',
+          '**Vertical** — the data chip slides up from below the image into the image area, and the',
+          'title gains a 2 px underline on each wrapped line.',
+          '',
+          '**Horizontal** — only the title underline appears; the chip is statically visible above',
+          'the title.',
+          '',
+          '## Accessibility',
+          '',
+          '- Always provide a meaningful `imageAlt`.',
+          '- Card-as-link uses a real `<a>`; card-as-button exposes `role="button"` and is focusable.',
+          '- The chip is a real `<a>`/`<button>` and stops propagation so it is independently operable.',
+        ].join('\n'),
       },
     },
   },
@@ -78,6 +153,12 @@ const meta: Meta<typeof Card> = {
       control: 'radio',
       options: ['vertical', 'horizontal'],
       description: '`vertical` (default) or `horizontal`.',
+    },
+    type: {
+      control: 'radio',
+      options: ['story', 'carousel'],
+      description:
+        'Affects width on mobile only. `story` (default) → full width. `carousel` → 1 card + a peek of the next.',
     },
     href: { control: 'text', description: 'When set, the card renders as an `<a>` element.' },
     className: { control: 'text', description: 'Extra Tailwind classes on the root element.' },
@@ -228,33 +309,63 @@ export const WithAndWithoutChip: Story = {
 export const HorizontalExamples: Story = {
   name: '5. Horizontal Examples',
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: 680 }}>
+      {/* Full featured: title, body, read time, and chip */}
       <div>
         <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
-          Horizontal (Full Featured)
+          Full featured (title, body, read time, chip)
         </h4>
         <Card
           image={SAMPLE_IMAGE}
           imageAlt="Brooklyn brownstone buildings"
-          title="COVID-19 Wage Loss Analysis"
-          description="description value that has to be at least one line but can be two lines"
+          title="COVID-19 Wage Loss Analysis across NYC"
+          description="An overview of how the pandemic affected wages across the five boroughs, with a breakdown by industry and neighborhood."
           readTime="7 min"
           dataDate="2023 data"
           orientation="horizontal"
-          style={{ maxWidth: '600px' }}
         />
       </div>
+
+      {/* Title + body only */}
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>Title + body</h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="Housing affordability trends"
+          description="Median rent and ownership costs compared against household income over the past decade."
+          orientation="horizontal"
+        />
+      </div>
+
+      {/* Title + body + read time (no chip) */}
       <div>
         <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
-          Horizontal (Minimal)
+          Title + body + read time
         </h4>
         <Card
           image={SAMPLE_IMAGE}
           imageAlt="Brooklyn brownstone buildings"
-          title="Wage Loss Analysis"
+          title="Small business recovery report"
+          description="Tracking revenue and employment recovery for NYC small businesses since 2020."
           readTime="5 min"
           orientation="horizontal"
-          style={{ maxWidth: '600px' }}
+        />
+      </div>
+
+      {/* Overflow: long title and body clamp to two lines */}
+      <div>
+        <h4 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: 600 }}>
+          Overflow (title &amp; body clamp to 2 lines)
+        </h4>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="A comprehensive longitudinal study of pandemic-era wage loss and its uneven recovery across New York City neighborhoods"
+          description="This extended summary spans well beyond two lines so you can verify that both the heading and the body text truncate gracefully with an ellipsis when the available space runs out within the horizontal layout."
+          readTime="12 min"
+          dataDate="2024 data"
+          orientation="horizontal"
         />
       </div>
     </div>

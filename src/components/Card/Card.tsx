@@ -134,14 +134,17 @@ export function Card({
   );
 
   // The card width follows these rules:
-  // - Desktop (either type)   => fixed 320px.
+  // - Desktop, vertical       => fixed 320px.
+  // - Desktop, horizontal     => width inherited from the container (image + content).
   // - `story`    + mobile     => full width.
   // - `carousel` + mobile     => 1 full card + 1/5 of the next (calc(100vw / 1.2)).
   const responsiveWidth: React.CSSProperties = isMobile
     ? isCarousel
       ? { width: 'calc(100vw / 1.2)' }
       : { width: '100%' }
-    : { width: 320 };
+    : isHorizontal
+      ? {}
+      : { width: 320 };
 
   const rootStyle: React.CSSProperties = {
     backgroundColor: cardFlashing ? 'var(--color-primary-light)' : 'var(--color-neutral-white)',
