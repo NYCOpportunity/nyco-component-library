@@ -37,6 +37,7 @@ export default [
         HTMLAnchorElement: 'readonly',
         HTMLFormElement: 'readonly',
         HTMLDivElement: 'readonly',
+        HTMLHRElement: 'readonly',
         Element: 'readonly',
         Event: 'readonly',
         MouseEvent: 'readonly',

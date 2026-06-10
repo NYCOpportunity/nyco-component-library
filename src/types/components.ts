@@ -638,6 +638,114 @@ export interface DropdownMenuProps {
   className?: string;
 }
 
+// *** Card Types ***
+
+/** Layout orientation of the card. */
+export type CardOrientation = 'vertical' | 'horizontal';
+
+/** Display type for the card. */
+export type CardType = 'story' | 'carousel';
+
+export interface CardProps {
+  /** URL of the card image. */
+  image: string;
+  /** Alt text for the card image. Defaults to `""`. */
+  imageAlt?: string;
+  /** Card heading text. Wraps naturally; each wrapped line is underlined on hover. */
+  title: string;
+  /**
+   * Optional body text shown below the title. Clamped to 2 lines.
+   * Hidden when omitted.
+   */
+  description?: string;
+  /** Optional read-time label shown below the description (e.g. `"7 min"`). */
+  readTime?: string;
+  /**
+   * Optional data-date chip label (e.g. `"2023 data"`).
+   * - **Vertical**: rendered as an overlay inside the image that slides into view on hover.
+   * - **Horizontal**: rendered statically at the top of the content area.
+   */
+  dataDate?: string;
+  /**
+   * URL the data chip navigates to when clicked (e.g. a findings page pre-filtered to this
+   * data year). Renders the chip as an `<a>` element. The chip click does **not** propagate
+   * to the card's own click target.
+   *
+   * Prefer `onChipClick` over `chipHref` when the card itself also has an `href`, to avoid
+   * nesting `<a>` elements.
+   */
+  chipHref?: string;
+  /**
+   * Click handler fired when the data chip is clicked. Renders the chip as a `<button>`.
+   * The click does **not** propagate to the card's own click target.
+   */
+  onChipClick?: React.MouseEventHandler<HTMLElement>;
+  /**
+   * Card layout orientation.
+   * - `'vertical'` (default) — stacked image + content, used for desktop/mobile grids.
+   * - `'horizontal'` — image on the left, content on the right.
+   */
+  orientation?: CardOrientation;
+  /**
+   * Card display type.
+   * - `'story'` (default) — mobile full width, desktop fixed or grid-based width.
+   * - `'carousel'` — responsive width showing 1 full card + 1/5 of next card.
+   */
+  type?: CardType;
+  /** When provided the entire card renders as an `<a>` element. */
+  href?: string;
+  /** Click handler. Combined with `href` it fires alongside navigation. */
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  /** Tailwind classes applied to the root element. */
+  className?: string;
+  /** Inline styles applied to the root element. */
+  style?: React.CSSProperties;
+}
+
+// *** CardCarousel Types ***
+
+/** A single card entry rendered inside a `CardCarousel`. */
+export interface CardCarouselItem extends Omit<CardProps, 'orientation' | 'type'> {
+  /** Stable key for the card. Falls back to the array index when omitted. */
+  id?: string | number;
+}
+
+export interface CardCarouselProps {
+  /** Cards rendered as horizontally-scrollable slides. */
+  items: CardCarouselItem[];
+  /** Optional heading shown above the carousel track. */
+  title?: string;
+  /**
+   * Number of (fixed 320px) cards the track advances per arrow click on **desktop**, and the
+   * minimum item count before the arrow controls appear. Defaults to `3`.
+   */
+  visibleDesktop?: number;
+  /**
+   * Gap between cards, in pixels, applied at every breakpoint. Defaults to `24`.
+   */
+  gap?: number;
+  /**
+   * Viewport width (px) below which the **mobile** peek layout is used: one full card
+   * plus a sliver of the next. At or above this width the desktop grid layout is used.
+   * Defaults to `768`.
+   */
+  mobileBreakpoint?: number;
+  /**
+   * Fraction of the next card shown as a "peek" beyond the full cards in view.
+   * `0.2` shows 1/5 of the next card on both mobile (1 + peek) and desktop
+   * (`visibleDesktop` + peek). Defaults to `0.2`.
+   */
+  mobilePeek?: number;
+  /** Show the previous/next arrow controls on desktop. Defaults to `true`. */
+  showArrows?: boolean;
+  /** Accessible label for the carousel region. Defaults to `title` or `"Card carousel"`. */
+  ariaLabel?: string;
+  /** Tailwind classes applied to the root element. */
+  className?: string;
+  /** Inline styles applied to the root element. */
+  style?: React.CSSProperties;
+}
+
 // *** ExpandableSelect Types ***
 
 /** A single option in an `ExpandableSelect`. */

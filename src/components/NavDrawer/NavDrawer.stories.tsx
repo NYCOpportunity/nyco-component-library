@@ -199,18 +199,20 @@ export const NoLogo: Story = {
  * Open — renders the drawer already open (no trigger click needed).
  * Useful for visual regression testing and documentation screenshots.
  */
+function OpenDrawerDemo() {
+  const [isOpen, setIsOpen] = React.useState(true);
+  return (
+    <NavDrawer
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      navItems={defaultNavItems}
+      logo={<DemoLogo />}
+    />
+  );
+}
+
 export const Open: Story = {
-  render: () => {
-    const [isOpen, setIsOpen] = React.useState(true);
-    return (
-      <NavDrawer
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        navItems={defaultNavItems}
-        logo={<DemoLogo />}
-      />
-    );
-  },
+  render: () => <OpenDrawerDemo />,
   parameters: {
     docs: {
       description: {
