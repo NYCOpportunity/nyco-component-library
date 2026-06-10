@@ -109,7 +109,8 @@ const meta = {
     },
     primaryLabel: {
       control: 'text',
-      description: 'Small supporting text rendered above `label` (e.g. a category or section name).',
+      description:
+        'Small supporting text rendered above `label` (e.g. a category or section name).',
     },
     secondaryLabel: {
       control: 'text',
@@ -409,96 +410,96 @@ const AllTypesDemo = () => {
   const [multiSelected, setMultiSelected] = React.useState(false);
 
   return (
-      <div style={{ display: 'flex', gap: 32, fontFamily: 'Public Sans, sans-serif' }}>
-        <div>
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: '#aaa',
-              marginBottom: 8,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-            }}
-          >
-            Standard
-          </p>
-          <div style={listStyle}>
-            <ListItem label="List item" type="standard" />
-            <ListItem label="List item" type="standard" disabled />
-          </div>
-        </div>
-        <div>
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: '#aaa',
-              marginBottom: 8,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-            }}
-          >
-            Multi-Standard
-          </p>
-          <div style={listStyle}>
-            <ListItem
-              label="List item"
-              type="multi-standard"
-              selected={multiSelected}
-              onSelectedChange={setMultiSelected}
-            />
-            <ListItem label="List item" type="multi-standard" disabled />
-          </div>
-        </div>
-        <div>
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: '#aaa',
-              marginBottom: 8,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-            }}
-          >
-            Checkbox
-          </p>
-          <div style={listStyle}>
-            <ListItem
-              label="List item"
-              type="checkbox"
-              selected={checkboxSelected}
-              onSelectedChange={setCheckboxSelected}
-            />
-            <ListItem label="List item" type="checkbox" disabled />
-          </div>
-        </div>
-        <div>
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: '#aaa',
-              marginBottom: 8,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-            }}
-          >
-            Radio
-          </p>
-          <div style={listStyle}>
-            <ListItem
-              label="List item"
-              type="radio"
-              selected={radioSelected}
-              onSelectedChange={setRadioSelected}
-            />
-            <ListItem label="List item" type="radio" disabled />
-          </div>
+    <div style={{ display: 'flex', gap: 32, fontFamily: 'Public Sans, sans-serif' }}>
+      <div>
+        <p
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: '#aaa',
+            marginBottom: 8,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}
+        >
+          Standard
+        </p>
+        <div style={listStyle}>
+          <ListItem label="List item" type="standard" />
+          <ListItem label="List item" type="standard" disabled />
         </div>
       </div>
-    );
+      <div>
+        <p
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: '#aaa',
+            marginBottom: 8,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}
+        >
+          Multi-Standard
+        </p>
+        <div style={listStyle}>
+          <ListItem
+            label="List item"
+            type="multi-standard"
+            selected={multiSelected}
+            onSelectedChange={setMultiSelected}
+          />
+          <ListItem label="List item" type="multi-standard" disabled />
+        </div>
+      </div>
+      <div>
+        <p
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: '#aaa',
+            marginBottom: 8,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}
+        >
+          Checkbox
+        </p>
+        <div style={listStyle}>
+          <ListItem
+            label="List item"
+            type="checkbox"
+            selected={checkboxSelected}
+            onSelectedChange={setCheckboxSelected}
+          />
+          <ListItem label="List item" type="checkbox" disabled />
+        </div>
+      </div>
+      <div>
+        <p
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: '#aaa',
+            marginBottom: 8,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}
+        >
+          Radio
+        </p>
+        <div style={listStyle}>
+          <ListItem
+            label="List item"
+            type="radio"
+            selected={radioSelected}
+            onSelectedChange={setRadioSelected}
+          />
+          <ListItem label="List item" type="radio" disabled />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export const AllTypes: Story = {

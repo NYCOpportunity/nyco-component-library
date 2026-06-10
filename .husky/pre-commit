@@ -1,0 +1,8 @@
+# Quality gate — runs before every commit.
+# 1. lint-staged: ESLint (no errors, no unused code) + Prettier on staged files.
+# 2. type-check: TypeScript across the whole project.
+echo "▶ Running lint-staged (lint + format on staged files)…"
+pnpm exec lint-staged || exit 1
+
+echo "▶ Running type-check…"
+pnpm run type-check || exit 1
