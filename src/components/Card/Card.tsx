@@ -2,6 +2,7 @@ import * as React from 'react';
 import { CardProps } from '../../types/components';
 import { cx } from '../../utils/cx';
 import { useFlash } from '../../hooks/useFlash';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -100,9 +101,9 @@ function DataChip({
  * **Hover interaction (horizontal)**
  * - Only the title underline appears; the chip is statically visible in the content area.
  *
- * **Display types**
- * - `story` (default): mobile full width, desktop fixed or grid-based width.
- * - `carousel`: responsive width showing 1 full card + 1/5 of next card.
+ * **Display types** (desktop width is always 320px; type only affects mobile width)
+ * - `story` (default): full width on mobile.
+ * - `carousel`: on mobile shows 1 full card + 1/5 of the next card.
  */
 export function Card({
   image,
@@ -122,6 +123,7 @@ export function Card({
 }: CardProps) {
   const isHorizontal = orientation === 'horizontal';
   const isCarousel = type === 'carousel';
+  const isMobile = useIsMobile();
 
   const { flashing: cardFlashing, handlePointerDown: handleCardPointerDown } = useFlash();
 
@@ -131,13 +133,19 @@ export function Card({
     className
   );
 
-  // Width calculation based on type
-  // Carousel: shows 1 full card + 1/5 of next = width: calc(100vw / 1.2)
-  const carouselWidth = isCarousel ? { width: 'calc(100vw / 1.2)' } : {};
+  // The card width follows these rules:
+  // - Desktop (either type)   => fixed 320px.
+  // - `story`    + mobile     => full width.
+  // - `carousel` + mobile     => 1 full card + 1/5 of the next (calc(100vw / 1.2)).
+  const responsiveWidth: React.CSSProperties = isMobile
+    ? isCarousel
+      ? { width: 'calc(100vw / 1.2)' }
+      : { width: '100%' }
+    : { width: 320 };
 
   const rootStyle: React.CSSProperties = {
     backgroundColor: cardFlashing ? 'var(--color-primary-light)' : 'var(--color-neutral-white)',
-    ...carouselWidth,
+    ...responsiveWidth,
   };
 
   const imageSection = (

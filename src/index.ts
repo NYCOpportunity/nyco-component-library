@@ -44,4 +44,7 @@ export { ExpandableSelectGroup } from './components/ExpandableSelectGroup';
 export type { ExpandableSelectGroupProps, ExpandableSelectGroupFilter } from './types/components';
 
 export { Card } from './components/Card';
-export type { CardProps, CardOrientation } from './types/components';
+export type { CardProps, CardOrientation, CardType } from './types/components';
+
+export { CardCarousel } from './components/CardCarousel';
+export type { CardCarouselProps, CardCarouselItem } from './types/components';
