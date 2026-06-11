@@ -84,6 +84,44 @@ function ArrowButton({
 }
 
 // ---------------------------------------------------------------------------
+// Mobile pill button (Previous / Next)
+// ---------------------------------------------------------------------------
+
+function PillButton({
+  label,
+  onClick,
+  disabled,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
+  const { flashing, handlePointerDown } = useFlash(disabled);
+
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      onPointerDown={handlePointerDown}
+      className={cx(
+        'flex items-center justify-center h-[44px] px-[24px] rounded-full shrink-0',
+        'text-[16px] font-semibold text-[var(--color-neutral-black)]',
+        'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]',
+        '[@media(hover:hover)]:transition-colors',
+        'disabled:opacity-40 disabled:pointer-events-none',
+        '[@media(hover:hover)]:hover:bg-[var(--color-neutral-200)]'
+      )}
+      style={{
+        backgroundColor: flashing ? 'var(--color-neutral-200)' : 'var(--color-neutral-100)',
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // CardCarousel
 // ---------------------------------------------------------------------------
 
@@ -97,7 +135,8 @@ function ArrowButton({
  *
  * **Mobile** (viewport < `mobileBreakpoint`)
  * - Shows one full card plus a `mobilePeek` sliver of the next card.
- * - Native horizontal scroll with CSS scroll-snap; arrows are hidden.
+ * - Native horizontal scroll with CSS scroll-snap; the desktop header arrows are hidden.
+ * - Pagination dots (progress feedback) and Previous / Next buttons appear below the track.
  */
 export function CardCarousel({
   items,
@@ -116,6 +155,7 @@ export function CardCarousel({
 
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(0);
 
   // Per-card slot width.
   // - Desktop => fixed 320px (matches the standalone Card desktop width).
@@ -130,7 +170,13 @@ export function CardCarousel({
     const maxScroll = el.scrollWidth - el.clientWidth;
     setCanScrollPrev(el.scrollLeft > 1);
     setCanScrollNext(el.scrollLeft < maxScroll - 1);
-  }, []);
+
+    // Active slide index (used by the mobile pagination dots).
+    const firstItem = el.firstElementChild as HTMLElement | null;
+    const cardWidth = firstItem ? firstItem.getBoundingClientRect().width : el.clientWidth;
+    const index = Math.round(el.scrollLeft / (cardWidth + gap));
+    setActiveIndex(Math.min(Math.max(index, 0), items.length - 1));
+  }, [gap, items.length]);
 
   React.useEffect(() => {
     const el = trackRef.current;
@@ -154,7 +200,16 @@ export function CardCarousel({
     el.scrollBy({ left: amount, behavior: 'smooth' });
   };
 
+  const scrollToIndex = (index: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const firstItem = el.firstElementChild as HTMLElement | null;
+    const cardWidth = firstItem ? firstItem.getBoundingClientRect().width : el.clientWidth;
+    el.scrollTo({ left: index * (cardWidth + gap), behavior: 'smooth' });
+  };
+
   const showArrowControls = showArrows && !isMobile && items.length > visibleDesktop;
+  const showMobileControls = isMobile && items.length > 1;
   const regionLabel = ariaLabel || title || 'Card carousel';
 
   if (items.length === 0) return null;
@@ -221,6 +276,54 @@ export function CardCarousel({
           );
         })}
       </div>
+
+      {/* Mobile controls: pagination dots + Previous / Next buttons */}
+      {showMobileControls && (
+        <div className="flex flex-col items-center gap-[20px]">
+          {/* Pagination dots (progress feedback) */}
+          <div
+            className="flex items-center gap-[8px]"
+            role="tablist"
+            aria-label="Carousel pagination"
+          >
+            {items.map((item, index) => {
+              const selected = index === activeIndex;
+              return (
+                <button
+                  key={item.id ?? index}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  aria-label={`Go to card ${index + 1}`}
+                  onClick={() => scrollToIndex(index)}
+                  className={cx(
+                    'h-[8px] w-[8px] rounded-full transition-colors duration-200',
+                    'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]',
+                    selected ? 'bg-[var(--color-neutral-black)]' : 'bg-[var(--color-neutral-300)]'
+                  )}
+                />
+              );
+            })}
+          </div>
+
+          {/* Previous / Next buttons */}
+          <div className="flex items-center gap-[12px]">
+            <PillButton
+              label="Previous"
+              onClick={() => scrollByPage('prev')}
+              disabled={!canScrollPrev}
+            />
+            <span aria-hidden="true" className="text-[16px] text-[var(--color-neutral-black)]">
+              /
+            </span>
+            <PillButton
+              label="Next"
+              onClick={() => scrollByPage('next')}
+              disabled={!canScrollNext}
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
