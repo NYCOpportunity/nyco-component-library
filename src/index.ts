@@ -48,3 +48,6 @@ export type { CardProps, CardOrientation, CardType } from './types/components';
 
 export { CardCarousel } from './components/CardCarousel';
 export type { CardCarouselProps, CardCarouselItem } from './types/components';
+
+export { ToastMessage } from './components/ToastMessage';
+export type { ToastMessageProps, ToastMessageType } from './types/components';

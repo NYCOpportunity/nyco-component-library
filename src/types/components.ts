@@ -746,6 +746,42 @@ export interface CardCarouselProps {
   style?: React.CSSProperties;
 }
 
+// *** ToastMessage Types ***
+
+/**
+ * Severity of a `ToastMessage`. Drives the background color, default icon, and the
+ * accessibility live-region semantics (`info`/`success` → polite, `warning`/`error` → assertive).
+ */
+export type ToastMessageType = 'info' | 'success' | 'warning' | 'error';
+
+export interface ToastMessageProps {
+  /** Severity of the toast. Defaults to `'info'`. */
+  type?: ToastMessageType;
+  /** Bold heading text. Omit for a description-only toast. */
+  title?: React.ReactNode;
+  /** Supporting body text. Omit for a title-only toast. */
+  description?: React.ReactNode;
+  /** Render the leading severity icon. Defaults to `true`. */
+  showIcon?: boolean;
+  /** Replace the default severity icon with custom content. */
+  icon?: React.ReactNode;
+  /** Show the trailing close button. Defaults to `true`. */
+  dismissible?: boolean;
+  /** Called when the close button is activated. */
+  onDismiss?: () => void;
+  /** Accessible label for the close button. Defaults to `'Dismiss'`. */
+  closeLabel?: string;
+  /**
+   * ARIA role for the live region. Defaults to `'status'` for `info`/`success`
+   * and `'alert'` for `warning`/`error`.
+   */
+  role?: 'status' | 'alert';
+  /** Tailwind classes applied to the root element. */
+  className?: string;
+  /** Inline styles applied to the root element. */
+  style?: React.CSSProperties;
+}
+
 // *** ExpandableSelect Types ***
 
 /** A single option in an `ExpandableSelect`. */
