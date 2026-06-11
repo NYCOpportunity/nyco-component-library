@@ -692,6 +692,11 @@ export interface CardProps {
    * - `'carousel'` — responsive width showing 1 full card + 1/5 of next card.
    */
   type?: CardType;
+  /**
+   * Render the card with a `1px` neutral border. When `true`, hovering reveals a soft
+   * shadow instead of the title underline. Defaults to `false` (borderless).
+   */
+  bordered?: boolean;
   /** When provided the entire card renders as an `<a>` element. */
   href?: string;
   /** Click handler. Combined with `href` it fires alongside navigation. */
