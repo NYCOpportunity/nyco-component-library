@@ -134,7 +134,7 @@ export function ToastMessage({
   showIcon = true,
   icon,
   dismissible = true,
-  onDismiss,
+  onClose,
   closeLabel = 'Dismiss',
   role,
   className,
@@ -189,7 +189,7 @@ export function ToastMessage({
           <button
             type="button"
             aria-label={closeLabel}
-            onClick={onDismiss}
+            onClick={onClose}
             onPointerDown={handlePointerDown}
             className={cx(
               'flex shrink-0 items-center justify-center rounded-full px-[4px] pb-[4px] pt-[2px] text-[var(--color-neutral-black)]',

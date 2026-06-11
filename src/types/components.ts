@@ -768,7 +768,7 @@ export interface ToastMessageProps {
   /** Show the trailing close button. Defaults to `true`. */
   dismissible?: boolean;
   /** Called when the close button is activated. */
-  onDismiss?: () => void;
+  onClose?: () => void;
   /** Accessible label for the close button. Defaults to `'Dismiss'`. */
   closeLabel?: string;
   /**

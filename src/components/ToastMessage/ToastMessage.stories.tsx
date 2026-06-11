@@ -26,7 +26,7 @@ const meta: Meta<typeof ToastMessage> = {
           '| **Icon** | 24px leading icon, colored with `--color-{type}-base`. Toggle with `showIcon` or replace via `icon`. |',
           '| **Title** | Optional bold heading (Public Sans SemiBold, 18px). |',
           '| **Description** | Optional body text (Public Sans Regular, 18px). |',
-          '| **Close button** | Optional 22px dismiss control. Toggle with `dismissible`, handle with `onDismiss`. |',
+          '| **Close button** | Optional 22px dismiss control. Toggle with `dismissible`, handle with `onClose`. |',
           '',
           '## Types',
           '',
@@ -45,7 +45,7 @@ const meta: Meta<typeof ToastMessage> = {
           '  type="success"',
           '  title="Saved"',
           '  description="Your changes have been saved."',
-          '  onDismiss={() => removeToast(id)}',
+          '  onClose={() => removeToast(id)}',
           '/>;',
           '```',
           '',
@@ -70,7 +70,7 @@ const meta: Meta<typeof ToastMessage> = {
     dismissible: { control: 'boolean' },
     closeLabel: { control: 'text' },
     role: { control: 'radio', options: [undefined, 'status', 'alert'] },
-    onDismiss: { action: 'dismissed' },
+    onClose: { action: 'closed' },
   },
   args: {
     type: 'info',
@@ -78,7 +78,7 @@ const meta: Meta<typeof ToastMessage> = {
     description: 'Description',
     showIcon: true,
     dismissible: true,
-    onDismiss: fn(),
+    onClose: fn(),
   },
   decorators: [
     (Story) => (
@@ -191,13 +191,13 @@ export const FullMatrix: Story = {
               type={type}
               dismissible={dismissible}
               title={type.charAt(0).toUpperCase() + type.slice(1)}
-              onDismiss={fn()}
+              onClose={fn()}
             />
             <ToastMessage
               type={type}
               dismissible={dismissible}
               description="Description only message."
-              onDismiss={fn()}
+              onClose={fn()}
             />
           </React.Fragment>
         ))
@@ -222,7 +222,7 @@ function DismissDemo() {
           type={type}
           title={type.charAt(0).toUpperCase() + type.slice(1)}
           description="Click the × to dismiss this toast."
-          onDismiss={() => setToasts((prev) => prev.filter((t) => t !== type))}
+          onClose={() => setToasts((prev) => prev.filter((t) => t !== type))}
         />
       ))}
       {toasts.length === 0 && (
