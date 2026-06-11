@@ -175,9 +175,20 @@ export function Card({
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
 
-      {/* Vertical only: chip hidden below image in default, slides up on hover */}
+      {/*
+        Vertical only — data chip overlay.
+        - Mobile & tablet (< lg / 1024px): persistently visible.
+        - Desktop (>= lg): hidden below the image, slides up on hover.
+      */}
       {dataDate && !isHorizontal && (
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-34px] group-hover:bottom-[16px] opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 ease-in-out flex gap-[8px] items-start">
+        <div
+          className={cx(
+            'absolute left-1/2 -translate-x-1/2 flex gap-[8px] items-start transition-all duration-200 ease-in-out',
+            'bottom-[16px] opacity-100 pointer-events-auto',
+            'lg:bottom-[-34px] lg:opacity-0 lg:pointer-events-none',
+            'lg:group-hover:bottom-[16px] lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto'
+          )}
+        >
           <DataChip
             label={dataDate}
             href={chipHref}
