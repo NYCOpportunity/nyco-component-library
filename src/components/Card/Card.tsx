@@ -133,8 +133,8 @@ export function Card({
   const { flashing: cardFlashing, handlePointerDown: handleCardPointerDown } = useFlash();
 
   const rootClasses = cx(
-    'group flex items-start relative cursor-pointer rounded-[8px]',
-    isHorizontal ? 'flex-row' : 'flex-col',
+    'group flex relative cursor-pointer rounded-[8px]',
+    isHorizontal ? 'flex-row items-stretch' : 'flex-col items-start',
     bordered &&
       'overflow-clip border border-[var(--color-neutral-300)] transition-shadow duration-200 [@media(hover:hover)]:hover:shadow-[2px_2px_20px_0px_rgba(25,25,25,0.08)]',
     className
@@ -166,13 +166,13 @@ export function Card({
     <div
       className={cx(
         'relative overflow-clip shrink-0',
-        isHorizontal ? 'h-[240px] w-[337px]' : 'h-[340px] w-full'
+        isHorizontal ? 'self-stretch min-h-[240px] w-[337px]' : 'h-[340px] w-full'
       )}
     >
       <img
         src={image}
         alt={imageAlt}
-        className="absolute inset-0 w-full h-full object-cover rounded-tl-[2px] rounded-tr-[2px] pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
 
       {/* Vertical only: chip hidden below image in default, slides up on hover */}
