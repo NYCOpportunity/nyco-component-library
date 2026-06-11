@@ -92,7 +92,8 @@ function ArrowButton({
  *
  * **Desktop** (viewport ≥ `mobileBreakpoint`)
  * - Cards are a fixed 320px wide (matching the standalone {@link Card} desktop width).
- * - Previous / next arrow controls page the track `visibleDesktop` cards at a time.
+ * - Previous / next arrow controls advance the track one card at a time. The previous
+ *   arrow is disabled at the start and the next arrow is disabled at the end.
  *
  * **Mobile** (viewport < `mobileBreakpoint`)
  * - Shows one full card plus a `mobilePeek` sliver of the next card.
@@ -146,11 +147,10 @@ export function CardCarousel({
   const scrollByPage = (direction: 'prev' | 'next') => {
     const el = trackRef.current;
     if (!el) return;
-    // Advance by `visibleDesktop` full cards (card width + gap) per click so the
-    // peek of the next card becomes the new leading card.
+    // Advance by a single card (card width + gap) per click.
     const firstItem = el.firstElementChild as HTMLElement | null;
     const cardWidth = firstItem ? firstItem.getBoundingClientRect().width : el.clientWidth;
-    const amount = (cardWidth + gap) * visibleDesktop * (direction === 'next' ? 1 : -1);
+    const amount = (cardWidth + gap) * (direction === 'next' ? 1 : -1);
     el.scrollBy({ left: amount, behavior: 'smooth' });
   };
 
