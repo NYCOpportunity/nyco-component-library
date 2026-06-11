@@ -23,6 +23,55 @@ const makeItems = (count: number): CardCarouselItem[] =>
 
 const ITEMS = makeItems(6);
 
+/** Mobile story items — realistic chip labels so the data-date chip stands out clearly. */
+const MOBILE_CHIP_ITEMS: CardCarouselItem[] = [
+  {
+    id: 'mc-1',
+    image: 'https://picsum.photos/seed/nyco-a/640/340',
+    imageAlt: 'Workers at a job fair',
+    title: 'How NYC Employers Are Adapting to Hybrid Work',
+    readTime: '4 min',
+    dataDate: 'Jan 2024',
+    href: '#',
+  },
+  {
+    id: 'mc-2',
+    image: 'https://picsum.photos/seed/nyco-b/640/340',
+    imageAlt: 'Subway commuters during peak hours',
+    title: 'Transit Access and Economic Mobility in the Five Boroughs',
+    readTime: '6 min',
+    dataDate: 'Mar 2024',
+    href: '#',
+  },
+  {
+    id: 'mc-3',
+    image: 'https://picsum.photos/seed/nyco-c/640/340',
+    imageAlt: 'Small business owner in Brooklyn',
+    title: 'Small Business Recovery Trends Across NYC Neighborhoods',
+    readTime: '5 min',
+    dataDate: 'Jun 2024',
+    href: '#',
+  },
+  {
+    id: 'mc-4',
+    image: 'https://picsum.photos/seed/nyco-d/640/340',
+    imageAlt: 'Youth workforce development program',
+    title: 'Youth Employment Programs: 2024 Outcomes Report',
+    readTime: '7 min',
+    dataDate: 'Sep 2024',
+    href: '#',
+  },
+  {
+    id: 'mc-5',
+    image: 'https://picsum.photos/seed/nyco-e/640/340',
+    imageAlt: 'Tech workers in midtown office',
+    title: 'Tech Sector Growth and Wage Inequality in NYC',
+    readTime: '8 min',
+    dataDate: 'Nov 2024',
+    href: '#',
+  },
+];
+
 // ---------------------------------------------------------------------------
 // Meta
 // ---------------------------------------------------------------------------
@@ -98,11 +147,11 @@ export const Desktop: Story = {
 };
 
 // ---------------------------------------------------------------------------
-// 2. Mobile — same 6 cards rendered in a phone-width frame so you can see how
-//    it looks when the screen shrinks (1 full card + a sliver of the next).
+// 2. Mobile — chip-focused items in a phone-width frame so you can see the
+//    persistent data-date chip and the pagination dots + Previous/Next buttons.
 // ---------------------------------------------------------------------------
 export const Mobile: Story = {
-  name: '2. Mobile (6 cards, shrunk screen)',
+  name: '2. Mobile (chips + pagination)',
   parameters: {
     viewport: { defaultViewport: 'mobile1' },
   },
@@ -119,11 +168,17 @@ export const Mobile: Story = {
       }}
     >
       {/*
-        Force the mobile layout regardless of the real browser width by raising
-        the breakpoint above the frame width — this mirrors how the carousel
-        reflows on an actual phone screen.
+        mobileBreakpoint={9999} forces the mobile layout (pagination dots +
+        Previous/Next buttons) regardless of the real browser width.
+        The Storybook viewport is set to mobile1 (320px) so Tailwind's `lg:`
+        breakpoint does NOT apply — chips are persistently visible.
       */}
-      <CardCarousel {...args} mobileBreakpoint={9999} />
+      <CardCarousel
+        {...args}
+        items={MOBILE_CHIP_ITEMS}
+        title="Latest research"
+        mobileBreakpoint={9999}
+      />
     </div>
   ),
 };
