@@ -832,6 +832,38 @@ export interface ExpandableSelectProps {
   className?: string;
 }
 
+// *** InputField Types ***
+
+/** Visual style of the input field border. */
+export type InputFieldVariant = 'outlined' | 'underlined';
+
+export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  /** HTML input type (e.g. `'text'`, `'email'`, `'password'`). Defaults to `'text'`. */
+  type?: string;
+  /** Optional label rendered above the input and associated via `htmlFor`. */
+  label?: string;
+  /** Helper text rendered below the input (neutral-700, 14px). */
+  helperText?: string;
+  /** Error message rendered below the input in error color (14px). Overrides `helperText`. */
+  errorText?: string;
+  /**
+   * When `true`, a clear (×) button appears on the right side of the input.
+   * Only visible when the field has a non-empty value and is not disabled.
+   * Defaults to `false`.
+   */
+  showClearButton?: boolean;
+  /** Called when the clear button is clicked. */
+  onClear?: () => void;
+  /**
+   * Visual variant of the input border:
+   * - `'outlined'` (default) — full rounded border on all sides.
+   * - `'underlined'` — bottom border only, no border-radius.
+   */
+  variant?: InputFieldVariant;
+  /** Tailwind classes applied to the root wrapper `<div>`. */
+  className?: string;
+}
+
 // *** ExpandableSelectGroup Types ***
 
 /** A single filter row inside an `ExpandableSelectGroup`. */
