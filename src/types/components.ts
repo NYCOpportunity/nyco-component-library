@@ -692,6 +692,11 @@ export interface CardProps {
    * - `'carousel'` — responsive width showing 1 full card + 1/5 of next card.
    */
   type?: CardType;
+  /**
+   * Render the card with a `1px` neutral border. When `true`, hovering reveals a soft
+   * shadow instead of the title underline. Defaults to `false` (borderless).
+   */
+  bordered?: boolean;
   /** When provided the entire card renders as an `<a>` element. */
   href?: string;
   /** Click handler. Combined with `href` it fires alongside navigation. */
@@ -716,8 +721,9 @@ export interface CardCarouselProps {
   /** Optional heading shown above the carousel track. */
   title?: string;
   /**
-   * Number of (fixed 320px) cards the track advances per arrow click on **desktop**, and the
-   * minimum item count before the arrow controls appear. Defaults to `3`.
+   * Minimum number of (fixed 320px) cards before the desktop arrow controls appear. When the
+   * item count exceeds this value the previous/next arrows are shown; the arrows advance the
+   * track one card at a time. Defaults to `3`.
    */
   visibleDesktop?: number;
   /**

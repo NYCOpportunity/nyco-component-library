@@ -104,6 +104,10 @@ function DataChip({
  * **Display types** (desktop width is always 320px; type only affects mobile width)
  * - `story` (default): full width on mobile.
  * - `carousel`: on mobile shows 1 full card + 1/5 of the next card.
+ *
+ * **Bordered**
+ * - When `bordered` is set, the card gains a 1px neutral border and reveals a soft shadow
+ *   on hover (instead of the title underline).
  */
 export function Card({
   image,
@@ -116,6 +120,7 @@ export function Card({
   onChipClick,
   orientation = 'vertical',
   type = 'story',
+  bordered = false,
   href,
   onClick,
   className,
@@ -128,8 +133,10 @@ export function Card({
   const { flashing: cardFlashing, handlePointerDown: handleCardPointerDown } = useFlash();
 
   const rootClasses = cx(
-    'group flex items-start relative cursor-pointer rounded-[8px]',
-    isHorizontal ? 'flex-row' : 'flex-col',
+    'group flex relative cursor-pointer rounded-[8px]',
+    isHorizontal ? 'flex-row items-stretch' : 'flex-col items-start',
+    bordered &&
+      'overflow-clip border border-[var(--color-neutral-300)] transition-shadow duration-200 [@media(hover:hover)]:hover:shadow-[2px_2px_20px_0px_rgba(25,25,25,0.08)]',
     className
   );
 
@@ -147,7 +154,11 @@ export function Card({
       : { width: 320 };
 
   const rootStyle: React.CSSProperties = {
-    backgroundColor: cardFlashing ? 'var(--color-primary-light)' : 'var(--color-neutral-white)',
+    backgroundColor: cardFlashing
+      ? 'var(--color-primary-light)'
+      : bordered
+        ? 'var(--color-neutral-white)'
+        : 'transparent',
     ...responsiveWidth,
   };
 
@@ -155,18 +166,29 @@ export function Card({
     <div
       className={cx(
         'relative overflow-clip shrink-0',
-        isHorizontal ? 'h-[240px] w-[337px]' : 'h-[340px] w-full'
+        isHorizontal ? 'self-stretch min-h-[240px] w-[337px]' : 'h-[340px] w-full'
       )}
     >
       <img
         src={image}
         alt={imageAlt}
-        className="absolute inset-0 w-full h-full object-cover rounded-tl-[2px] rounded-tr-[2px] pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
 
-      {/* Vertical only: chip hidden below image in default, slides up on hover */}
+      {/*
+        Vertical only — data chip overlay.
+        - Mobile & tablet (< lg / 1024px): persistently visible.
+        - Desktop (>= lg): hidden below the image, slides up on hover.
+      */}
       {dataDate && !isHorizontal && (
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-34px] group-hover:bottom-[16px] opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 ease-in-out flex gap-[8px] items-start">
+        <div
+          className={cx(
+            'absolute left-1/2 -translate-x-1/2 flex gap-[8px] items-start transition-all duration-200 ease-in-out',
+            'bottom-[16px] opacity-100 pointer-events-auto',
+            'lg:bottom-[-34px] lg:opacity-0 lg:pointer-events-none',
+            'lg:group-hover:bottom-[16px] lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto'
+          )}
+        >
           <DataChip
             label={dataDate}
             href={chipHref}
@@ -184,7 +206,9 @@ export function Card({
         'flex flex-col items-start',
         isHorizontal
           ? 'flex-1 min-w-0 gap-[16px] px-[16px] pt-[16px] pb-[24px]'
-          : 'w-full shrink-0 gap-[16px] p-4 h-[190px]'
+          : bordered
+            ? 'w-full shrink-0 gap-[16px] p-4 h-[190px]'
+            : 'w-full shrink-0 gap-[16px] py-4 h-[190px]'
       )}
     >
       {/* Horizontal: chip lives in content area, always visible */}
@@ -207,7 +231,8 @@ export function Card({
         <h3
           className={cx(
             'text-[22px] font-semibold leading-[1.4] text-[var(--color-neutral-black)] m-0 line-clamp-2 w-full',
-            'group-hover:underline group-hover:decoration-[2px] group-hover:underline-offset-[2px]'
+            !bordered &&
+              'group-hover:underline group-hover:decoration-[2px] group-hover:underline-offset-[2px]'
           )}
         >
           {title}

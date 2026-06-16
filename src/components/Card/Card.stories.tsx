@@ -160,6 +160,11 @@ const meta: Meta<typeof Card> = {
       description:
         'Affects width on mobile only. `story` (default) → full width. `carousel` → 1 card + a peek of the next.',
     },
+    bordered: {
+      control: 'boolean',
+      description:
+        'Adds a 1px neutral border. On hover a soft shadow appears instead of the title underline.',
+    },
     href: { control: 'text', description: 'When set, the card renders as an `<a>` element.' },
     className: { control: 'text', description: 'Extra Tailwind classes on the root element.' },
   },
@@ -493,6 +498,55 @@ export const GridEightExamples: Story = {
           dataDate="2023 data"
           href="#detail"
           orientation="vertical"
+        />
+      </div>
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// 7. Bordered (hover reveals a soft shadow)
+// ---------------------------------------------------------------------------
+export const Bordered: Story = {
+  name: '7. Bordered (hover shadow)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The bordered variant has a 1px neutral border at rest. On hover a soft shadow appears (instead of the title underline used by the borderless variant). Hover a card to see the shadow.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap' }}>
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>
+          Borderless (hover → underline)
+        </p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis across NYC"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+        />
+      </div>
+
+      <div>
+        <p style={{ fontSize: '12px', marginBottom: '8px', color: '#666' }}>
+          Bordered (hover → shadow)
+        </p>
+        <Card
+          image={SAMPLE_IMAGE}
+          imageAlt="Brooklyn brownstone buildings"
+          title="COVID-19 Wage Loss Analysis across NYC"
+          description="description value that has to be at least one line but can be two lines"
+          readTime="7 min"
+          dataDate="2023 data"
+          orientation="vertical"
+          bordered
         />
       </div>
     </div>
