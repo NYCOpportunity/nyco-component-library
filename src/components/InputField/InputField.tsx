@@ -9,12 +9,14 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       placeholder,
       helperText,
       errorText,
+      showError = true,
       showClearButton = false,
       onClear,
       variant = 'outlined',
       id,
       className,
       disabled,
+      required,
       type = 'text',
       onFocus,
       onBlur,
@@ -29,7 +31,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     const helperId = `${inputId}-helper`;
     const errorId = `${inputId}-error`;
 
-    const hasError = !!errorText;
+    const hasError = showError && !!errorText;
     const hasHelper = !!helperText;
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -118,6 +120,15 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             className="w-full pr-[16px] text-[16px] leading-[1.5] font-normal text-[var(--color-text-primary)]"
           >
             {label}
+            {required && (
+              <>
+                <span aria-hidden="true" className="text-[var(--color-error-base)]">
+                  {' '}
+                  *
+                </span>
+                <span className="sr-only"> required</span>
+              </>
+            )}
           </label>
         )}
 
@@ -128,9 +139,11 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             type={type}
             placeholder={placeholder}
             disabled={disabled}
+            required={required}
             className={inputClasses}
             aria-describedby={describedBy}
             aria-invalid={hasError || undefined}
+            aria-required={required || undefined}
             onFocus={handleFocus}
             onBlur={handleBlur}
             {...inputProps}

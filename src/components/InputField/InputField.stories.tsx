@@ -14,6 +14,8 @@ const meta: Meta<typeof InputField> = {
       control: 'select',
       options: ['outlined', 'underlined'],
     },
+    showError: { control: 'boolean' },
+    required: { control: 'boolean' },
     disabled: { control: 'boolean' },
     showClearButton: { control: 'boolean' },
   },
@@ -101,6 +103,40 @@ export const WithErrorAndHelperText: Story = {
 };
 
 // ---------------------------------------------------------------------------
+// Error Hidden (showError=false)
+// ---------------------------------------------------------------------------
+export const WithErrorHidden: Story = {
+  args: {
+    label: 'Value',
+    placeholder: 'Input value category',
+    errorText: 'Value field specific error text',
+    helperText: 'Descriptive helper text',
+    showError: false,
+  },
+  render: (args) => (
+    <div style={{ maxWidth: 360 }}>
+      <InputField {...args} />
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
+// Required
+// ---------------------------------------------------------------------------
+export const Required: Story = {
+  args: {
+    label: 'Value',
+    placeholder: 'Input value category',
+    required: true,
+  },
+  render: (args) => (
+    <div style={{ maxWidth: 360 }}>
+      <InputField {...args} />
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------------
 // Disabled
 // ---------------------------------------------------------------------------
 export const Disabled: Story = {
@@ -150,91 +186,6 @@ export const Underlined: Story = {
   render: (args) => (
     <div style={{ maxWidth: 360 }}>
       <InputField {...args} />
-    </div>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// Figma State Matrix (node 9216:1490)
-// ---------------------------------------------------------------------------
-export const FigmaStateMatrix: Story = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-      <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-        <div style={{ width: 110, fontSize: 16, color: '#191919' }}>default</div>
-        <div style={{ width: 326 }}>
-          <InputField placeholder="Input value category" />
-        </div>
-        <div style={{ width: 326 }}>
-          <InputField value="3sHIn56" errorText="" readOnly />
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-        <div style={{ width: 110, fontSize: 16, color: '#191919' }}>hover</div>
-        <div style={{ width: 326 }}>
-          <InputField
-            className="[&>div:nth-child(2)]:bg-[var(--color-neutral-100)] [&>div:nth-child(2)]:border-transparent"
-            placeholder="Input value category"
-          />
-        </div>
-        <div style={{ width: 326 }}>
-          <InputField
-            className="[&>div:nth-child(2)]:bg-[var(--color-neutral-100)]"
-            value="3sHIn56"
-            errorText="Value field specific error text"
-            readOnly
-          />
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-        <div style={{ width: 110, fontSize: 16, color: '#191919' }}>select/focus</div>
-        <div style={{ width: 326 }}>
-          <InputField
-            className="[&>div:nth-child(2)]:border-[3px] [&>div:nth-child(2)]:border-[var(--color-border-focus)]"
-            value="|"
-            readOnly
-          />
-        </div>
-        <div style={{ width: 326 }}>
-          <InputField
-            className="[&>div:nth-child(2)]:border-[3px] [&>div:nth-child(2)]:border-[var(--color-border-error)]"
-            value="|"
-            errorText="Value field specific error text"
-            readOnly
-          />
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', gap: 24, alignItems: 'center', marginTop: 12 }}>
-        <div style={{ width: 110, fontSize: 16, color: '#191919' }}>disabled</div>
-        <div style={{ width: 326 }}>
-          <InputField placeholder="Input value category" disabled />
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', gap: 24, alignItems: 'center', marginTop: 20 }}>
-        <div style={{ width: 110, fontSize: 16, color: '#191919' }}>underlined</div>
-        <div style={{ width: 326 }}>
-          <InputField variant="underlined" placeholder="Input value category" />
-        </div>
-        <div style={{ width: 326 }}>
-          <InputField
-            variant="underlined"
-            className="[&>div:nth-child(2)]:border-[var(--color-neutral-700)]"
-            placeholder="Input value category"
-          />
-        </div>
-        <div style={{ width: 326 }}>
-          <InputField
-            variant="underlined"
-            className="[&>div:nth-child(2)]:border-b-[3px] [&>div:nth-child(2)]:border-[var(--color-border-focus)]"
-            value="|"
-            readOnly
-          />
-        </div>
-      </div>
     </div>
   ),
 };
