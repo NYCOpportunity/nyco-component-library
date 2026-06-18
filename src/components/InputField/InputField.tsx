@@ -33,10 +33,8 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     const hasHelper = !!helperText;
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      // Only show the focus ring for keyboard navigation (not mouse clicks)
-      if (e.target.matches(':focus-visible')) {
-        setIsFocused(true);
-      }
+      // Figma "select/focus" state applies on focus regardless of input method.
+      setIsFocused(true);
       onFocus?.(e);
     };
 
@@ -61,29 +59,50 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         : 'border-b-2 border-x-0 border-t-0 rounded-none';
 
     const entryFieldClasses = cx(
-      'flex items-center w-full overflow-hidden transition-colors',
+      'flex items-center w-full overflow-hidden',
       shapeClass,
-      // Disabled — static muted appearance, no interaction states
-      disabled && 'bg-[var(--color-neutral-white)] border-[var(--color-neutral-200)]',
-      // Focused — white bg, border turns focus-blue
+      // Disabled — filled neutral-200 with the standard idle border.
+      disabled && 'bg-[var(--color-neutral-200)] border-[var(--color-border-default)]',
+      // Focused — visually thicker without changing layout (drawn outside).
       !disabled &&
         isFocused &&
-        'bg-[var(--color-neutral-white)] border-[var(--color-border-focus)]',
-      // Normal (idle) — white bg, default border, hover fills with neutral-100 and hides border
+        cx(
+          'bg-[var(--color-neutral-white)]',
+          variant === 'outlined'
+            ? [
+                'outline outline-[2px] outline-offset-0',
+                hasError
+                  ? 'border-[var(--color-border-error)] outline-[var(--color-border-error)]'
+                  : 'border-[var(--color-border-focus)] outline-[var(--color-border-focus)]',
+              ].join(' ')
+            : [
+                'border-b-2',
+                hasError
+                  ? 'border-[var(--color-border-error)] shadow-[0_1px_0_0_var(--color-border-error)]'
+                  : 'border-[var(--color-border-focus)] shadow-[0_1px_0_0_var(--color-border-focus)]',
+              ].join(' ')
+        ),
+      // Idle + hover states vary by variant in the Figma state grid.
       !disabled &&
         !isFocused &&
-        [
+        cx(
           'bg-[var(--color-neutral-white)]',
           hasError ? 'border-[var(--color-border-error)]' : 'border-[var(--color-border-default)]',
-          '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)] [@media(hover:hover)]:hover:border-transparent',
-        ].join(' ')
+          variant === 'outlined'
+            ? hasError
+              ? '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)]'
+              : '[@media(hover:hover)]:hover:bg-[var(--color-neutral-100)] [@media(hover:hover)]:hover:border-transparent'
+            : hasError
+              ? '[@media(hover:hover)]:hover:border-[var(--color-border-error)]'
+              : '[@media(hover:hover)]:hover:border-[var(--color-neutral-700)]'
+        )
     );
 
     const inputClasses = cx(
       'flex-1 min-w-0 text-[16px] leading-[1.5] font-normal bg-transparent outline-none',
-      variant === 'outlined' ? 'px-[16px] py-[16px]' : 'pb-[4px] pr-[12px]',
+      variant === 'outlined' ? 'px-[16px] py-[16px]' : 'pb-[8px] pr-[12px]',
       disabled
-        ? 'text-[var(--color-neutral-200)] cursor-not-allowed placeholder:text-[var(--color-neutral-200)]'
+        ? 'text-[var(--color-text-secondary)] cursor-not-allowed placeholder:text-[var(--color-text-secondary)]'
         : 'text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)]'
     );
 
