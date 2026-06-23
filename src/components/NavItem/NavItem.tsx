@@ -43,8 +43,8 @@ function NorthEastIcon() {
 // ---------------------------------------------------------------------------
 const baseClasses = [
   'inline-flex items-center gap-1',
-  // Typography — Public Sans Regular 18px / lh 1.5 (body-regular spec)
-  'font-primary text-[18px] font-normal leading-[1.5] whitespace-nowrap',
+  // Typography — Desktop/Body/Regular
+  'body-regular whitespace-nowrap',
   // Reset anchor underline
   'no-underline',
   // Cursor

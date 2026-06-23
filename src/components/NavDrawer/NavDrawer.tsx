@@ -176,7 +176,7 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
           className={cx(
             'fixed inset-y-0 right-0 z-50',
             'w-screen md:w-[390px] md:max-w-[390px]',
-            'bg-[var(--color-neutral-100)] flex flex-col',
+            'bg-[var(--color-neutral-white)] flex flex-col',
             'pt-8 pb-8 px-4 overflow-y-auto',
             className
           )}
