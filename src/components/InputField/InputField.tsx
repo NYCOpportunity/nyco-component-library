@@ -63,8 +63,8 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     const entryFieldClasses = cx(
       'flex items-center w-full overflow-hidden',
       shapeClass,
-      // Disabled — filled neutral-200 with the standard idle border.
-      disabled && 'bg-[var(--color-neutral-200)] border-[var(--color-border-default)]',
+      // Disabled — lighter muted state (aligned with ListItem disabled tone).
+      disabled && 'bg-[var(--color-neutral-100)] border-[var(--color-border-default)]',
       // Focused — visually thicker without changing layout (drawn outside).
       !disabled &&
         isFocused &&
@@ -104,7 +104,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       'flex-1 min-w-0 text-[16px] leading-[1.5] font-normal bg-transparent outline-none',
       variant === 'outlined' ? 'px-[16px] py-[16px]' : 'pb-[8px] pr-[12px]',
       disabled
-        ? 'text-[var(--color-text-secondary)] cursor-not-allowed placeholder:text-[var(--color-text-secondary)]'
+        ? 'text-[var(--color-neutral-300)] cursor-not-allowed placeholder:text-[var(--color-neutral-300)]'
         : 'text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)]'
     );
 
