@@ -428,6 +428,48 @@
     font-weight: 400; /* regular */
   }
 
+  /* Mobile Navigation — Uncategorized */
+  .navigation-uncategorized-regular {
+    font-family: var(--font-primary);
+    font-size: 2rem; /* 32px */
+    letter-spacing: -0.02em;
+    line-height: 114%;
+    font-weight: 400; /* regular */
+  }
+
+  .navigation-uncategorized-medium {
+    font-family: var(--font-primary);
+    font-size: 2rem; /* 32px */
+    letter-spacing: -0.02em;
+    line-height: 114%;
+    font-weight: 500; /* medium */
+  }
+
+  .navigation-uncategorized-bold {
+    font-family: var(--font-primary);
+    font-size: 2rem; /* 32px */
+    letter-spacing: -0.02em;
+    line-height: 114%;
+    font-weight: 600; /* semi bold */
+  }
+
+  /* Mobile Navigation — Categorized */
+  .navigation-categorized-regular {
+    font-family: var(--font-primary);
+    font-size: 1.75rem; /* 28px */
+    letter-spacing: -0.02em;
+    line-height: 114%;
+    font-weight: 400; /* regular */
+  }
+
+  .navigation-categorized-medium {
+    font-family: var(--font-primary);
+    font-size: 1.75rem; /* 28px */
+    letter-spacing: -0.02em;
+    line-height: 114%;
+    font-weight: 500; /* medium */
+  }
+
   /* ============================================================
      MOBILE OVERRIDES — max-width: 999px
      Tablet sizing to be added later per spec

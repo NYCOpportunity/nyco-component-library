@@ -346,13 +346,32 @@ export interface FooterProps {
 }
 
 // *** NavDrawer Types ***
+
+export type NavDrawerVariant = 'category' | 'none';
+
+export interface NavDrawerSection {
+  /** Optional section heading (rendered in small uppercase text). */
+  category?: string;
+  /** Primary navigation links for the section. */
+  items: SiteNavItem[];
+}
+
 export interface NavDrawerProps {
   /** Whether the drawer is visible. */
   isOpen: boolean;
   /** Called when the drawer requests to close (close button, backdrop click, or Escape). */
   onClose: () => void;
-  /** Navigation items rendered as large display links. */
+  /** Navigation items rendered as large display links (used by `without-category` variant). */
   navItems?: SiteNavItem[];
+  /**
+   * Structured section data used by `category` variant.
+   * When omitted, the drawer falls back to a single unheaded section from `navItems`.
+   */
+  sections?: NavDrawerSection[];
+  /** Optional footer links shown at the bottom in smaller text (often external product links). */
+  footerLinks?: SiteNavItem[];
+  /** Layout variant. Defaults to `none`. */
+  variant?: NavDrawerVariant;
   /** Optional logo rendered at the bottom of the drawer. */
   logo?: React.ReactNode;
   /**

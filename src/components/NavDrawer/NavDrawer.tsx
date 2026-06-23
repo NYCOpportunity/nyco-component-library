@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { NavDrawerProps, SiteNavItem } from '../../types/components';
+import { NavDrawerProps, NavDrawerSection, SiteNavItem } from '../../types/components';
 import { cx } from '../../utils/cx';
-
-// ---------------------------------------------------------------------------
-// Icons — inline SVG (Material Design)
-// ---------------------------------------------------------------------------
 
 /** close — 24 × 24 */
 function CloseIcon() {
@@ -22,15 +18,12 @@ function CloseIcon() {
   );
 }
 
-/**
- * north_east — 40 × 40 container matching the Figma mobile-drawer icon size.
- * Path draws for a 24 × 24 viewBox and scales cleanly to 40 px.
- */
-function NorthEastLargeIcon() {
+/** north_east icon with configurable size. */
+function NorthEastIcon({ size = 40 }: { size?: number }) {
   return (
     <svg
-      width="40"
-      height="40"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
@@ -41,30 +34,33 @@ function NorthEastLargeIcon() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Shared focus ring
-// ---------------------------------------------------------------------------
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]';
 
-// ---------------------------------------------------------------------------
-// Individual drawer link — large display typography per Figma spec
-// ---------------------------------------------------------------------------
-function DrawerLink({ item }: { item: SiteNavItem }) {
-  const classes = cx(
-    'inline-flex items-center gap-1 no-underline cursor-pointer',
-    'w-full py-1 rounded-[var(--border-radius-base)]',
-    'font-primary font-semibold text-[38px] leading-[1.14] tracking-[-0.02em]',
-    item.external ? 'text-[var(--color-text-link)]' : 'text-[var(--color-neutral-black)]',
-    focusRing
-  );
-
+function DrawerLink({
+  item,
+  fontClass,
+  isActive = false,
+  iconSize = 40,
+}: {
+  item: SiteNavItem;
+  fontClass: string;
+  isActive?: boolean;
+  iconSize?: number;
+}) {
   if (item.href) {
     return (
       <a
         href={item.href}
-        className={classes}
-        aria-current={item.active ? 'page' : undefined}
+        className={cx(
+          'inline-flex items-center no-underline cursor-pointer rounded-[var(--border-radius-base)]',
+          'w-full',
+          'gap-1 py-1',
+          fontClass,
+          item.external ? 'text-[var(--color-text-link)]' : 'text-[var(--color-neutral-black)]',
+          focusRing
+        )}
+        aria-current={isActive ? 'page' : undefined}
         target={item.external ? '_blank' : undefined}
         rel={item.external ? 'noopener noreferrer' : undefined}
         onClick={item.onClick as React.MouseEventHandler<HTMLAnchorElement>}
@@ -72,7 +68,7 @@ function DrawerLink({ item }: { item: SiteNavItem }) {
         <span>{item.label}</span>
         {item.external && (
           <>
-            <NorthEastLargeIcon />
+            <NorthEastIcon size={iconSize} />
             <span className="sr-only">(opens in a new tab)</span>
           </>
         )}
@@ -83,7 +79,14 @@ function DrawerLink({ item }: { item: SiteNavItem }) {
   return (
     <button
       type="button"
-      className={classes}
+      className={cx(
+        'inline-flex items-center no-underline cursor-pointer rounded-[var(--border-radius-base)]',
+        'w-full',
+        'gap-1 py-1',
+        fontClass,
+        item.external ? 'text-[var(--color-text-link)]' : 'text-[var(--color-neutral-black)]',
+        focusRing
+      )}
       onClick={item.onClick as React.MouseEventHandler<HTMLButtonElement>}
     >
       {item.label}
@@ -100,7 +103,10 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
     {
       isOpen,
       onClose,
+      variant = 'none',
       navItems = [],
+      sections,
+      footerLinks = [],
       logo,
       id = 'nav-drawer',
       triggerRef,
@@ -110,6 +116,11 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
     ref
   ) => {
     const closeBtnRef = React.useRef<HTMLButtonElement>(null);
+    const displayFontClass =
+      variant === 'category' ? 'navigation-categorized-medium' : 'navigation-uncategorized-regular';
+
+    const resolvedSections: NavDrawerSection[] =
+      sections && sections.length > 0 ? sections : [{ items: navItems }];
 
     // Central close handler — always calls onClose then returns focus to trigger
     const handleClose = React.useCallback(() => {
@@ -164,41 +175,84 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
           aria-label={label}
           className={cx(
             'fixed inset-y-0 right-0 z-50',
-            'w-full max-w-[400px]',
-            'bg-white flex flex-col justify-between',
-            'pt-[151px] pb-14 px-6 overflow-y-auto',
+            'w-screen md:w-[390px] md:max-w-[390px]',
+            'bg-[var(--color-neutral-100)] flex flex-col',
+            'pt-8 pb-8 px-4 overflow-y-auto',
             className
           )}
         >
-          {/* Close button */}
-          <button
-            ref={closeBtnRef}
-            type="button"
-            onClick={handleClose}
-            aria-label="Close navigation menu"
-            className={cx(
-              'absolute top-[91px] right-3 w-12 py-3',
-              'flex items-center justify-center',
-              'rounded-[var(--border-radius-base)]',
-              focusRing
-            )}
-          >
-            <CloseIcon />
-          </button>
+          {/* Header row */}
+          <div className="flex justify-between items-center h-[56px] mb-4">
+            <div className="pt-1 flex items-center">{logo}</div>
+            <button
+              ref={closeBtnRef}
+              type="button"
+              onClick={handleClose}
+              aria-label="Close navigation menu"
+              className={cx(
+                'flex items-center',
+                'rounded-[8px]',
+                variant === 'category' && 'bg-[var(--color-neutral-200)]',
+                focusRing
+              )}
+            >
+              <CloseIcon />
+            </button>
+          </div>
 
-          {/* Navigation list */}
-          <nav aria-label={label}>
-            <ul className="flex flex-col gap-[6px] list-none m-0 p-0">
-              {navItems.map((item, i) => (
-                <li key={i}>
-                  <DrawerLink item={item} />
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {variant === 'category' ? (
+            <div className="flex flex-col gap-6">
+              <nav aria-label={label} className="flex-1">
+                <div className="flex flex-col gap-10">
+                  {resolvedSections.map((section, i) => (
+                    <section key={i}>
+                      {section.category && (
+                        <p className="mb-2 text-[11px] leading-[1.2] tracking-[0.04em] uppercase text-[var(--color-neutral-700)]">
+                          {section.category}
+                        </p>
+                      )}
+                      <ul className="flex flex-col gap-[2px] list-none m-0 p-0">
+                        {section.items.map((item, j) => (
+                          <li key={`${i}-${j}`}>
+                            <DrawerLink
+                              item={item}
+                              fontClass={displayFontClass}
+                              isActive={!!item.active}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              </nav>
 
-          {/* Logo anchored to the bottom */}
-          {logo && <div className="shrink-0">{logo}</div>}
+              {footerLinks.length > 0 && (
+                <ul className="list-none m-0 mt-6 p-0 flex flex-col gap-[2px]">
+                  {footerLinks.map((item, i) => (
+                    <li key={`footer-${i}`}>
+                      <DrawerLink
+                        item={item}
+                        fontClass="body-bold"
+                        isActive={!!item.active}
+                        iconSize={28}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ) : (
+            <nav aria-label={label} className="flex-1">
+              <ul className="flex flex-col gap-[2px] list-none m-0 p-0">
+                {navItems.map((item, i) => (
+                  <li key={i}>
+                    <DrawerLink item={item} fontClass={displayFontClass} isActive={!!item.active} />
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
         </div>
       </>
     );
