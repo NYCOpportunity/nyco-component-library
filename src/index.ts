@@ -51,3 +51,6 @@ export type { CardCarouselProps, CardCarouselItem } from './types/components';
 
 export { ToastMessage } from './components/ToastMessage';
 export type { ToastMessageProps, ToastMessageType } from './types/components';
+
+export { InputField } from './components/InputField';
+export type { InputFieldProps, InputFieldVariant } from './types/components';
