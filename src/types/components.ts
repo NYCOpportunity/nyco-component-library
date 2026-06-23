@@ -431,6 +431,12 @@ export interface SiteNavigationProps {
   logo: React.ReactNode;
   /** Navigation items. Desktop: `NavItem` links. Mobile drawer: large display-style links. */
   navItems?: SiteNavItem[];
+  /** Mobile drawer layout variant. Defaults to `'none'`. */
+  drawerVariant?: NavDrawerVariant;
+  /** Sectioned data for categorized mobile drawer variant. */
+  drawerSections?: NavDrawerSection[];
+  /** Optional footer links shown at the bottom of categorized mobile drawer. */
+  drawerFooterLinks?: SiteNavItem[];
   /**
    * When `true`, shows a search icon button in the mobile bar to the left of the hamburger.
    * Defaults to `false`.

@@ -57,6 +57,22 @@ const defaultNavItems: SiteNavItem[] = [
   { label: 'Equity Data', href: 'https://example.com', external: true },
 ];
 
+const categorizedSections = [
+  {
+    category: 'Data',
+    items: [
+      { label: 'Data Tool', href: '#' },
+      { label: 'Findings', href: '#' },
+      { label: 'Methodology', href: '#', active: true },
+    ],
+  },
+];
+
+const drawerFooterLinks: SiteNavItem[] = [
+  { label: 'Workforce Data', href: 'https://example.com', external: true },
+  { label: 'Equity Data', href: 'https://example.com', external: true },
+];
+
 // ---------------------------------------------------------------------------
 // Meta
 // ---------------------------------------------------------------------------
@@ -159,16 +175,24 @@ export const Mobile: Story = {
 };
 
 /**
- * Mobile with search — same as Mobile but also shows the search icon button.
+ * Mobile drawer using categorized variant with section heading and footer links.
  */
-export const MobileWithSearch: Story = {
-  args: { showSearch: true },
+export const CategoryDrawer: Story = {
+  args: {
+    defaultOpen: true,
+    drawerVariant: 'category',
+    drawerSections: categorizedSections,
+    drawerFooterLinks,
+  },
   parameters: {
-    viewport: { defaultViewport: 'mobile2' },
-    docs: {
-      description: {
-        story: 'Mobile bar with the optional search icon to the left of the hamburger.',
+    viewport: {
+      viewports: {
+        drawerCanvas: {
+          name: 'Drawer canvas',
+          styles: { width: '600px', height: '900px' },
+        },
       },
+      defaultViewport: 'drawerCanvas',
     },
   },
 };

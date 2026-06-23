@@ -58,6 +58,9 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
     {
       logo,
       navItems = [],
+      drawerVariant = 'none',
+      drawerSections,
+      drawerFooterLinks = [],
       showSearch = false,
       onSearchClick,
       mobileMenuLabel = 'Open navigation menu',
@@ -127,7 +130,10 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
           id={DRAWER_ID}
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
+          variant={drawerVariant}
           navItems={navItems}
+          sections={drawerSections}
+          footerLinks={drawerFooterLinks}
           logo={logo}
           triggerRef={menuBtnRef}
         />
