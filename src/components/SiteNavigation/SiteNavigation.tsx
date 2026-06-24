@@ -3,6 +3,7 @@ import { SiteNavigationProps } from '../../types/components';
 import { NavItem } from '../NavItem';
 import { NavDrawer } from '../NavDrawer';
 import { cx } from '../../utils/cx';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 // ---------------------------------------------------------------------------
 // Icons — inline SVG (Material Design)
@@ -57,6 +58,9 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
     {
       logo,
       navItems = [],
+      drawerVariant = 'none',
+      drawerSections,
+      drawerFooterLinks = [],
       showSearch = false,
       onSearchClick,
       mobileMenuLabel = 'Open navigation menu',
@@ -67,6 +71,13 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
   ) => {
     const [isOpen, setIsOpen] = React.useState(defaultOpen);
     const menuBtnRef = React.useRef<HTMLButtonElement>(null);
+    const isMobile = useIsMobile(1000);
+
+    React.useEffect(() => {
+      if (!isMobile && isOpen) {
+        setIsOpen(false);
+      }
+    }, [isMobile, isOpen]);
 
     return (
       <header ref={ref} className={cx('relative', className)}>
@@ -119,7 +130,10 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
           id={DRAWER_ID}
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
+          variant={drawerVariant}
           navItems={navItems}
+          sections={drawerSections}
+          footerLinks={drawerFooterLinks}
           logo={logo}
           triggerRef={menuBtnRef}
         />

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { NavDrawer } from './NavDrawer';
-import type { SiteNavItem } from '../../types/components';
+import type { NavDrawerSection, SiteNavItem } from '../../types/components';
 
 // ---------------------------------------------------------------------------
 // Demo logo
@@ -41,11 +41,40 @@ function DemoLogo() {
 // Shared nav items
 // ---------------------------------------------------------------------------
 const defaultNavItems: SiteNavItem[] = [
+  { label: 'Home', href: '#' },
   { label: 'Data Tool', href: '#' },
   { label: 'Findings', href: '#' },
   { label: 'Methodology', href: '#', active: true },
   { label: 'Workforce Data', href: 'https://example.com', external: true },
   { label: 'Equity Data', href: 'https://example.com', external: true },
+];
+
+const categorizedSections: NavDrawerSection[] = [
+  {
+    category: 'Nav item category',
+    items: [
+      { label: 'Nav item', href: '#' },
+      { label: 'Nav item', href: '#' },
+      { label: 'Nav item', href: '#' },
+      { label: 'External link', href: 'https://example.com', external: true },
+    ],
+  },
+  {
+    category: 'Nav item category',
+    items: [
+      { label: 'Nav item', href: '#' },
+      { label: 'Nav item', href: '#' },
+    ],
+  },
+  {
+    category: 'Nav item category',
+    items: [{ label: 'Nav item', href: '#' }],
+  },
+];
+
+const footerProductLinks: SiteNavItem[] = [
+  { label: 'External product link', href: 'https://example.com', external: true },
+  { label: 'External product link', href: 'https://example.com', external: true },
 ];
 
 // ---------------------------------------------------------------------------
@@ -82,7 +111,10 @@ function DrawerDemo(props: Partial<React.ComponentProps<typeof NavDrawer>>) {
         {...props}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
+        variant={props.variant ?? 'none'}
         navItems={props.navItems ?? defaultNavItems}
+        sections={props.sections}
+        footerLinks={props.footerLinks}
         logo={props.logo ?? <DemoLogo />}
         triggerRef={triggerRef}
       />
@@ -151,10 +183,23 @@ type Story = StoryObj<typeof meta>;
 // ---------------------------------------------------------------------------
 
 /**
- * Default — click "Open drawer" to see the side-sheet with a mix of internal and external links.
+ * Default variant (`none`) — large nav links with optional external arrows.
  */
 export const Default: Story = {
-  render: () => <DrawerDemo />,
+  render: () => <DrawerDemo variant="none" />,
+};
+
+/**
+ * Categorized variant (`category`) with section headings and footer product links.
+ */
+export const Category: Story = {
+  render: () => (
+    <DrawerDemo
+      variant="category"
+      sections={categorizedSections}
+      footerLinks={footerProductLinks}
+    />
+  ),
 };
 
 /**
