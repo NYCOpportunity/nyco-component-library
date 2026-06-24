@@ -14,11 +14,8 @@ const focusRing =
 // ---------------------------------------------------------------------------
 function FooterNavLink({ link }: { link: FooterLink }) {
   const textClasses = cx(
-    'font-primary leading-[1.5]',
-    // Desktop 18px / Mobile 16px
-    'text-[18px] max-[999px]:text-[16px]',
-    'text-[var(--color-neutral-black)]',
-    link.bold ? 'font-semibold' : 'font-normal'
+    link.bold ? 'body-bold' : 'body-regular',
+    'text-[var(--color-neutral-black)]'
   );
 
   if (link.href) {
@@ -29,8 +26,9 @@ function FooterNavLink({ link }: { link: FooterLink }) {
         rel={link.external ? 'noopener noreferrer' : undefined}
         onClick={link.onClick as React.MouseEventHandler<HTMLAnchorElement>}
         className={cx(
-          'block px-2 py-2 no-underline rounded-[var(--border-radius-base)]',
+          'block no-underline rounded-[var(--border-radius-base)]',
           '[@media(hover:hover)]:hover:underline [@media(hover:hover)]:hover:underline-offset-2',
+          'transition-colors',
           textClasses,
           focusRing
         )}
@@ -41,7 +39,7 @@ function FooterNavLink({ link }: { link: FooterLink }) {
     );
   }
 
-  return <span className={cx('block px-2 py-2', textClasses)}>{link.label}</span>;
+  return <span className={cx('block', textClasses)}>{link.label}</span>;
 }
 
 // ---------------------------------------------------------------------------
@@ -70,96 +68,105 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
       <footer ref={ref} className={cx('border-t border-[var(--color-neutral-300)]', className)}>
         {/* ── Top zone: white bg ─────────────────────────────────────────── */}
         {hasTopSection && (
-          <div
-            className={cx(
-              'bg-white py-10',
-              // Desktop: 56 px h-padding, single row
-              'min-[1000px]:px-14 min-[1000px]:flex min-[1000px]:items-start min-[1000px]:justify-between',
-              // Mobile: 16 px h-padding, stacked column
-              'max-[999px]:px-4 max-[999px]:flex max-[999px]:flex-col max-[999px]:gap-6'
-            )}
-          >
-            {/* Logo + site name */}
-            {logo && (
-              <div className="shrink-0 min-[1000px]:w-60 min-[1000px]:py-2 max-[999px]:pl-2">
-                {logo}
-              </div>
-            )}
+          <div className="bg-white">
+            <div
+              className={cx(
+                'mx-auto',
+                // Mobile: 16 px h-padding
+                'px-4 py-12',
+                // Tablet: 24 px h-padding
+                'min-[600px]:max-[999px]:px-6',
+                // Desktop: 56 px h-padding
+                'min-[1000px]:px-14 min-[1000px]:py-16'
+              )}
+            >
+              <div
+                className={cx(
+                  // Mobile: single column stack
+                  'flex flex-col gap-8',
+                  // Desktop: grid layout with logo column + 3 equal columns
+                  'min-[1000px]:grid min-[1000px]:[grid-template-columns:minmax(12rem,auto)_1fr_1fr_1fr] min-[1000px]:gap-12'
+                )}
+              >
+                {/* Logo + site name */}
+                {logo && <div className="h-fit w-fit">{logo}</div>}
 
-            {/* Site nav link groups */}
-            {siteNavGroups.map((group, i) => (
-              <div key={i} className="flex flex-col items-start min-[1000px]:w-80">
-                {group.links.map((link, j) => (
-                  <FooterNavLink key={j} link={link} />
+                {/* Site nav link groups */}
+                {siteNavGroups.map((group, i) => (
+                  <div key={i} className="flex flex-col gap-4">
+                    {group.links.map((link, j) => (
+                      <FooterNavLink key={j} link={link} />
+                    ))}
+                  </div>
                 ))}
-              </div>
-            ))}
 
-            {/* Connect / CTA section */}
-            {(connectTitle || onConnectClick) && (
-              <div className="flex flex-col gap-6 items-start min-[1000px]:w-80">
-                {connectTitle && (
-                  <p className="font-primary font-semibold text-[22px] leading-[1.4] text-[var(--color-neutral-black)]">
-                    {connectTitle}
-                  </p>
-                )}
-                {onConnectClick && (
-                  <Button onClick={onConnectClick} className="max-[999px]:w-full">
-                    {connectButtonLabel}
-                  </Button>
+                {/* Connect / CTA section */}
+                {(connectTitle || onConnectClick) && (
+                  <div className="flex flex-col gap-6 items-start">
+                    {connectTitle && (
+                      <p className="component-card-title text-[var(--color-neutral-black)]">
+                        {connectTitle}
+                      </p>
+                    )}
+                    {onConnectClick && (
+                      <Button onClick={onConnectClick} className="max-[999px]:w-full">
+                        {connectButtonLabel}
+                      </Button>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
+            </div>
           </div>
         )}
 
         {/* ── Bottom zone: neutral-100 bg ────────────────────────────────── */}
         {hasBottomSection && (
-          <div
-            className={cx(
-              'bg-[var(--color-neutral-100)] py-10 flex flex-col justify-between gap-10',
-              'min-[1000px]:px-14',
-              'max-[999px]:px-4 max-[999px]:gap-6'
-            )}
-          >
-            {/* "More on nyc.gov" + link groups */}
-            {nycLinkGroups.length > 0 && (
-              <div
-                className={cx(
-                  'flex items-start',
-                  'min-[1000px]:justify-between',
-                  'max-[999px]:flex-col max-[999px]:gap-6'
-                )}
-              >
-                {/* Section heading */}
-                <p className="font-primary font-semibold text-[22px] leading-[1.4] text-[var(--color-neutral-black)] shrink-0 min-[1000px]:w-60">
-                  {nycSectionTitle}
-                </p>
-
-                {/* NYC link groups */}
+          <div className="bg-[var(--color-neutral-100)]">
+            <div
+              className={cx(
+                'mx-auto flex flex-col gap-8',
+                // Mobile: 16 px h-padding
+                'px-4 py-12',
+                // Tablet: 24 px h-padding
+                'min-[600px]:max-[999px]:px-6 min-[600px]:max-[999px]:gap-8',
+                // Desktop: 56 px h-padding
+                'min-[1000px]:px-14 min-[1000px]:py-16 min-[1000px]:gap-12'
+              )}
+            >
+              {/* "More on nyc.gov" + link groups */}
+              {nycLinkGroups.length > 0 && (
                 <div
                   className={cx(
-                    'flex items-start',
-                    'max-[999px]:flex-col max-[999px]:gap-4 max-[999px]:w-full'
+                    // Mobile: stacked
+                    'flex flex-col gap-8',
+                    // Desktop: grid with heading column + 3 link columns
+                    'min-[1000px]:grid min-[1000px]:[grid-template-columns:minmax(12rem,auto)_1fr_1fr_1fr] min-[1000px]:gap-12'
                   )}
                 >
+                  {/* Section heading */}
+                  <p className="component-card-title text-[var(--color-neutral-black)] whitespace-nowrap">
+                    {nycSectionTitle}
+                  </p>
+
+                  {/* NYC link groups */}
                   {nycLinkGroups.map((group, i) => (
-                    <div key={i} className="flex flex-col items-start min-[1000px]:w-80">
+                    <div key={i} className="flex flex-col gap-4">
                       {group.links.map((link, j) => (
                         <FooterNavLink key={j} link={link} />
                       ))}
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Copyright line */}
-            {copyright && (
-              <p className="font-primary text-[14px] leading-[1.6] text-[var(--color-neutral-black)]">
-                {copyright}
-              </p>
-            )}
+              {/* Copyright line */}
+              {copyright && (
+                <p className="ui-14-regular text-[var(--color-neutral-black)] border-t border-[var(--color-neutral-300)] pt-8">
+                  {copyright}
+                </p>
+              )}
+            </div>
           </div>
         )}
       </footer>

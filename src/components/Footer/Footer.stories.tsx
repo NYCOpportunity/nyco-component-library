@@ -184,8 +184,21 @@ type Story = StoryObj<typeof meta>;
 // ---------------------------------------------------------------------------
 
 /**
+ * Docs — reference state for the footer content and layout.
+ */
+export const Docs: Story = {
+  args: {
+    logo: <DemoLogo />,
+    siteNavGroups,
+    connectTitle: 'Receive updates about the Workforce Data Portal',
+    connectButtonLabel: 'Button',
+    nycLinkGroups,
+    copyright,
+  },
+};
+
+/**
  * Full footer — both zones, logo, nav links, CTA, and copyright.
- * Matches the Figma Desktop spec exactly.
  */
 export const Default: Story = {
   args: {
@@ -205,57 +218,13 @@ export const Mobile: Story = {
   args: {
     logo: <DemoLogo />,
     siteNavGroups,
-    connectTitle: 'Sign up for more updates',
+    connectTitle: 'Receive updates about the Workforce Data Portal',
     connectButtonLabel: 'Button',
     nycLinkGroups,
     copyright,
   },
   parameters: {
+    layout: 'fullscreen',
     viewport: { defaultViewport: 'mobile2' },
-  },
-};
-
-/**
- * Top section only — no nyc.gov links or copyright.
- */
-export const TopSectionOnly: Story = {
-  args: {
-    logo: <DemoLogo />,
-    siteNavGroups,
-    connectTitle: 'Receive updates about the Workforce Data Portal',
-    connectButtonLabel: 'Sign up',
-  },
-};
-
-/**
- * Bottom section only — no site nav or CTA.
- */
-export const BottomSectionOnly: Story = {
-  args: {
-    nycLinkGroups,
-    copyright,
-  },
-};
-
-/**
- * Minimal — logo and copyright only.
- */
-export const Minimal: Story = {
-  args: {
-    logo: <DemoLogo />,
-    copyright,
-  },
-};
-
-/**
- * No logo — for sites where the brand is shown elsewhere.
- */
-export const NoLogo: Story = {
-  args: {
-    siteNavGroups,
-    connectTitle: 'Receive updates',
-    connectButtonLabel: 'Sign up',
-    nycLinkGroups,
-    copyright,
   },
 };
