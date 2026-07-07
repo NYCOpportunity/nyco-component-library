@@ -62,3 +62,6 @@ export type {
   NavDrawerVariant,
   SiteNavItem,
 } from './types/components';
+
+export { Icon, icons, iconNames } from './components/Icon';
+export type { IconProps, IconName, IconDefinition } from './components/Icon';
