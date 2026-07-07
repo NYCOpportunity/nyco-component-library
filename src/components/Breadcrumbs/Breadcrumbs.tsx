@@ -1,39 +1,10 @@
 import * as React from 'react';
 import { BreadcrumbsProps } from '../../types/components';
+import { Icon } from '../Icon';
 
-const ChevronRight = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path
-      d="M6 3.5L10.5 8L6 12.5"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+const ChevronRight = () => <Icon name="chevron-right-thin" size={16} />;
 
-const DotsIcon = () => (
-  <svg
-    width="13"
-    height="4"
-    viewBox="0 0 13 4"
-    fill="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <circle cx="1.5" cy="2" r="1.5" />
-    <circle cx="6.5" cy="2" r="1.5" />
-    <circle cx="11.5" cy="2" r="1.5" />
-  </svg>
-);
+const DotsIcon = () => <Icon name="dots" width={13} height={4} />;
 
 const Separator = () => (
   <span className="shrink-0 text-[var(--color-neutral-black)]" aria-hidden="true">

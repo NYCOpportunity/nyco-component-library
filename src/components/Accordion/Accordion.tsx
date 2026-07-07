@@ -2,25 +2,10 @@ import * as React from 'react';
 import { AccordionProps } from '../../types/components';
 import { cx } from '../../utils/cx';
 import { useFlash } from '../../hooks/useFlash';
+import { Icon } from '../Icon';
 
 const PlusIcon = ({ rotate }: { rotate?: boolean }) => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-    className={rotate ? 'rotate-45 transition-transform' : 'transition-transform'}
-  >
-    <path
-      d="M12 5v14M5 12h14"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
+  <Icon name="add" className={rotate ? 'rotate-45 transition-transform' : 'transition-transform'} />
 );
 
 export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(

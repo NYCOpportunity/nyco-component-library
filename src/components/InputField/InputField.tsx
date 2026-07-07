@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { InputFieldProps } from '../../types/components';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   (
@@ -161,21 +162,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               )}
               aria-label="Clear input"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                className="w-[18px] h-[18px]"
-              >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <Icon name="close-thin" className="h-[18px] w-[18px]" />
             </button>
           )}
         </div>

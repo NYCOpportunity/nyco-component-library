@@ -2,91 +2,30 @@ import * as React from 'react';
 import { PaginationProps } from '../../types/components';
 import { cx } from '../../utils/cx';
 import { useFlash } from '../../hooks/useFlash';
+import { Icon } from '../Icon';
 
 // ---------------------------------------------------------------------------
 // Icons
 // ---------------------------------------------------------------------------
 
 function ChevronLeftIcon() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ display: 'block', flexShrink: 0 }}
-    >
-      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-    </svg>
-  );
+  return <Icon name="chevron-left" style={{ display: 'block', flexShrink: 0 }} />;
 }
 
 function ChevronRightIcon() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ display: 'block', flexShrink: 0 }}
-    >
-      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-    </svg>
-  );
+  return <Icon name="chevron-right" style={{ display: 'block', flexShrink: 0 }} />;
 }
 
 function EllipsisIcon() {
-  return (
-    <svg
-      width="13"
-      height="4"
-      viewBox="0 0 13 4"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ display: 'block' }}
-    >
-      <circle cx="1.5" cy="2" r="1.5" />
-      <circle cx="6.5" cy="2" r="1.5" />
-      <circle cx="11.5" cy="2" r="1.5" />
-    </svg>
-  );
+  return <Icon name="dots" width={13} height={4} style={{ display: 'block' }} />;
 }
 
 function CaretUpIcon() {
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ display: 'block' }}
-    >
-      <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
-    </svg>
-  );
+  return <Icon name="chevron-up" size={22} style={{ display: 'block' }} />;
 }
 
 function CaretDownIcon() {
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ display: 'block' }}
-    >
-      <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
-    </svg>
-  );
+  return <Icon name="chevron-down" size={22} style={{ display: 'block' }} />;
 }
 
 // ---------------------------------------------------------------------------
