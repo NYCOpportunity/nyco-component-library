@@ -13,37 +13,54 @@ const meta: Meta<typeof GlobalNavigation> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          '`GlobalNavigation` is the NYC government-wide utility banner that appears at the very top ' +
-          'of every page. It identifies the page as an official City of New York website and optionally ' +
-          'provides a language/translate toggle.\n\n' +
-          '---\n\n' +
-          '## Layout\n\n' +
-          '**Desktop (≥ 1000 px):** Single 33 px row — NYC logo + "Official website…" text on the ' +
-          'left, optional Language toggle on the right. Horizontal padding `32px`.\n\n' +
-          '**Mobile (< 1000 px):** When `showTranslate` is `true`, the language toggle renders in a ' +
-          '34 px row **above** the site identity row. When `showTranslate` is `false`, a single compact ' +
-          'row is shown. Horizontal padding `16px`.\n\n' +
-          '---\n\n' +
-          '## Props\n\n' +
-          '| Prop | Type | Default | Description |\n' +
-          '|---|---|---|---|\n' +
-          '| `showTranslate` | `boolean` | `true` | Show the language toggle |\n' +
-          '| `language` | `string` | `"English"` | Label shown in the toggle |\n' +
-          '| `onLanguageClick` | `MouseEventHandler` | — | Called when the toggle is clicked |\n\n' +
-          '---\n\n' +
-          '## Accessibility\n\n' +
-          '- The language toggle is a `<button type="button">` with a descriptive `aria-label`.\n' +
-          '- The NYC logo `<img>` carries `alt="NYC"`.\n' +
-          '- All interactive elements have a visible focus ring via `--color-border-focus`.\n\n' +
-          '---\n\n' +
-          '## Design Tokens\n\n' +
-          '| Property | Token | Value |\n' +
-          '|---|---|---|\n' +
-          '| Background | `--color-neutral-100` | `#f5f5f5` |\n' +
-          '| Border | `--color-neutral-300` | `#dddddd` |\n' +
-          '| Text / icons | `--color-neutral-900` | `#333333` |\n' +
-          '| Focus ring | `--color-border-focus` | `#284cca` |\n',
+        component: [
+          'The **GlobalNavigation** banner is the NYC government-wide utility bar pinned to the very',
+          'top of every page. It identifies the page as an official City of New York website and,',
+          'optionally, exposes a language / translate toggle. Place it above the site-level',
+          '`SiteNavigation` header.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| NYC logo + official-site text | — | ✅ (built-in) | "Official website of the City of New York"; logo swaps between a desktop and mobile asset. |',
+          '| Language toggle | `showTranslate`, `language`, `onLanguageClick` | — | Translate icon + `Language | {language}` + chevron. Hidden when `showTranslate` is `false`. |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { GlobalNavigation } from "@nycopportunity/component-library";',
+          '',
+          '// Default — includes the English language toggle',
+          '<GlobalNavigation onLanguageClick={() => openLanguageMenu()} />',
+          '',
+          '// Custom language label, or hide the toggle entirely',
+          '<GlobalNavigation language="Español" onLanguageClick={openLanguageMenu} />',
+          '<GlobalNavigation showTranslate={false} />',
+          '```',
+          '',
+          '---',
+          '',
+          '## Responsive',
+          '',
+          '| Breakpoint | Layout |',
+          '| --- | --- |',
+          '| Desktop (≥ 1000 px) | Single 33 px row: logo + text on the left, language toggle inline on the right. 32 px h-padding. |',
+          '| Mobile (< 1000 px) | Language toggle sits in its own 34 px row **above** the site-identity row; text may wrap. 16 px h-padding. |',
+          '',
+          '---',
+          '',
+          '## Accessibility',
+          '',
+          '- The language toggle is a `<button type="button">` with a descriptive `aria-label`',
+          '  (`"Language: {language}. Click to change language"`).',
+          '- The NYC logo `<img>` carries `alt="NYC"`.',
+          '- The toggle shows a visible focus ring via `--color-border-focus` and underlines on hover.',
+        ].join('\n'),
       },
     },
   },

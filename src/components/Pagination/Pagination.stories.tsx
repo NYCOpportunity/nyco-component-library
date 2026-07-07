@@ -21,25 +21,71 @@ const meta: Meta<typeof Pagination> = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'A pagination control for navigating paged content.\n\n' +
-          '---\n\n' +
-          '## Behavior\n\n' +
-          'Always renders exactly **7 page slots** (not counting the prev/next arrows). ' +
-          'The first and last page are always visible. ' +
-          'An **ellipsis (`...`) button** appears whenever it would hide **2 or more** consecutive pages. ' +
-          'Clicking the ellipsis opens a **dropdown** listing the hidden page numbers — ' +
-          'selecting any of them navigates there and closes the dropdown.\n\n' +
-          'When there are 7 or fewer total pages, all pages are shown directly with no ellipsis.\n\n' +
-          '## Controls\n\n' +
-          '- **Prev arrow** (`<`) — disabled when on page 1.\n' +
-          '- **Next arrow** (`>`) — disabled when on the last page.\n\n' +
-          '## Usage\n\n' +
-          'Always use in controlled mode — manage `page` state externally and pass it back via `onChange`:\n\n' +
-          '```tsx\n' +
-          'const [page, setPage] = React.useState(1);\n' +
-          '<Pagination page={page} totalPages={20} onChange={setPage} />\n' +
+        component: [
+          'A **pagination control** for navigating paged content — search results, tables, or any',
+          'list split across multiple pages. It is a controlled component: you own the current',
+          '`page` in state and update it from `onChange`.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Prop | Type | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| `page` | `number` | ✅ | Current page (1-indexed). |',
+          '| `totalPages` | `number` | ✅ | Total number of pages. |',
+          '| `onChange` | `(page: number) => void` | ✅ | Fired when the user navigates. |',
+          '| `expandableEllipsis` | `boolean` | — | When `true`, the `…` opens a dropdown of hidden pages. Defaults to a static indicator. |',
+          '| `pageSize` | `number` | — | Current items-per-page value. |',
+          '| `pageSizeOptions` | `number[]` | — | Options for the "Results per page" dropdown. |',
+          '| `onPageSizeChange` | `(size: number) => void` | — | Fired when a new page size is picked. |',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { Pagination } from "@nycopportunity/component-library";',
+          '',
+          '// Controlled — manage `page` externally',
+          'const [page, setPage] = React.useState(1);',
+          '<Pagination page={page} totalPages={20} onChange={setPage} />',
+          '',
+          '// With an expandable ellipsis and a results-per-page dropdown',
+          'const [size, setSize] = React.useState(25);',
+          '<Pagination',
+          '  page={page}',
+          '  totalPages={20}',
+          '  onChange={setPage}',
+          '  expandableEllipsis',
+          '  pageSize={size}',
+          '  pageSizeOptions={[10, 25, 50, 100]}',
+          '  onPageSizeChange={setSize}',
+          '/>',
           '```',
+          '',
+          '## Behavior',
+          '',
+          'The bar always renders exactly **7 page slots** (plus the prev/next arrows). The first',
+          'and last page are always visible. An **ellipsis (`…`)** appears whenever it would hide',
+          '**2 or more** consecutive pages; with 7 or fewer total pages, every page is shown and no',
+          'ellipsis is needed.',
+          '',
+          'With `expandableEllipsis`, clicking the `…` opens a **dropdown** of the hidden page',
+          'numbers — picking one navigates there and closes the dropdown (it also closes on outside',
+          'click). Without it, the `…` is a static, non-interactive indicator.',
+          '',
+          '## Controls',
+          '',
+          '- **Prev arrow** (`‹`) — disabled on page 1.',
+          '- **Next arrow** (`›`) — disabled on the last page.',
+          '',
+          '## Accessibility',
+          '',
+          '- Every page is a `<button>` with `aria-label="Page N"`; the active page adds',
+          '  `aria-current="page"`.',
+          '- Prev/next expose `aria-label="Previous page"` / `"Next page"` and set `disabled` at the edges.',
+          '- The expandable ellipsis uses `aria-expanded`; its dropdown is a `role="listbox"` of',
+          '  `role="option"` page buttons.',
+        ].join('\n'),
       },
     },
   },

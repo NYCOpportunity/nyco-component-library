@@ -36,63 +36,84 @@ const meta: Meta<typeof Dropdown> = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          '`Dropdown` is a dropdown input that lets users choose one or more options from a list. ' +
-          'It reuses `ListItem` internally for its option rows and supports two visual trigger styles.\n\n' +
-          '---\n\n' +
-          '## Variants\n\n' +
-          '### `underlined` (default)\n' +
-          'A minimal trigger styled as an inline text field with a bottom-border divider — ' +
-          'matching the MUI "standard" text field pattern. ' +
-          'Ideal for table filters, inline data-entry forms, or anywhere a lightweight selector fits.\n\n' +
-          '### `outlined`\n' +
-          'A bordered pill/box trigger with `rounded-[8px]` corners. ' +
-          'The open panel floats over page content with a subtle shadow. ' +
-          'Use for standalone form inputs, sidebar filters, or anywhere borders provide helpful structure.\n\n' +
-          '---\n\n' +
-          '## Selection modes\n\n' +
-          '**Single-select** (`multiple: false`, default): Clicking an option selects it and closes the dropdown. ' +
-          'The trigger shows the selected label.\n\n' +
-          '**Multi-select** (`multiple: true`): Options render as checkboxes (using `ListItem type="checkbox"`). ' +
-          'The panel stays open while the user toggles. ' +
-          'The trigger summarises the selection: one item shows the label; ' +
-          'two or three items show comma-separated labels; four or more show "N selected".\n\n' +
-          '---\n\n' +
-          '## State management\n\n' +
-          '**Uncontrolled**: Omit `value`. Optionally pass `defaultValue` (a `string` for single-select ' +
-          'or `string[]` for multi-select) to pre-seed the selection on mount.\n\n' +
-          '```tsx\n' +
-          '<Dropdown options={options} defaultValue="income" />\n' +
-          '```\n\n' +
-          '**Controlled**: Pass `value` + `onChange`. ' +
-          'For single-select, `value` is a `string` and `onChange` receives a `string`. ' +
-          'For multi-select, both are `string[]`.\n\n' +
-          '```tsx\n' +
-          "const [val, setVal] = useState('');\n" +
-          '<Dropdown options={options} value={val} onChange={(v) => setVal(v as string)} />\n' +
-          '```\n\n' +
-          '---\n\n' +
-          '## Open state\n\n' +
-          'The dropdown is **uncontrolled by default** — click the trigger to open, click outside or press ' +
-          '`Escape` to close. Pass `open` + `onOpenChange` to take full control over visibility.\n\n' +
-          '---\n\n' +
-          '## Accessibility\n\n' +
-          '- Trigger is a `<button type="button">` with `aria-haspopup="listbox"` and `aria-expanded`.\n' +
-          '- The panel has `role="listbox"` and `aria-multiselectable` when `multiple` is true.\n' +
-          '- Press `Escape` anywhere in the dropdown to close and return focus to the trigger.\n' +
-          '- Pass `aria-label` or `aria-labelledby` to give the trigger an accessible name ' +
-          'when there is no associated visible label. ' +
-          'When `label` is provided, the trigger is automatically connected via `aria-labelledby`.\n\n' +
-          '---\n\n' +
-          '| Property | CSS Variable | Default |\n' +
-          '|---|---|---|\n' +
-          '| Text | `--color-neutral-black` | `#191919` |\n' +
-          '| Placeholder | `--color-neutral-500` | `#aaaaaa` |\n' +
-          '| Border (outlined) | `--color-neutral-300` | `#dddddd` |\n' +
-          '| Border hover (outlined) | `--color-neutral-500` | `#aaaaaa` |\n' +
-          '| Divider (underlined) | `--color-border-default` | `#dddddd` |\n' +
-          '| Panel background | `--color-neutral-white` | `#ffffff` |\n' +
-          '| Focus ring | `--color-border-focus` | `#284cca` |',
+        component: [
+          'A **Dropdown** input that lets people choose one or more options from a list. It reuses',
+          '**ListItem** internally for its option rows and offers two visual trigger styles. Use it',
+          'for table filters, inline forms, and sidebar selectors.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Options | `options` | ✅ | `DropdownOption[]` of `{ value, label, disabled? }`. `value` must be unique. |',
+          '| Trigger | `variant`, `placeholder` | — | `underlined` (default) or `outlined`. Shows the selection or placeholder. |',
+          '| Label | `label` | — | Form label above the trigger; auto-associated via `aria-labelledby`. |',
+          '| Helper text | `helperText` | — | Small caption below the trigger. |',
+          '| Panel | — | — | `role="listbox"` popup of `ListItem` rows. |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { Dropdown } from "@nycopportunity/component-library";',
+          '',
+          'const options = [',
+          '  { value: "income", label: "Median income" },',
+          '  { value: "poverty", label: "Poverty rate" },',
+          '];',
+          '',
+          '// Single-select, uncontrolled',
+          '<Dropdown label="Metric" options={options} defaultValue="income" />',
+          '',
+          '// Multi-select, controlled',
+          'const [vals, setVals] = React.useState<string[]>([]);',
+          '<Dropdown',
+          '  options={options}',
+          '  multiple',
+          '  value={vals}',
+          '  onChange={(v) => setVals(v as string[])}',
+          '/>',
+          '```',
+          '',
+          '---',
+          '',
+          '## Variants',
+          '',
+          '`variant="underlined"` (default) — a minimal trigger styled as an inline text field with a',
+          'bottom-border divider. Good for lightweight, in-flow selectors.',
+          '',
+          '`variant="outlined"` — a bordered, `rounded-[8px]` pill/box trigger whose open panel floats',
+          'over page content with a subtle shadow. Good for standalone form inputs.',
+          '',
+          '## Selection modes',
+          '',
+          '**Single-select** (`multiple: false`, default) — clicking an option selects it, closes the',
+          'panel, and returns focus to the trigger. `onChange` receives a `string`.',
+          '',
+          '**Multi-select** (`multiple: true`) — options render as checkboxes and the panel stays open',
+          'while toggling. The trigger summarizes the selection: one label; two or three comma-',
+          'separated labels; four or more show `"N selected"`. `onChange` receives a `string[]`.',
+          '',
+          '## State management',
+          '',
+          '**Uncontrolled** — omit `value`; optionally pass `defaultValue` (a `string` or `string[]`)',
+          'to pre-seed on mount.',
+          '',
+          '**Controlled** — pass `value` + `onChange`. The dropdown is uncontrolled-open by default;',
+          'pass `open` + `onOpenChange` to control visibility.',
+          '',
+          '## Accessibility',
+          '',
+          '- Trigger is a `<button type="button">` with `aria-haspopup="listbox"` and `aria-expanded`.',
+          '- The panel has `role="listbox"`, plus `aria-multiselectable` when `multiple` is true.',
+          '- Press `Escape` anywhere in the dropdown to close and return focus to the trigger; a click',
+          '  outside also closes it.',
+          '- Pass `aria-label` / `aria-labelledby` to name the trigger when no visible `label` exists;',
+          '  a provided `label` is auto-connected via `aria-labelledby`.',
+        ].join('\n'),
       },
     },
   },

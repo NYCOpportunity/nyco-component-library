@@ -142,34 +142,77 @@ const meta: Meta<typeof NavDrawer> = {
     },
     docs: {
       description: {
-        component:
-          '`NavDrawer` is the mobile navigation side-sheet extracted from `SiteNavigation`. ' +
-          'It is a **controlled component** — the caller manages `isOpen` and passes an `onClose` callback.\n\n' +
-          '---\n\n' +
-          '## Behaviour\n\n' +
-          '- Renders a full-height backdrop + a right-anchored sheet (max 400 px wide).\n' +
-          '- Focuses the **close button** when `isOpen` becomes `true`.\n' +
-          '- Returns focus to `triggerRef` when closed (button, backdrop click, or **Escape**).\n' +
-          '- Locks `document.body` scroll while open.\n\n' +
-          '---\n\n' +
-          '## Props\n\n' +
-          '| Prop | Type | Default | Description |\n' +
-          '|---|---|---|---|\n' +
-          '| `isOpen` | `boolean` | — | Controls visibility |\n' +
-          '| `onClose` | `() => void` | — | Called when the drawer requests to close |\n' +
-          '| `navItems` | `SiteNavItem[]` | `[]` | Nav links shown as large display text |\n' +
-          '| `logo` | `ReactNode` | — | Optional logo at the bottom of the sheet |\n' +
-          '| `id` | `string` | `"nav-drawer"` | DOM id — use as `aria-controls` on the trigger |\n' +
-          '| `triggerRef` | `RefObject<HTMLElement>` | — | Focus target after close |\n' +
-          '| `label` | `string` | `"Navigation menu"` | `aria-label` on the dialog |\n\n' +
-          '---\n\n' +
-          '## Design Tokens\n\n' +
-          '| Property | Token | Value |\n' +
-          '|---|---|---|\n' +
-          '| Sheet background | `--color-white` | `#ffffff` |\n' +
-          '| Internal links | `--color-neutral-black` | `#191919` |\n' +
-          '| External links | `--color-text-link` | `#284cca` |\n' +
-          '| Focus ring | `--color-border-focus` | `#284cca` |\n',
+        component: [
+          'The **NavDrawer** is the mobile navigation side-sheet used by `SiteNavigation`. It is a',
+          '**controlled** modal dialog — the caller owns `isOpen` and provides an `onClose` callback.',
+          'Use it directly when you need a standalone slide-in menu, or let `SiteNavigation` wire it up',
+          'for you.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Open state | `isOpen` | ✅ | Renders nothing when `false`. |',
+          '| Close handler | `onClose` | ✅ | Fired by the close button, backdrop click, or Escape. |',
+          '| Flat nav links | `navItems` | — | `SiteNavItem[]` shown as large display links (`none` variant). |',
+          '| Sectioned nav | `sections` | — | `NavDrawerSection[]` (`{ category?, items }`) for the `category` variant. |',
+          '| Footer links | `footerLinks` | — | Smaller links pinned below, often external products. |',
+          '| Variant | `variant` | — | `"none"` (default, flat) or `"category"` (grouped with headings). |',
+          '| Logo | `logo` | — | Rendered in the header row of the sheet. |',
+          '| `id` / trigger | `id`, `triggerRef`, `label` | — | `id` (default `"nav-drawer"`) pairs with the trigger\'s `aria-controls`; focus returns to `triggerRef` on close; `label` sets the dialog `aria-label`. |',
+          '',
+          'Each `SiteNavItem` supports `label`, `href` (anchor vs. button), `active`, `external`',
+          '(link-color text + `north_east` arrow), `hasDropdown`, and `onClick`.',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { NavDrawer } from "@nycopportunity/component-library";',
+          '',
+          'const triggerRef = React.useRef<HTMLButtonElement>(null);',
+          'const [open, setOpen] = React.useState(false);',
+          '',
+          '<button ref={triggerRef} aria-controls="nav-drawer" aria-expanded={open}',
+          '  onClick={() => setOpen(true)}>Menu</button>',
+          '',
+          '<NavDrawer',
+          '  id="nav-drawer"',
+          '  isOpen={open}',
+          '  onClose={() => setOpen(false)}',
+          '  triggerRef={triggerRef}',
+          '  variant="category"',
+          '  sections={[',
+          '    { category: "Explore", items: [{ label: "About", href: "/about" }] },',
+          '  ]}',
+          '  footerLinks={[{ label: "NYC.gov", href: "https://nyc.gov", external: true }]}',
+          '/>',
+          '```',
+          '',
+          '---',
+          '',
+          '## Behavior',
+          '',
+          '- Renders a full-height backdrop plus a right-anchored sheet (full width on small screens,',
+          '  capped at 390 px on `md`+).',
+          '- Moves focus to the **close button** when `isOpen` becomes `true`.',
+          '- Closes on the close button, a backdrop click, or the **Escape** key, then returns focus to',
+          '  `triggerRef`.',
+          '- Locks `document.body` scroll while open and restores it on close/unmount.',
+          '',
+          '---',
+          '',
+          '## Accessibility',
+          '',
+          '- The sheet is `role="dialog" aria-modal="true"` with an `aria-label` from `label`.',
+          '- Nav links are grouped in a `<nav>` landmark; each `category` heading precedes its `<ul>`.',
+          '- External links set `target="_blank" rel="noopener noreferrer"` and add a visually-hidden',
+          '  "(opens in a new tab)" note; `active` items get `aria-current="page"`.',
+          '- All interactive elements show a visible focus ring via `--color-border-focus`.',
+        ].join('\n'),
       },
     },
   },

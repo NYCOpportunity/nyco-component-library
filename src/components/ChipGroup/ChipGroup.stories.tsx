@@ -36,52 +36,96 @@ const meta: Meta<typeof ChipGroup> = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          '`ChipGroup` manages a collection of chips across three distinct interaction modes.\n\n' +
-          '---\n\n' +
-          '## Modes\n\n' +
-          '### `multiselect` (default)\n' +
-          'Renders all `options` as selectable chips. Multiple chips can be active at the same time.\n\n' +
-          '**Live mode** (default): `onChange` fires on every click — ideal for instant filtering.\n\n' +
-          '**Pending mode** (`pending` prop): Changes are buffered. Apply / Clear buttons appear below the chips. ' +
-          '`Apply` is disabled until the draft diverges from the last committed state. ' +
-          '`Clear` reverts the draft to the last committed value without touching committed state. ' +
-          'Use `onApply` to receive the committed selection; `onChange` is not called until Apply is pressed.\n\n' +
-          '**Custom actions** (`renderActions`): Pass a render prop to replace the built-in Apply / Clear row with any UI. ' +
-          'Receives `{ selected, apply, clear, clearAll, isDirty }` — wire your own buttons to those handlers.\n\n' +
-          '---\n\n' +
-          '### `singleselect`\n' +
-          'Renders the same chip row but enforces a maximum of one active chip at a time. ' +
-          'Clicking a chip selects it and deselects any previously active chip. ' +
-          'Clicking the active chip again deselects it. ' +
-          '`onChange` always fires immediately — `pending` is not supported in this mode. ' +
-          '`onChange` receives an array of 0 or 1 items.\n\n' +
-          '---\n\n' +
-          '### `dismissible`\n' +
-          'Renders only the items that are currently active (from `value`) as dismissible chips. ' +
-          'The source of which items are active is entirely **external** — a dropdown, URL params, an API response, etc. ' +
-          'Clicking a chip fires `onChange` with that item removed; no selection logic is managed internally. ' +
-          'The whole chip surface is the dismiss trigger (not just the × icon).\n\n' +
-          '---\n\n' +
-          '## State management\n\n' +
-          '**Uncontrolled** (headless): Omit `value`. Optionally pass `defaultValue` to pre-select chips on mount. ' +
-          'The component tracks selection internally; `onChange` / `onApply` report changes outward.\n\n' +
-          '**Controlled**: Pass `value` + `onChange`. ' +
-          'The external state fully drives selection — every `onChange` call should update `value` to keep them in sync. ' +
-          'In pending mode, `value` syncs both `draft` and `committed` whenever it changes from outside.\n\n' +
-          '---\n\n' +
-          '## Edge cases\n\n' +
-          '- **Disabled options**: Set `disabled: true` on any `ChipOption`. ' +
-          'In `singleselect`, only the per-option `disabled` flag applies — other chips remain interactive.\n' +
-          '- **Empty `value` in dismissible mode**: Renders an empty chip row — the caller is responsible for showing a fallback.\n' +
-          '- **`value` item not in `options`**: Dismissible mode silently skips it (no label/tooltip can be looked up). ' +
-          'Ensure `options` always contains metadata for every active `value`.\n' +
-          '- **`pending` on non-multiselect modes**: `pending` is ignored for `singleselect` and `dismissible`; ' +
-          'those modes always trigger `onChange` immediately.\n' +
-          '- **`clearAll` in pending mode**: Wipes both draft and committed to `[]` and fires `onChange`. ' +
-          'This is the only action that bypasses the pending buffer.\n' +
-          '- **`renderActions` + `pending`**: When `renderActions` is provided, the built-in Apply / Clear row is fully replaced. ' +
-          'Call `apply()` from the context to commit — `isDirty` tells you when there is something new to commit.',
+        component: [
+          'A **ChipGroup** manages a whole row of related chips and their shared selection state',
+          'across three interaction modes. Use it for filter bars, faceted search, and any place a',
+          'set of **Chip**s needs to be selected, single-selected, or dismissed together.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Options registry | `options` | ✅ | `ChipOption[]` providing `value`, `label`, `tooltip`, and `disabled` per item. |',
+          '| Chip row | `mode` | — | `multiselect` (default), `singleselect`, or `dismissible`. |',
+          '| Action row | `pending`, `applyLabel`, `clearLabel` | — | Apply / Clear buttons rendered below the chips in pending mode. |',
+          '| Custom actions | `renderActions` | — | Render prop that replaces the built-in action row. |',
+          '| Slot overrides | `componentStyle` | — | Per-slot class names for `chipContainer`, `chip`, and `actions`. |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { ChipGroup } from "@nycopportunity/component-library";',
+          '',
+          'const options = [',
+          '  { value: "poverty", label: "Poverty rate" },',
+          '  { value: "income", label: "Median income" },',
+          '  { value: "rent", label: "Rent burden", disabled: true },',
+          '];',
+          '',
+          '// Live multiselect — onChange fires on every click',
+          '<ChipGroup options={options} onChange={(next) => setFilters(next)} />',
+          '',
+          '// Pending multiselect — buffer changes behind Apply / Clear',
+          '<ChipGroup options={options} pending onApply={(committed) => setFilters(committed)} />',
+          '```',
+          '',
+          '---',
+          '',
+          '## Modes',
+          '',
+          '**`multiselect`** (default) — renders all `options` as selectable chips; multiple can be',
+          'active at once.',
+          '- *Live* (default): `onChange` fires on every click — ideal for instant filtering.',
+          '- *Pending* (`pending`): changes are buffered and Apply / Clear buttons appear. `Apply`',
+          '  is disabled until the draft diverges from the committed state; `Clear` reverts the draft',
+          '  to the last committed value. Use `onApply` to receive the committed selection.',
+          '- *Custom actions* (`renderActions`): replace the built-in row entirely. Receives',
+          '  `{ selected, apply, clear, clearAll, isDirty }`.',
+          '',
+          '**`singleselect`** — the same chip row, but at most one chip is active at a time. Clicking',
+          'a chip selects it and deselects any previous one; clicking the active chip toggles it off.',
+          '`onChange` always fires immediately (no `pending`) with an array of 0 or 1 items.',
+          '',
+          '**`dismissible`** — renders only the currently active items (from `value`) as dismissible',
+          'chips. Which items are active is driven entirely externally (a dropdown, URL params, an',
+          'API). Clicking a chip fires `onChange` with that item removed; the whole chip surface is',
+          'the dismiss trigger.',
+          '',
+          '---',
+          '',
+          '## State management',
+          '',
+          '**Uncontrolled** — omit `value`; optionally pass `defaultValue` to pre-select on mount.',
+          'Selection is tracked internally and reported via `onChange` / `onApply`.',
+          '',
+          '**Controlled** — pass `value` + `onChange`; external state fully drives selection. In',
+          'pending mode, `value` syncs both the draft and committed state when it changes from',
+          'outside.',
+          '',
+          '---',
+          '',
+          '## Edge cases',
+          '',
+          '- **Disabled options**: set `disabled: true` on any `ChipOption`; other chips stay',
+          '  interactive.',
+          '- **Empty `value` (dismissible)**: renders an empty row — the caller shows any fallback.',
+          '- **`value` item missing from `options`**: dismissible mode silently skips it (no',
+          '  label/tooltip to look up).',
+          '- **`pending` on non-multiselect modes**: ignored; those modes always fire `onChange`',
+          '  immediately.',
+          '- **`clearAll` in pending mode**: wipes both draft and committed to `[]` and fires',
+          '  `onChange` — the only action that bypasses the pending buffer.',
+          '',
+          '## Accessibility',
+          '',
+          '- Selection chips are `role="checkbox"` buttons with `aria-checked`; dismissible chips',
+          '  expose an `aria-label` of `"Remove {label}"`.',
+          '- Every chip and action button is keyboard operable with a visible `focus-visible` ring.',
+        ].join('\n'),
       },
     },
   },

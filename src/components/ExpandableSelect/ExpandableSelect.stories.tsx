@@ -34,30 +34,71 @@ const meta: Meta<typeof ExpandableSelect> = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          '`ExpandableSelect` is an inline multi-select that expands in place to reveal a list of checkboxes.\n\n' +
-          'Unlike `Dropdown`, it does **not** float a panel — the options are rendered in document flow and push surrounding content down.\n\n' +
-          '---\n\n' +
-          '## States\n\n' +
-          '- **Default** — collapsed, showing the `label` text and a chevron-down icon\n' +
-          '- **Hover** — neutral-100 background on the trigger\n' +
-          '- **Active/Pressed** — neutral-200 background on the trigger\n' +
-          '- **Focused** — 3 px blue focus ring around the entire component\n' +
-          '- **Open** — chevron flips to point up; a divider + checkbox rows appear below\n' +
-          '- **Disabled** — trigger text and icon render in neutral-300; non-interactive\n\n' +
-          '---\n\n' +
-          '## Props\n\n' +
-          '| Prop | Type | Default | Description |\n' +
-          '|---|---|---|---|\n' +
-          '| `label` | `string` | `"Select..."` | Text shown in the trigger button |\n' +
-          '| `options` | `ExpandableSelectOption[]` | — | Checkbox rows displayed when open |\n' +
-          '| `value` | `string[]` | — | Controlled selected values |\n' +
-          '| `defaultValue` | `string[]` | `[]` | Initial uncontrolled values |\n' +
-          '| `onChange` | `(v: string[]) => void` | — | Called on every selection change |\n' +
-          '| `open` | `boolean` | — | Controlled open state |\n' +
-          '| `defaultOpen` | `boolean` | `false` | Initial open state (uncontrolled) |\n' +
-          '| `onOpenChange` | `(open: boolean) => void` | — | Called when open state changes |\n' +
-          '| `disabled` | `boolean` | `false` | Disables the trigger |\n',
+        component: [
+          'An inline **multi-select** that expands in place to reveal a list of checkbox options.',
+          'Unlike a floating `Dropdown`, it renders its options in document flow — opening the panel',
+          'pushes the surrounding content down instead of overlaying it. Ideal for filter sidebars',
+          'where several selects stack together.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Trigger button | `label` | — | Category/filter name. Defaults to `"Select..."`. Shows a chevron that flips up when open. |',
+          '| Option list | `options` | ✅ | Array of `ExpandableSelectOption` (`value`, `label`, optional `disabled`) rendered as checkbox rows. |',
+          '| Selection | `value` / `defaultValue` | — | Array of selected `value` strings. Controlled via `value`, uncontrolled via `defaultValue` (default `[]`). |',
+          '| Open state | `open` / `defaultOpen` | — | Controlled via `open`, uncontrolled via `defaultOpen` (default `false`). |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { ExpandableSelect } from "@nycopportunity/component-library";',
+          '',
+          '// Uncontrolled — track selection with onChange',
+          '<ExpandableSelect',
+          '  label="Category"',
+          '  options={[',
+          '    { value: "housing", label: "Housing" },',
+          '    { value: "health", label: "Health" },',
+          '    { value: "education", label: "Education" },',
+          '  ]}',
+          '  defaultValue={["housing"]}',
+          '  onChange={(values) => console.log(values)}',
+          '/>',
+          '',
+          '// Controlled — you own both open and value state',
+          '<ExpandableSelect',
+          '  label="Category"',
+          '  options={options}',
+          '  open={open}',
+          '  onOpenChange={setOpen}',
+          '  value={selected}',
+          '  onChange={setSelected}',
+          '/>',
+          '```',
+          '',
+          '---',
+          '',
+          '## States',
+          '',
+          '- **Default** — collapsed, showing the `label` text and a chevron-down icon.',
+          '- **Hover** — `neutral-100` background on the trigger.',
+          '- **Active / pressed** — `neutral-200` background on the trigger.',
+          '- **Focused** — a 3 px blue focus ring wraps the entire component (trigger + open list).',
+          '- **Open** — the chevron flips up; a divider and checkbox rows appear below.',
+          '- **Disabled** — trigger text and icon render in `neutral-300` and the whole component is non-interactive.',
+          '',
+          '## Accessibility',
+          '',
+          '- The trigger is a real `<button>` exposing `aria-expanded` and `aria-controls` pointing at the panel.',
+          '- Pressing **Escape** while the panel is open collapses it.',
+          '- The option list is a `role="group"` labelled by the trigger; each row is a checkbox (via `ListItem`) reflecting its selected state.',
+          '- Supply `aria-label` or `aria-labelledby` when the visible `label` is not descriptive enough on its own.',
+        ].join('\n'),
       },
     },
   },
