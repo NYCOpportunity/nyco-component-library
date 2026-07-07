@@ -44,6 +44,7 @@ export default [
         KeyboardEvent: 'readonly',
         FocusEvent: 'readonly',
         SVGElement: 'readonly',
+        SVGSVGElement: 'readonly',
       },
     },
     plugins: {

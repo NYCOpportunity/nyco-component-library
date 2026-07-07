@@ -2,31 +2,18 @@ import * as React from 'react';
 import { DropdownMenuProps } from '../../types/components';
 import { useFlash } from '../../hooks/useFlash';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 
 // ---------------------------------------------------------------------------
 // Icons
 // ---------------------------------------------------------------------------
 
 function ChevronIcon({ open, size = 22 }: { open: boolean; size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path
-        d={
-          open
-            ? 'M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z' // expand_less
-            : 'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' // expand_more
-        }
-      />
-    </svg>
-  );
+  return <Icon name={open ? 'chevron-up' : 'chevron-down'} size={size} />;
 }
 
 function CheckmarkIcon() {
-  return (
-    <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-    </svg>
-  );
+  return <Icon name="check" size={20} />;
 }
 
 // ---------------------------------------------------------------------------

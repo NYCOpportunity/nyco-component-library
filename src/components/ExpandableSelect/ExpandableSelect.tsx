@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ExpandableSelectProps } from '../../types/components';
 import { cx } from '../../utils/cx';
 import { ListItem } from '../ListItem/ListItem';
+import { Icon } from '../Icon';
 
 // ---------------------------------------------------------------------------
 // Icons
@@ -9,25 +10,13 @@ import { ListItem } from '../ListItem/ListItem';
 
 function ChevronIcon({ open, disabled }: { open: boolean; disabled?: boolean }) {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
+    <Icon
+      name={open && !disabled ? 'chevron-up' : 'chevron-down'}
       className={cx(
         'shrink-0',
         disabled ? 'text-[var(--color-neutral-300)]' : 'text-[var(--color-neutral-black)]'
       )}
-    >
-      <path
-        d={
-          open && !disabled
-            ? 'M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z' // expand_less
-            : 'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' // expand_more
-        }
-      />
-    </svg>
+    />
   );
 }
 

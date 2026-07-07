@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavItemProps } from '../../types/components';
 import { cx } from '../../utils/cx';
+import { Icon } from '../Icon';
 
 // ---------------------------------------------------------------------------
 // Icons — inline SVG (Material Design paths)
@@ -8,34 +9,12 @@ import { cx } from '../../utils/cx';
 
 /** expand_more — 24 × 24 */
 function ChevronDownIcon() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
-    </svg>
-  );
+  return <Icon name="chevron-down" />;
 }
 
 /** north_east — 24 × 24 */
 function NorthEastIcon() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5z" />
-    </svg>
-  );
+  return <Icon name="north-east" />;
 }
 
 // ---------------------------------------------------------------------------

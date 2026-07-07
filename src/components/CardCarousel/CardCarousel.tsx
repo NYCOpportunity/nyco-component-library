@@ -4,6 +4,7 @@ import { Card } from '../Card/Card';
 import { cx } from '../../utils/cx';
 import { useFlash } from '../../hooks/useFlash';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { Icon } from '../Icon';
 
 /** Fixed desktop card width — matches the standalone `Card` desktop width. */
 const DESKTOP_CARD_WIDTH = 320;
@@ -13,35 +14,11 @@ const DESKTOP_CARD_WIDTH = 320;
 // ---------------------------------------------------------------------------
 
 function ChevronLeftIcon() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ display: 'block', flexShrink: 0 }}
-    >
-      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-    </svg>
-  );
+  return <Icon name="chevron-left" style={{ display: 'block', flexShrink: 0 }} />;
 }
 
 function ChevronRightIcon() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style={{ display: 'block', flexShrink: 0 }}
-    >
-      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-    </svg>
-  );
+  return <Icon name="chevron-right" style={{ display: 'block', flexShrink: 0 }} />;
 }
 
 // ---------------------------------------------------------------------------
