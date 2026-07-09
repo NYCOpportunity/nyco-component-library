@@ -95,6 +95,15 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
     ref
   ) => {
     const closeBtnRef = React.useRef<HTMLButtonElement>(null);
+    const dialogRef = React.useRef<HTMLDivElement | null>(null);
+    const setDialogRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        dialogRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      },
+      [ref]
+    );
     const displayFontClass =
       variant === 'category' ? 'navigation-categorized-medium' : 'navigation-uncategorized-regular';
 
@@ -109,10 +118,11 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
       });
     }, [onClose, triggerRef]);
 
-    // Focus the close button whenever the drawer opens
+    // Move focus into the drawer when it opens. Target the dialog container (not the
+    // close button) so no focus ring is shown until the user navigates by keyboard.
     React.useEffect(() => {
       if (isOpen) {
-        closeBtnRef.current?.focus();
+        dialogRef.current?.focus();
       }
     }, [isOpen]);
 
@@ -147,13 +157,14 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
 
         {/* Side sheet */}
         <div
-          ref={ref}
+          ref={setDialogRef}
           id={id}
           role="dialog"
           aria-modal="true"
           aria-label={label}
+          tabIndex={-1}
           className={cx(
-            'fixed inset-y-0 right-0 z-50',
+            'fixed inset-y-0 right-0 z-50 outline-none',
             'w-screen md:w-[390px] md:max-w-[390px]',
             'bg-[var(--color-neutral-white)] flex flex-col',
             'pt-8 pb-8 px-4 overflow-y-auto',
@@ -168,12 +179,7 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
               type="button"
               onClick={handleClose}
               aria-label="Close navigation menu"
-              className={cx(
-                'flex items-center',
-                'rounded-[8px]',
-                variant === 'category' && 'bg-[var(--color-neutral-200)]',
-                focusRing
-              )}
+              className={cx('flex items-center', 'rounded-[8px]', focusRing)}
             >
               <CloseIcon />
             </button>
@@ -186,7 +192,7 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
                   {resolvedSections.map((section, i) => (
                     <section key={i}>
                       {section.category && (
-                        <p className="mb-2 text-[11px] leading-[1.2] tracking-[0.04em] uppercase text-[var(--color-neutral-700)]">
+                        <p className="mb-6 text-[11px] leading-[1.2] tracking-[0.04em] uppercase text-[var(--color-neutral-700)]">
                           {section.category}
                         </p>
                       )}

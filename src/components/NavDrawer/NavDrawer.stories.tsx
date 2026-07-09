@@ -115,7 +115,7 @@ function DrawerDemo(props: Partial<React.ComponentProps<typeof NavDrawer>>) {
         navItems={props.navItems ?? defaultNavItems}
         sections={props.sections}
         footerLinks={props.footerLinks}
-        logo={props.logo ?? <DemoLogo />}
+        logo={'logo' in props ? props.logo : <DemoLogo />}
         triggerRef={triggerRef}
       />
     </div>
@@ -141,6 +141,12 @@ const meta: Meta<typeof NavDrawer> = {
       defaultViewport: 'drawerCanvas',
     },
     docs: {
+      story: {
+        // Render each story in its own iframe so the fixed side-sheet is fully
+        // visible on the Docs page instead of being clipped by the inline block.
+        inline: false,
+        iframeHeight: 720,
+      },
       description: {
         component: [
           'The **NavDrawer** is the mobile navigation side-sheet used by `SiteNavigation`. It is a',
