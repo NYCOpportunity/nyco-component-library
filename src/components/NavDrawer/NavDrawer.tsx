@@ -192,7 +192,7 @@ export const NavDrawer = React.forwardRef<HTMLDivElement, NavDrawerProps>(
                   {resolvedSections.map((section, i) => (
                     <section key={i}>
                       {section.category && (
-                        <p className="mb-6 text-[11px] leading-[1.2] tracking-[0.04em] uppercase text-[var(--color-neutral-700)]">
+                        <p className="mb-1 text-[11px] leading-[1.2] tracking-[0.04em] uppercase text-[var(--color-neutral-700)]">
                           {section.category}
                         </p>
                       )}
