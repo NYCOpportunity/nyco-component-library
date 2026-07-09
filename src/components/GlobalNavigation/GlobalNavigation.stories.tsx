@@ -3,6 +3,31 @@ import { fn } from '@storybook/test';
 import { GlobalNavigation } from './GlobalNavigation';
 
 // ---------------------------------------------------------------------------
+// Random placeholder logo (stand-in for a real brand mark)
+// ---------------------------------------------------------------------------
+function RandomLogo() {
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 20,
+        height: 20,
+        borderRadius: 4,
+        background: 'var(--color-primary-base)',
+        color: '#fff',
+        fontSize: 13,
+        fontWeight: 700,
+      }}
+    >
+      ★
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Meta
 // ---------------------------------------------------------------------------
 const meta: Meta<typeof GlobalNavigation> = {
@@ -25,7 +50,7 @@ const meta: Meta<typeof GlobalNavigation> = {
           '',
           '| Part | Prop | Required | Notes |',
           '| --- | --- | --- | --- |',
-          '| NYC logo + official-site text | — | ✅ (built-in) | "Official website of the City of New York"; logo swaps between a desktop and mobile asset. |',
+          '| NYC logo + official-site text | `showLogo`, `logo` | — | The official-site text always shows. The logo is opt-in via `showLogo` (default `false`); pass a custom `logo` node, otherwise the built-in NYC mark is used. |',
           '| Language toggle | `showTranslate`, `language`, `onLanguageClick` | — | Translate icon + `Language | {language}` + chevron. Hidden when `showTranslate` is `false`. |',
           '',
           '---',
@@ -41,6 +66,10 @@ const meta: Meta<typeof GlobalNavigation> = {
           '// Custom language label, or hide the toggle entirely',
           '<GlobalNavigation language="Español" onLanguageClick={openLanguageMenu} />',
           '<GlobalNavigation showTranslate={false} />',
+          '',
+          '// Opt in to a logo (hidden by default) — built-in NYC mark or your own node',
+          '<GlobalNavigation showLogo onLanguageClick={openLanguageMenu} />',
+          '<GlobalNavigation showLogo logo={<BrandLogo />} />',
           '```',
           '',
           '---',
@@ -104,5 +133,15 @@ export const SpanishLanguage: Story = {
   args: {
     showTranslate: true,
     language: 'Español',
+  },
+};
+
+/** With a logo shown — opt-in via `showLogo` (hidden by default). Here a random placeholder icon is passed via `logo`. */
+export const WithLogo: Story = {
+  args: {
+    showTranslate: true,
+    showLogo: true,
+    logo: <RandomLogo />,
+    language: 'English',
   },
 };

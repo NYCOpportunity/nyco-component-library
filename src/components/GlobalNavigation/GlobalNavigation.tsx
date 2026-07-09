@@ -36,7 +36,17 @@ const focusRing =
 // ---------------------------------------------------------------------------
 
 export const GlobalNavigation = React.forwardRef<HTMLDivElement, GlobalNavigationProps>(
-  ({ showTranslate = true, language = 'English', onLanguageClick, className }, ref) => {
+  (
+    {
+      showTranslate = true,
+      showLogo = false,
+      logo,
+      language = 'English',
+      onLanguageClick,
+      className,
+    },
+    ref
+  ) => {
     return (
       <div
         ref={ref}
@@ -79,24 +89,29 @@ export const GlobalNavigation = React.forwardRef<HTMLDivElement, GlobalNavigatio
         >
           {/* NYC logo + "Official website" text */}
           <div className="flex items-center gap-4 max-[999px]:gap-2">
-            {/* Desktop logo */}
-            <img
-              src={NYC_LOGO_DESKTOP}
-              alt="NYC"
-              width={44}
-              height={15}
-              className="block max-[999px]:hidden shrink-0"
-              style={{ width: '43.694px', height: '14.463px' }}
-            />
-            {/* Mobile logo */}
-            <img
-              src={NYC_LOGO_MOBILE}
-              alt="NYC"
-              width={30}
-              height={10}
-              className="hidden max-[999px]:block shrink-0"
-              style={{ width: '30px', height: '10px' }}
-            />
+            {showLogo &&
+              (logo ?? (
+                <>
+                  {/* Desktop logo */}
+                  <img
+                    src={NYC_LOGO_DESKTOP}
+                    alt="NYC"
+                    width={44}
+                    height={15}
+                    className="block max-[999px]:hidden shrink-0"
+                    style={{ width: '43.694px', height: '14.463px' }}
+                  />
+                  {/* Mobile logo */}
+                  <img
+                    src={NYC_LOGO_MOBILE}
+                    alt="NYC"
+                    width={30}
+                    height={10}
+                    className="hidden max-[999px]:block shrink-0"
+                    style={{ width: '30px', height: '10px' }}
+                  />
+                </>
+              ))}
             <p className="text-[12px] leading-[1.4] font-normal text-[var(--color-neutral-900)] whitespace-nowrap max-[999px]:whitespace-normal">
               Official website of the City of New York
             </p>
