@@ -22,7 +22,7 @@ const variantTokens: Record<
       variable: '--color-button-disabled-base',
       value: '#eeeeee',
     },
-    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#dddddd' },
     { property: 'Focus ring', variable: '--color-border-focus', value: '#284cca' },
   ],
   secondary: [
@@ -39,12 +39,12 @@ const variantTokens: Record<
       variable: '--color-button-disabled-base',
       value: '#eeeeee',
     },
-    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#dddddd' },
     { property: 'Focus ring', variable: '--color-border-focus', value: '#284cca' },
   ],
   text: [
     { property: 'Text', variable: '--color-text-link', value: '#284cca' },
-    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#777777' },
+    { property: 'Text (disabled)', variable: '--color-button-disabled-text', value: '#dddddd' },
     { property: 'Focus ring', variable: '--color-border-focus', value: '#284cca' },
   ],
 };
