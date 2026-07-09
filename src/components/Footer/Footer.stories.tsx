@@ -132,6 +132,10 @@ const meta: Meta<typeof Footer> = {
           name: 'Footer Desktop',
           styles: { width: '1440px', height: '900px' },
         },
+        footerMobile: {
+          name: 'Footer Mobile',
+          styles: { width: '375px', height: '812px' },
+        },
       },
       defaultViewport: 'footerDesktop',
     },
@@ -265,6 +269,6 @@ export const Mobile: Story = {
   },
   parameters: {
     layout: 'fullscreen',
-    viewport: { defaultViewport: 'mobile2' },
+    viewport: { defaultViewport: 'footerMobile' },
   },
 };
