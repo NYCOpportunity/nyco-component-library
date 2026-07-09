@@ -17,25 +17,16 @@ function DataChip({
   label,
   href,
   onClick,
-  cardFlashing = false,
 }: {
   label: string;
   href?: string;
   onClick?: React.MouseEventHandler<HTMLElement>;
-  /** When true the parent card is in its press-flash state — chip matches the card bg. */
-  cardFlashing?: boolean;
 }) {
   const isInteractive = !!(href || onClick);
   const { flashing, handlePointerDown } = useFlash(!isInteractive);
   const [isHovered, setIsHovered] = React.useState(false);
 
-  const bgColor = cardFlashing
-    ? 'var(--color-primary-light)'
-    : flashing
-      ? CHIP_PRESS_BG
-      : isHovered
-        ? CHIP_HOVER_BG
-        : CHIP_BG;
+  const bgColor = flashing ? CHIP_PRESS_BG : isHovered ? CHIP_HOVER_BG : CHIP_BG;
 
   const sharedClasses = cx(
     'flex items-center justify-center px-[24px] py-[6px] rounded-[8px] shrink-0',
@@ -130,8 +121,6 @@ export function Card({
   const isCarousel = type === 'carousel';
   const isMobile = useIsMobile();
 
-  const { flashing: cardFlashing, handlePointerDown: handleCardPointerDown } = useFlash();
-
   const rootClasses = cx(
     'group flex relative cursor-pointer rounded-[8px]',
     isHorizontal ? 'flex-row items-stretch' : 'flex-col items-start',
@@ -154,11 +143,7 @@ export function Card({
       : { width: 320 };
 
   const rootStyle: React.CSSProperties = {
-    backgroundColor: cardFlashing
-      ? 'var(--color-primary-light)'
-      : bordered
-        ? 'var(--color-neutral-white)'
-        : 'transparent',
+    backgroundColor: bordered ? 'var(--color-neutral-white)' : 'transparent',
     ...responsiveWidth,
   };
 
@@ -189,12 +174,7 @@ export function Card({
             'lg:group-hover:bottom-[16px] lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto'
           )}
         >
-          <DataChip
-            label={dataDate}
-            href={chipHref}
-            onClick={onChipClick}
-            cardFlashing={cardFlashing}
-          />
+          <DataChip label={dataDate} href={chipHref} onClick={onChipClick} />
         </div>
       )}
     </div>
@@ -213,12 +193,7 @@ export function Card({
     >
       {/* Horizontal: chip lives in content area, always visible */}
       {dataDate && isHorizontal && (
-        <DataChip
-          label={dataDate}
-          href={chipHref}
-          onClick={onChipClick}
-          cardFlashing={cardFlashing}
-        />
+        <DataChip label={dataDate} href={chipHref} onClick={onChipClick} />
       )}
 
       {/* Title + Description */}
@@ -259,7 +234,6 @@ export function Card({
       <a
         href={href}
         onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
-        onPointerDown={handleCardPointerDown}
         className={cx(rootClasses, 'no-underline text-inherit')}
         style={{ ...rootStyle, ...style }}
       >
@@ -272,7 +246,6 @@ export function Card({
   return (
     <div
       onClick={onClick as React.MouseEventHandler<HTMLDivElement>}
-      onPointerDown={handleCardPointerDown}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
       style={{ ...rootStyle, ...style }}
