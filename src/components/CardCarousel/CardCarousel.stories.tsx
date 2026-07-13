@@ -88,18 +88,59 @@ const meta: Meta<typeof CardCarousel> = {
     },
     docs: {
       description: {
-        component:
-          'Horizontally-scrollable list of `Card`s with responsive desktop and mobile layouts.\n\n' +
-          '---\n\n' +
-          '## Desktop (viewport ≥ `mobileBreakpoint`)\n\n' +
-          '- Shows `visibleDesktop` full cards plus a sliver (`mobilePeek`) of the next.\n' +
-          '- Previous / next arrows page the track `visibleDesktop` cards at a time.\n\n' +
-          '## Mobile (viewport < `mobileBreakpoint`)\n\n' +
-          '- Shows one full card plus a `mobilePeek` sliver of the next.\n' +
-          '- Native horizontal scroll with snap; arrows are hidden.\n\n' +
-          '> The **Desktop** and **Mobile** stories below both contain 6 cards — the Mobile ' +
-          'story is rendered inside a phone-width frame to show how it reflows when the screen ' +
-          'shrinks.',
+        component: [
+          'A horizontally-scrollable row of **`Card`s** with responsive desktop and mobile layouts.',
+          'Feed it an array of card data and it lays them out as slides, adds an optional heading,',
+          'and shows previous / next arrows on desktop when there are more cards than fit.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Cards | `items` | ✅ | Array of `CardCarouselItem` — a `Card` minus `orientation`/`type`, plus an optional `id`. |',
+          '| Heading | `title` | — | Shown above the track and used as the default region label. |',
+          '| Arrows | `showArrows`, `visibleDesktop` | — | Arrows appear on desktop once the item count exceeds `visibleDesktop` (default `3`). |',
+          '| Layout tuning | `gap`, `mobileBreakpoint`, `mobilePeek` | — | Card gap (24 px), viewport width for the mobile layout (768 px), and next-card peek fraction (0.2). |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { CardCarousel } from "@nycopportunity/component-library";',
+          '',
+          'const items = reports.map((r) => ({',
+          '  id: r.id,',
+          '  image: r.cover,',
+          '  imageAlt: r.coverAlt,',
+          '  title: r.title,',
+          '  readTime: r.readTime,',
+          '  href: r.url,',
+          '}));',
+          '',
+          '<CardCarousel title="Latest research" items={items} visibleDesktop={3} />',
+          '```',
+          '',
+          '---',
+          '',
+          '## Responsive',
+          '',
+          '- **Desktop** (viewport ≥ `mobileBreakpoint`) — shows `visibleDesktop` full 320 px cards plus',
+          '  a `mobilePeek` sliver of the next. The previous / next arrows page the track',
+          '  `visibleDesktop` cards at a time.',
+          '- **Mobile** (viewport < `mobileBreakpoint`) — shows one full card plus a `mobilePeek` sliver',
+          '  of the next, using native horizontal snap scrolling; arrows are hidden.',
+          '',
+          '## Accessibility',
+          '',
+          '- The root is a `<section>` with `aria-roledescription="carousel"` labelled by `ariaLabel`,',
+          '  falling back to `title` or `"Card carousel"`.',
+          '- The slide track is a `role="group"` labelled `"<region> items"`.',
+          '- Arrow buttons are real `<button>`s labelled `"Previous cards"` / `"Next cards"`, disabled at the ends.',
+          '- Pagination dots form a `role="tablist"` (`"Carousel pagination"`) of `role="tab"` buttons with `aria-selected`.',
+        ].join('\n'),
       },
     },
   },

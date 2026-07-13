@@ -50,7 +50,9 @@
       --color-neutral-100
     ); /* Secondary button background on hover */
     --color-button-disabled-base: var(--color-neutral-200); /* Disabled button background */
-    --color-button-disabled-text: var(--color-neutral-700); /* Disabled button text */
+    --color-button-disabled-text: var(
+      --color-neutral-300
+    ); /* Disabled button text (matches disabled ListItem text) */
     /* Note: For disabled buttons, use opacity: 0.4 instead of separate disabled colors */
 
     /* --- Border --- */

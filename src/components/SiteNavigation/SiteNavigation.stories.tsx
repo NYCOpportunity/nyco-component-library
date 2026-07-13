@@ -84,43 +84,72 @@ const meta: Meta<typeof SiteNavigation> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          '`SiteNavigation` is the site-level header bar — logo on the left, nav links on the right.\n\n' +
-          '---\n\n' +
-          '## Layout\n\n' +
-          '**Desktop (≥ 1 000 px):** White bar, 68 px tall, 56 px horizontal padding. ' +
-          'Logo on the left; `NavItem` components (full bar height) on the right.\n\n' +
-          '**Mobile (< 1 000 px):** Compact 56 px bar — logo on the left, optional search icon and ' +
-          'hamburger on the right. Tapping the hamburger opens a full-height side-sheet drawer with ' +
-          'large-display nav links and the logo anchored to the bottom.\n\n' +
-          '---\n\n' +
-          '## Props\n\n' +
-          '| Prop | Type | Default | Description |\n' +
-          '|---|---|---|---|\n' +
-          '| `logo` | `ReactNode` | — | Logo content rendered left of the nav bar |\n' +
-          '| `navItems` | `SiteNavItem[]` | `[]` | Navigation items |\n' +
-          '| `showSearch` | `boolean` | `false` | Show search icon in mobile bar |\n' +
-          '| `onSearchClick` | `MouseEventHandler` | — | Called when search icon is clicked |\n' +
-          '| `mobileMenuLabel` | `string` | `"Open navigation menu"` | Accessible hamburger label |\n' +
-          '| `defaultOpen` | `boolean` | `false` | Seeds the drawer open/closed state |\n\n' +
-          '---\n\n' +
-          '## Accessibility\n\n' +
-          '- Hamburger: `<button>` with `aria-label`, `aria-expanded`, `aria-controls` pointing to the drawer.\n' +
-          '- Drawer: `role="dialog" aria-modal="true"` — focus moves to the close button on open.\n' +
-          '- Backdrop click and **Escape** close the drawer; focus returns to the hamburger.\n' +
-          '- Body scroll is locked while the drawer is open.\n' +
-          '- External links carry `target="_blank" rel="noopener noreferrer"` and a visually-hidden ' +
-          '"(opens in a new tab)" notice.\n\n' +
-          '---\n\n' +
-          '## Design Tokens\n\n' +
-          '| Property | Token | Value |\n' +
-          '|---|---|---|\n' +
-          '| Bar background | `--color-white` | `#ffffff` |\n' +
-          '| Bar border | `--color-neutral-300` | `#dddddd` |\n' +
-          '| Default nav text | `--color-neutral-black` | `#191919` |\n' +
-          '| Active / hover border | `--color-primary-base` | `#050560` |\n' +
-          '| External link text | `--color-text-link` | `#284cca` |\n' +
-          '| Focus ring | `--color-border-focus` | `#284cca` |\n',
+        component: [
+          'The site-level **SiteNavigation** header \u2014 logo on the left, primary nav links on the',
+          'right. It is responsive out of the box: a full nav bar on desktop and a compact bar with a',
+          'hamburger-triggered `NavDrawer` on mobile. Feed it `SiteNavItem[]` and it wires up the',
+          'desktop `NavItem`s and the mobile drawer for you.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Logo | `logo` | \u2705 | Rendered left of the bar and in the mobile drawer header. |',
+          '| Nav items | `navItems` | \u2014 | `SiteNavItem[]`; `NavItem`s on desktop, large display links in the drawer. |',
+          '| Drawer variant | `drawerVariant` | \u2014 | `"none"` (default) or `"category"` for grouped sections. |',
+          '| Drawer sections | `drawerSections` | \u2014 | `NavDrawerSection[]` for the categorized mobile drawer. |',
+          '| Drawer footer links | `drawerFooterLinks` | \u2014 | Extra links at the bottom of the categorized drawer. |',
+          '| Search button | `showSearch`, `onSearchClick` | \u2014 | Optional search icon in the mobile bar. |',
+          '| Menu label | `mobileMenuLabel` | \u2014 | Accessible hamburger label. Defaults to `"Open navigation menu"`. |',
+          '| Initial state | `defaultOpen` | \u2014 | Seeds the drawer open/closed state (useful for stories/SSR). |',
+          '',
+          'Each `SiteNavItem` has `label`, optional `href` (anchor vs. button), `active`',
+          '(`aria-current="page"` + bottom border), `external`, `hasDropdown`, and `onClick`.',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { SiteNavigation } from "@nycopportunity/component-library";',
+          '',
+          '<SiteNavigation',
+          '  logo={<SiteLogo />}',
+          '  navItems={[',
+          '    { label: "Home", href: "/", active: true },',
+          '    { label: "Programs", href: "/programs", hasDropdown: true },',
+          '    { label: "NYC.gov", href: "https://nyc.gov", external: true },',
+          '  ]}',
+          '  showSearch',
+          '  onSearchClick={() => openSearch()}',
+          '/>',
+          '```',
+          '',
+          '---',
+          '',
+          '## Responsive',
+          '',
+          '| Breakpoint | Layout |',
+          '| --- | --- |',
+          '| Desktop (\u2265 1000 px) | White bar 68 px tall, 56 px h-padding; logo left, full-height `NavItem`s right. |',
+          '| Mobile (< 1000 px) | Compact 56 px bar; logo left, optional search + hamburger right. Tapping the hamburger opens the `NavDrawer` side-sheet. |',
+          '',
+          'The drawer auto-closes if the viewport grows back to desktop while it is open.',
+          '',
+          '---',
+          '',
+          '## Accessibility',
+          '',
+          '- Rendered as a `<header>` landmark; the desktop links sit inside a `<nav aria-label="Site navigation">`.',
+          '- The hamburger is a `<button>` with `aria-label`, `aria-expanded`, and `aria-controls`',
+          '  pointing at the drawer `id`.',
+          '- The drawer is `role="dialog" aria-modal="true"`; focus moves to its close button on open',
+          '  and returns to the hamburger on close (button, backdrop, or **Escape**).',
+          '- Body scroll is locked while the drawer is open; external links add',
+          '  `target="_blank" rel="noopener noreferrer"` and a visually-hidden "(opens in a new tab)" note.',
+        ].join('\n'),
       },
     },
   },

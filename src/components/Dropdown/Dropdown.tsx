@@ -131,7 +131,7 @@ export function Dropdown({
       }}
       className={cx(
         'absolute z-50 left-0 w-full bg-[var(--color-neutral-white)] rounded-[8px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.15)]',
-        variant === 'outlined' ? 'top-full mt-[4px] p-[8px]' : 'top-full'
+        'top-full mt-[4px] p-[8px]'
       )}
     >
       {options.map((option) => (

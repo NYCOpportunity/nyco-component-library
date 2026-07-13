@@ -132,42 +132,86 @@ const meta: Meta<typeof Footer> = {
           name: 'Footer Desktop',
           styles: { width: '1440px', height: '900px' },
         },
+        footerMobile: {
+          name: 'Footer Mobile',
+          styles: { width: '375px', height: '812px' },
+        },
       },
       defaultViewport: 'footerDesktop',
     },
     docs: {
       description: {
-        component:
-          '`Footer` is the site-wide footer with two distinct zones.\n\n' +
-          '---\n\n' +
-          '## Zones\n\n' +
-          '**Top zone** (white bg): Logo · site nav link columns · connect / CTA section.\n\n' +
-          '**Bottom zone** (neutral-100 bg): "More on nyc.gov" heading · link columns · copyright.\n\n' +
-          '---\n\n' +
-          '## Responsive\n\n' +
-          '**Desktop (≥ 1 000 px):** 56 px horizontal padding, single row per zone with `justify-between`.\n\n' +
-          '**Mobile (< 1 000 px):** 16 px horizontal padding, stacked column layout.\n\n' +
-          '---\n\n' +
-          '## Props\n\n' +
-          '| Prop | Type | Default | Description |\n' +
-          '|---|---|---|---|\n' +
-          '| `logo` | `ReactNode` | — | Logo content (top-left) |\n' +
-          '| `siteNavGroups` | `FooterLinkGroup[]` | `[]` | Top-section link columns |\n' +
-          '| `connectTitle` | `string` | — | CTA heading text |\n' +
-          '| `connectButtonLabel` | `string` | `"Sign up"` | CTA button label |\n' +
-          '| `onConnectClick` | `MouseEventHandler` | — | CTA button click handler |\n' +
-          '| `nycSectionTitle` | `string` | `"More on nyc.gov"` | Bottom-section heading |\n' +
-          '| `nycLinkGroups` | `FooterLinkGroup[]` | `[]` | Bottom-section link columns |\n' +
-          '| `copyright` | `string` | — | Copyright line at bottom |\n\n' +
-          '---\n\n' +
-          '## Design Tokens\n\n' +
-          '| Property | Token | Value |\n' +
-          '|---|---|---|\n' +
-          '| Top zone bg | `--color-white` | `#ffffff` |\n' +
-          '| Bottom zone bg | `--color-neutral-100` | `#f5f5f5` |\n' +
-          '| Border | `--color-neutral-300` | `#dddddd` |\n' +
-          '| Text | `--color-neutral-black` | `#191919` |\n' +
-          '| Focus ring | `--color-border-focus` | `#284cca` |\n',
+        component: [
+          'The site-wide **Footer** — a two-zone landmark that closes every page with site',
+          'navigation, an optional newsletter / connect call-to-action, and the standard NYC.gov',
+          'links and copyright. Compose it entirely from data props; every section is optional and',
+          'only renders when you supply its content.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          'The footer is split into a white **top zone** and a neutral-100 **bottom zone**. A zone is',
+          'omitted entirely when none of its parts are provided.',
+          '',
+          '| Part | Prop | Zone | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Logo | `logo` | Top | Any React node — typically a logo mark + wordmark. |',
+          '| Site nav columns | `siteNavGroups` | Top | Array of `FooterLinkGroup`; each becomes one column (up to 3 on desktop). |',
+          '| Connect heading | `connectTitle` | Top | CTA heading, e.g. "Receive updates…". |',
+          '| Connect button | `connectButtonLabel`, `onConnectClick` | Top | Button renders only when `onConnectClick` is passed. Label defaults to `"Sign up"`. |',
+          '| NYC section heading | `nycSectionTitle` | Bottom | Defaults to `"More on nyc.gov"`. |',
+          '| NYC link columns | `nycLinkGroups` | Bottom | Array of `FooterLinkGroup` (up to 3 columns). |',
+          '| Copyright | `copyright` | Bottom | Small print rule + copyright line. |',
+          '',
+          'Each `FooterLinkGroup` is `{ links: FooterLink[] }`. A `FooterLink` has `label`, optional',
+          '`href` (renders an `<a>`, otherwise a plain `<span>`), `bold` (semibold heading style),',
+          '`external` (opens in a new tab with `rel="noopener noreferrer"`), and `onClick`.',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { Footer } from "@nycopportunity/component-library";',
+          '',
+          '<Footer',
+          '  logo={<SiteLogo />}',
+          '  siteNavGroups={[',
+          '    { links: [',
+          '      { label: "About", href: "/about", bold: true },',
+          '      { label: "Data", href: "/data" },',
+          '    ] },',
+          '  ]}',
+          '  connectTitle="Receive updates about the Workforce Data Portal"',
+          '  onConnectClick={() => openSignupModal()}',
+          '  nycLinkGroups={[',
+          '    { links: [{ label: "311", href: "https://portal.311.nyc.gov", external: true }] },',
+          '  ]}',
+          '  copyright="© 2024 City of New York. All rights reserved."',
+          '/>',
+          '```',
+          '',
+          '---',
+          '',
+          '## Responsive',
+          '',
+          '| Breakpoint | Layout |',
+          '| --- | --- |',
+          '| Desktop (≥ 1000 px) | 56 px h-padding; each zone is a grid: logo column + up to 3 link columns. |',
+          '| Tablet (600–999 px) | 24 px h-padding; columns stack. |',
+          '| Mobile (< 600 px) | 16 px h-padding; single stacked column, full-width CTA button. |',
+          '',
+          '---',
+          '',
+          '## Accessibility',
+          '',
+          '- Rendered as a `<footer>` landmark element (forwards `ref`).',
+          '- Links use real `<a>` elements; non-linked labels are plain `<span>`s.',
+          '- External links set `target="_blank" rel="noopener noreferrer"` and append a visually-hidden',
+          '  "(opens in a new tab)" note for screen readers.',
+          '- Every focusable link and the CTA button show a visible focus ring via `--color-border-focus`.',
+        ].join('\n'),
       },
     },
   },
@@ -225,6 +269,6 @@ export const Mobile: Story = {
   },
   parameters: {
     layout: 'fullscreen',
-    viewport: { defaultViewport: 'mobile2' },
+    viewport: { defaultViewport: 'footerMobile' },
   },
 };

@@ -85,32 +85,59 @@ const meta: Meta<typeof NavItem> = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          '`NavItem` is a single navigation link used inside top-level navigation bars.\n\n' +
-          '---\n\n' +
-          '## Variants\n\n' +
-          '| Prop | Effect |\n' +
-          '|---|---|\n' +
-          '| (default) | Plain text link, `--color-neutral-black` |\n' +
-          '| `active` | Persistent 5 px `--color-primary-base` bottom border + `aria-current="page"` |\n' +
-          '| `hasDropdown` | Appends an `expand_more` chevron icon |\n' +
-          '| `external` | Link-color text (`--color-text-link`) + `north_east` arrow, opens in new tab |\n\n' +
-          '---\n\n' +
-          '## Rendering\n\n' +
-          'Renders as `<a>` when `href` is provided, `<button type="button">` otherwise.\n\n' +
-          '---\n\n' +
-          '## States\n\n' +
-          '| State | Visual |\n' +
-          '|---|---|\n' +
-          '| Default | No decoration |\n' +
-          '| Hover | 5 px bottom border (primary or link color) |\n' +
-          '| Active / Selected | Same 5 px bottom border, persistent |\n' +
-          '| Focus-visible | Filled `--color-primary-base` bg, white text, `4px` radius |\n\n' +
-          '---\n\n' +
-          '## Accessibility\n\n' +
-          '- `aria-current="page"` is set when `active` is `true`.\n' +
-          '- External links include `target="_blank" rel="noopener noreferrer"` and a visually-hidden ' +
-          '"(opens in a new tab)" label for screen readers.\n',
+        component: [
+          'A single **NavItem** — the individual link used inside a top-level navigation bar (see',
+          '`SiteNavigation`). It renders as an `<a>` when `href` is provided and a',
+          '`<button type="button">` otherwise, with built-in active, dropdown, and external variants.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Notes |',
+          '| --- | --- | --- |',
+          '| Label | `label` | Required text of the link. |',
+          '| Target | `href` | Renders `<a>` when set; `<button>` when omitted. |',
+          '| Active marker | `active` | Persistent 5 px `--color-primary-base` bottom border + `aria-current="page"`. |',
+          '| Dropdown chevron | `hasDropdown` | Appends an `expand_more` chevron — use for mega-menu triggers. |',
+          '| External arrow | `external` | Link-color text + `north_east` arrow; opens in a new tab. |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { NavItem } from "@nycopportunity/component-library";',
+          '',
+          '<NavItem label="About" href="/about" active />',
+          '<NavItem label="Programs" href="/programs" hasDropdown />',
+          '<NavItem label="NYC.gov" href="https://nyc.gov" external />',
+          '',
+          '// As a button (no href)',
+          '<NavItem label="Menu" hasDropdown onClick={() => toggleMenu()} />',
+          '```',
+          '',
+          '---',
+          '',
+          '## States',
+          '',
+          '| State | Visual |',
+          '| --- | --- |',
+          '| Default | Plain text, no decoration. |',
+          '| Hover | 5 px bottom border (primary color, or link color when `external`). |',
+          '| Active | Same 5 px bottom border, persistent. |',
+          '| Focus-visible | Filled `--color-primary-base` background, foreground text, 4 px radius, no border. |',
+          '',
+          '---',
+          '',
+          '## Accessibility',
+          '',
+          '- `aria-current="page"` is set on the anchor/button when `active` is `true`.',
+          '- External links add `target="_blank" rel="noopener noreferrer"` plus a visually-hidden',
+          '  "(opens in a new tab)" label for screen readers.',
+          '- The transparent 5 px bottom border is always present, so there is no layout shift between',
+          '  the default and hover/active states.',
+        ].join('\n'),
       },
     },
   },

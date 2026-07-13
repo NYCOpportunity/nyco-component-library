@@ -36,22 +36,64 @@ const meta: Meta<typeof ExpandableSelectGroup> = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          '`ExpandableSelectGroup` is a filter panel card composed of stacked `ExpandableSelect` rows.\n\n' +
-          'It provides an optional title + subtitle header, borders the whole panel in a white card, ' +
-          'and wires accordion behavior (opening one filter closes the rest) out of the box.\n\n' +
-          '---\n\n' +
-          '## Props\n\n' +
-          '| Prop | Type | Default | Description |\n' +
-          '|---|---|---|---|\n' +
-          '| `filters` | `ExpandableSelectGroupFilter[]` | — | Filter rows |\n' +
-          '| `title` | `string` | — | Card heading (semibold 18 px) |\n' +
-          '| `subtitle` | `string` | — | Subtitle below heading (regular 16 px) |\n' +
-          '| `value` | `Record<id, string[]>` | — | Controlled selection map |\n' +
-          '| `defaultValue` | `Record<id, string[]>` | `{}` | Uncontrolled initial selections |\n' +
-          '| `onChange` | `(map) => void` | — | Called on any selection change |\n' +
-          '| `defaultOpenId` | `string` | — | Filter `id` that starts open |\n' +
-          '| `accordion` | `boolean` | `true` | One-open-at-a-time mode |\n',
+        component: [
+          'A **filter panel card** composed of stacked `ExpandableSelect` rows. Wrap several related',
+          'filters in one bordered white card with an optional title and subtitle, and get',
+          'accordion behavior — opening one filter closes the others — wired up for free.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Heading | `title` | — | Semibold 18 px card heading. |',
+          '| Subtitle | `subtitle` | — | Regular 16 px text below the heading (`neutral-700`). |',
+          '| Filter rows | `filters` | ✅ | Array of `ExpandableSelectGroupFilter` (`id`, `label`, `options`, optional `disabled`). Each renders one `ExpandableSelect`. |',
+          '| Selection | `value` / `defaultValue` | — | Map of filter `id` → selected `string[]`. Controlled via `value`, uncontrolled via `defaultValue` (default `{}`). |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { ExpandableSelectGroup } from "@nycopportunity/component-library";',
+          '',
+          'const filters = [',
+          '  { id: "age", label: "Age", options: ageOptions },',
+          '  { id: "borough", label: "Borough", options: boroughOptions },',
+          '];',
+          '',
+          '// Accordion mode (default) — one filter open at a time',
+          '<ExpandableSelectGroup',
+          '  title="Filters"',
+          '  subtitle="Refine the results below"',
+          '  filters={filters}',
+          '  defaultOpenId="age"',
+          '  onChange={(map) => console.log(map)}',
+          '/>',
+          '',
+          '// Allow multiple filters open at once',
+          '<ExpandableSelectGroup filters={filters} accordion={false} />',
+          '```',
+          '',
+          '---',
+          '',
+          '## Behavior',
+          '',
+          '- **Accordion mode** (`accordion={true}`, the default) — opening any filter automatically',
+          '  closes all others. Use `defaultOpenId` to choose which row starts open.',
+          '- **Multi-open mode** (`accordion={false}`) — filters open and close independently.',
+          '- `onChange` fires on every selection change and receives the **full** updated',
+          '  `Record<id, string[]>` map, not just the row that changed.',
+          '',
+          '## Accessibility',
+          '',
+          '- Each filter row is a self-contained `ExpandableSelect`: a `<button>` trigger with',
+          '  `aria-expanded` / `aria-controls` and a `role="group"` list of checkbox rows.',
+          '- Pressing **Escape** collapses the focused open row.',
+          '- The focus ring wraps the active row, keeping the open panel visually grouped with its trigger.',
+        ].join('\n'),
       },
     },
   },

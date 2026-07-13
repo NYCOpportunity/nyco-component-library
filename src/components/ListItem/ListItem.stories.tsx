@@ -12,79 +12,101 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          '`ListItem` is a single interactive row used inside menus, dropdowns, selects, and filter panels.\n\n' +
-          '---\n\n' +
-          '## Types\n\n' +
-          'The `type` prop controls the visual and interactive behaviour:\n\n' +
-          '- **`standard`** — no selection icon; fires `onClick` only. Use for navigation or action menus.\n' +
-          '- **`multi-standard`** — checkmark on the right. Toggles on every click. ' +
-          'Use inside multi-select dropdowns or command palettes.\n' +
-          '- **`checkbox`** — checkbox icon on the left. Toggles on every click. ' +
-          'Use for checklist-style multi-select lists.\n' +
-          '- **`radio`** — radio icon on the left. Can only be selected, not deselected by clicking again. ' +
-          'Use with an external group to ensure single selection.\n\n' +
-          '---\n\n' +
-          '## Labels\n\n' +
-          'Every item requires a `label`. Two optional supporting labels are available:\n\n' +
-          '- **`primaryLabel`** — small text rendered *above* the main label (e.g. a category name or section header).\n' +
-          '- **`secondaryLabel`** — small text rendered *below* the main label (e.g. a description or hint).\n\n' +
-          '---\n\n' +
-          '## Controlled vs. uncontrolled\n\n' +
-          '**Uncontrolled**: omit `selected` and optionally pass `defaultSelected`. ' +
-          'The component owns its own selection state internally.\n\n' +
-          '```tsx\n' +
-          '<ListItem label="Remember me" type="checkbox" defaultSelected={false} />\n' +
-          '```\n\n' +
-          '**Controlled**: pass `selected` + `onSelectedChange`. ' +
-          'You fully own the state and must keep it in sync.\n\n' +
-          '```tsx\n' +
-          'const [checked, setChecked] = useState(false);\n' +
-          '<ListItem label="Remember me" type="checkbox" selected={checked} onSelectedChange={setChecked} />\n' +
-          '```\n\n' +
-          '---\n\n' +
-          '## Radio groups\n\n' +
-          'Wire multiple `radio` items by sharing an external value and passing `selected={value === id}` ' +
-          'with `onSelectedChange={() => setValue(id)}` to each item. ' +
-          'The `radio` type never calls `onSelectedChange(false)`, so the active item can only change by selecting another.\n\n' +
-          '## Styling\n\n' +
-          'Two props give you Tailwind-level control over every part of the component:\n\n' +
-          '**`className`** — applied to the root `<button>`. Use Tailwind modifiers to override hover/press colors:\n\n' +
-          '```tsx\n' +
-          '// Override hover and press background colors using CSS-variable overrides\n' +
-          '<ListItem\n' +
-          '  label="Sky theme"\n' +
-          '  className="[--color-neutral-100:theme(colors.sky.50)] [--color-neutral-200:theme(colors.sky.100)]"\n' +
-          '/>\n' +
-          '```\n\n' +
-          '**`slots`** — per-slot overrides. Target the icon, main label, primary label, or secondary label individually:\n\n' +
-          '```tsx\n' +
-          '<ListItem\n' +
-          '  label="Custom item"\n' +
-          '  type="checkbox"\n' +
-          '  slots={{\n' +
-          '    icon: "text-violet-600",          // icon fill color\n' +
-          '    label: "font-semibold text-lg",   // main label text\n' +
-          '    primaryLabel: "text-violet-400",  // overline text color\n' +
-          '    secondaryLabel: "italic",         // underline text style\n' +
-          '  }}\n' +
-          '/>\n' +
-          '```\n\n' +
-          '---\n\n' +
-          '| Property | CSS Variable | Default |\n' +
-          '|---|---|---|\n' +
-          '| Default text | `--color-neutral-black` | `#191919` |\n' +
-          '| Supporting labels | `--color-neutral-700` | `#777777` |\n' +
-          '| Disabled text | `--color-neutral-300` | `#dddddd` |\n' +
-          '| Hover background | `--color-neutral-100` | `#f5f5f5` |\n' +
-          '| Pressed background | `--color-neutral-200` | `#eeeeee` |\n' +
-          '| Focus ring | `--color-border-focus` | `#284cca` |\n\n' +
-          '---\n\n' +
-          '## Accessibility\n\n' +
-          '- Renders as a `<button type="button">` — keyboard focusable and activatable with `Enter` / `Space`.\n' +
-          '- `aria-pressed` is applied on `multi-standard`, `checkbox`, and `radio` items to communicate toggle state.\n' +
-          '- Icons are decorative (`aria-hidden="true"`) — the visible label is the accessible name.\n' +
-          '- Focus ring uses `focus-visible` so it only appears during keyboard navigation, not on mouse click.',
+        component: [
+          'A single interactive **list item** row used inside menus, dropdowns, selects, and filter',
+          'panels. Pick a `type` to get a plain action row, a right-hand checkmark, or a left-hand',
+          'checkbox / radio control.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Label | `label` | ✅ | The main visible text — also the accessible name. |',
+          '| Overline | `primaryLabel` | — | Small text above the label. `standard` type only. |',
+          '| Underline | `secondaryLabel` | — | Small text below the label. `standard` type only. |',
+          '| Selection icon | `type` | — | Checkmark (`multi-standard`), checkbox, or radio. |',
+          '| Slot overrides | `slots`, `className` | — | Tailwind class hooks for the root and each inner slot. |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { ListItem } from "@nycopportunity/component-library";',
+          '',
+          '// Plain action row',
+          '<ListItem label="View details" onClick={() => open()} />',
+          '',
+          '// Checkbox row, controlled',
+          'const [checked, setChecked] = React.useState(false);',
+          '<ListItem',
+          '  label="Remember me"',
+          '  type="checkbox"',
+          '  selected={checked}',
+          '  onSelectedChange={setChecked}',
+          '/>',
+          '```',
+          '',
+          '---',
+          '',
+          '## Types',
+          '',
+          'The `type` prop controls the visual and interactive behavior:',
+          '',
+          '| Type | Icon | Behavior | Use for |',
+          '| --- | --- | --- | --- |',
+          '| `standard` (default) | — | Fires `onClick` only. | Navigation / action menus. |',
+          '| `multi-standard` | Right checkmark | Toggles on every click. | Multi-select dropdowns. |',
+          '| `checkbox` | Left checkbox | Toggles on every click. | Checklist-style lists. |',
+          '| `radio` | Left radio | Selects only — never deselects on re-click. | Single-select groups. |',
+          '',
+          '## Labels',
+          '',
+          'Every item requires a `label`. On the `standard` type you can also add `primaryLabel` (small',
+          'overline above) and `secondaryLabel` (small underline below).',
+          '',
+          '## Controlled vs. uncontrolled',
+          '',
+          '**Uncontrolled** — omit `selected`, optionally pass `defaultSelected`; the component owns its',
+          'selection state.',
+          '',
+          '**Controlled** — pass `selected` + `onSelectedChange` and keep the state in sync yourself.',
+          '',
+          '## Radio groups',
+          '',
+          'Wire multiple `radio` items by sharing an external value: pass `selected={value === id}` and',
+          '`onSelectedChange={() => setValue(id)}` to each. The `radio` type never calls',
+          '`onSelectedChange(false)`, so the active item can only change by selecting another.',
+          '',
+          '## Styling',
+          '',
+          '`className` targets the root `<button>` — use Tailwind modifiers or CSS-variable overrides',
+          '(e.g. `[--color-neutral-100:#e0f2fe]`) to retheme hover / press colors. `slots` provides',
+          'per-part overrides for `icon`, `label`, `primaryLabel`, and `secondaryLabel`.',
+          '',
+          '```tsx',
+          '<ListItem',
+          '  label="Custom item"',
+          '  type="checkbox"',
+          '  slots={{',
+          '    icon: "text-violet-600",',
+          '    label: "font-semibold text-lg",',
+          '    primaryLabel: "text-violet-400",',
+          '    secondaryLabel: "italic",',
+          '  }}',
+          '/>',
+          '```',
+          '',
+          '## Accessibility',
+          '',
+          '- Renders as a `<button type="button">` — keyboard focusable and activated with Enter / Space.',
+          '- `aria-pressed` is applied on `multi-standard`, `checkbox`, and `radio` items to communicate',
+          '  toggle state.',
+          '- Icons are decorative (`aria-hidden`); the visible label is the accessible name.',
+          '- The focus ring uses `focus-visible`, so it only appears during keyboard navigation.',
+        ].join('\n'),
       },
     },
   },

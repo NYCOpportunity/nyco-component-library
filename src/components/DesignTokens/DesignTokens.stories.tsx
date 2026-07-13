@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { ReactNode } from 'react';
 
 // ---------------------------------------------------------------------------
 // Color data — mirrors CSS custom properties in styles.css
@@ -728,6 +729,231 @@ function TypographyPage() {
 }
 
 // ---------------------------------------------------------------------------
+// Usage examples — how to pull colors & typography in code
+// ---------------------------------------------------------------------------
+
+function CodeSnippet({ code }: { code: string }) {
+  return (
+    <pre
+      style={{
+        margin: 0,
+        padding: '14px 16px',
+        background: '#191919',
+        color: '#f5f5f5',
+        borderRadius: 8,
+        fontFamily: 'monospace',
+        fontSize: '0.8125rem',
+        lineHeight: 1.65,
+        overflowX: 'auto',
+        whiteSpace: 'pre',
+      }}
+    >
+      <code>{code}</code>
+    </pre>
+  );
+}
+
+function Example({
+  title,
+  description,
+  preview,
+  code,
+}: {
+  title: string;
+  description?: string;
+  preview?: ReactNode;
+  code: string;
+}) {
+  return (
+    <div style={{ marginBottom: 32 }}>
+      <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#191919', margin: '0 0 4px' }}>
+        {title}
+      </h3>
+      {description && (
+        <p style={{ fontSize: '0.8125rem', color: '#777', margin: '0 0 12px', lineHeight: 1.6 }}>
+          {description}
+        </p>
+      )}
+      {preview != null && (
+        <div
+          style={{
+            border: '1px solid #eee',
+            borderRadius: 8,
+            padding: 20,
+            marginBottom: 10,
+            background: '#fff',
+          }}
+        >
+          {preview}
+        </div>
+      )}
+      <CodeSnippet code={code} />
+    </div>
+  );
+}
+
+function UsageSection({ children, note }: { children: ReactNode; note?: string }) {
+  return (
+    <div style={{ margin: '48px 0 20px' }}>
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#191919', margin: 0 }}>
+        {children}
+      </h2>
+      {note && (
+        <p style={{ fontSize: '0.875rem', color: '#777', margin: '6px 0 0', lineHeight: 1.6 }}>
+          {note}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function UsagePage() {
+  return (
+    <div style={{ padding: '40px 32px', maxWidth: 960, fontFamily: 'Public Sans, sans-serif' }}>
+      <h1 style={{ fontSize: '2rem', fontWeight: 600, color: '#191919', marginBottom: 8 }}>
+        Using Tokens
+      </h1>
+      <p style={{ fontSize: '0.875rem', color: '#777', margin: '0 0 12px', lineHeight: 1.6 }}>
+        Every token is a CSS custom property defined in <code>styles.css</code>. Import the
+        stylesheet once at your app root, then reference the variables anywhere — in CSS, inline
+        styles, Tailwind, or JavaScript.
+      </p>
+      <CodeSnippet
+        code={`// app entry (e.g. main.tsx)\nimport '@nycopportunity/component-library/style.css';`}
+      />
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Colors                                                            */}
+      {/* ---------------------------------------------------------------- */}
+      <UsageSection note="Reference the --color-* custom properties — never hard-code hex values, so themes stay consistent.">
+        Pulling colors
+      </UsageSection>
+
+      <Example
+        title="Plain CSS"
+        description="Reference the variable in any stylesheet or CSS module."
+        preview={
+          <span
+            style={{
+              background: 'var(--color-primary-base)',
+              color: 'var(--color-primary-foreground)',
+              padding: '10px 16px',
+              borderRadius: 6,
+              fontWeight: 600,
+              display: 'inline-block',
+            }}
+          >
+            Primary surface
+          </span>
+        }
+        code={`.cta {\n  background: var(--color-primary-base);\n  color: var(--color-primary-foreground);\n}`}
+      />
+
+      <Example
+        title="Inline React style"
+        description="Pass the variable straight into the style object."
+        preview={
+          <span style={{ color: 'var(--color-error-base)', fontWeight: 600 }}>Error message</span>
+        }
+        code={`<span style={{ color: 'var(--color-error-base)' }}>\n  Error message\n</span>`}
+      />
+
+      <Example
+        title="Tailwind (arbitrary value)"
+        description="Wrap the variable in Tailwind's arbitrary-value brackets."
+        preview={
+          <span
+            style={{
+              background: 'var(--color-secondary-base)',
+              color: '#fff',
+              padding: '8px 16px',
+              borderRadius: 6,
+              fontWeight: 600,
+              display: 'inline-block',
+            }}
+          >
+            Secondary
+          </span>
+        }
+        code={`<button className="bg-[var(--color-secondary-base)] text-white px-4 py-2 rounded">\n  Secondary\n</button>`}
+      />
+
+      <Example
+        title="JavaScript (dynamic / data-viz)"
+        description="Resolve a value at runtime — handy for charts, canvas, or SVG fills."
+        preview={
+          <span style={{ display: 'inline-flex', gap: 8 }}>
+            {['01', '02', '03', '04'].map((n) => (
+              <span
+                key={n}
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 4,
+                  background: `var(--color-data-viz-${n})`,
+                }}
+              />
+            ))}
+          </span>
+        }
+        code={`const styles = getComputedStyle(document.documentElement);\nconst color = styles.getPropertyValue('--color-data-viz-01').trim();\n// → "#3f5bbf"`}
+      />
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Typography                                                        */}
+      {/* ---------------------------------------------------------------- */}
+      <UsageSection note="Apply a typography utility class — one class sets font-family, size, line-height, and weight together.">
+        Pulling typography
+      </UsageSection>
+
+      <Example
+        title="Utility classes"
+        description="The quickest way — the class name is the full type style."
+        preview={
+          <div>
+            <div className="heading-h1" style={{ marginBottom: 4 }}>
+              Heading H1
+            </div>
+            <p className="body-regular" style={{ margin: 0 }}>
+              Body regular paragraph for long-form reading.
+            </p>
+          </div>
+        }
+        code={`<h1 className="heading-h1">Page title</h1>\n<p className="body-regular">Body copy…</p>\n<span className="ui-16-bold">Button label</span>`}
+      />
+
+      <Example
+        title="Font family & size variables"
+        description="For custom rules, compose from the raw font tokens."
+        preview={
+          <span
+            style={{
+              fontFamily: 'var(--font-secondary)',
+              fontSize: 'var(--font-size-lg)',
+              lineHeight: 'var(--line-height-lg)',
+            }}
+          >
+            Source Serif, large
+          </span>
+        }
+        code={`.quote {\n  font-family: var(--font-secondary);\n  font-size: var(--font-size-lg);\n  line-height: var(--line-height-lg);\n}`}
+      />
+
+      <Example
+        title="Typography + color together"
+        description="Combine a type class with a color token for links and emphasis."
+        preview={
+          <span className="ui-16-link" style={{ color: 'var(--color-text-link)' }}>
+            Learn more
+          </span>
+        }
+        code={`<a\n  className="ui-16-link"\n  style={{ color: 'var(--color-text-link)' }}\n>\n  Learn more\n</a>`}
+      />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Storybook meta
 // ---------------------------------------------------------------------------
 
@@ -751,4 +977,8 @@ export const DevTokens: Story = {
 
 export const Typography: Story = {
   render: () => <TypographyPage />,
+};
+
+export const Usage: Story = {
+  render: () => <UsagePage />,
 };

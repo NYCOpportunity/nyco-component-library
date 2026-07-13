@@ -47,64 +47,92 @@ const meta: Meta<typeof DropdownMenu> = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          '`DropdownMenu` is a compact dropdown that lets users choose one or more options from a floating menu panel. ' +
-          'It supports category-grouped options, two trigger styles, and single or multi-select modes.\n\n' +
-          '---\n\n' +
-          '## Trigger types\n\n' +
-          '### `contained` (default)\n' +
-          'A gray `var(--color-neutral-100)` pill trigger. Pair with `border={true}` to add a visible `var(--color-neutral-300)` outline.\n\n' +
-          '### `uncontained`\n' +
-          'A transparent trigger that shows a hover fill. Ideal for inline filters, toolbars, or compact layouts.\n\n' +
-          '---\n\n' +
-          '## Category grouping\n\n' +
-          'Add an optional `category` string to any option. Options sharing a `category` are rendered together under a ' +
-          'section header inside the menu panel. Options without a `category` form an unnamed group.\n\n' +
-          '```tsx\n' +
-          'const options = [\n' +
-          '  { value: "poverty", label: "Poverty rate", category: "Economic" },\n' +
-          '  { value: "housing", label: "Housing cost burden", category: "Housing" },\n' +
-          '];\n' +
-          '```\n\n' +
-          '---\n\n' +
-          '## Selection modes\n\n' +
-          '**Single-select** (`multiple: false`, default): selecting an option closes the panel. ' +
-          'The chosen item is highlighted with a checkmark.\n\n' +
-          '**Multi-select** (`multiple: true`): checkbox icons render alongside each option. ' +
-          'The panel stays open until the user clicks outside or presses Escape. ' +
-          'The trigger summarises the selection: one item shows the label; ' +
-          'two or three items show comma-separated labels; four or more show "N selected".\n\n' +
-          '---\n\n' +
-          '## State management\n\n' +
-          '**Uncontrolled**: Omit `value`. Optionally pass `defaultValue` to pre-seed the selection.\n\n' +
-          '```tsx\n' +
-          '<DropdownMenu options={options} defaultValue="income" />\n' +
-          '```\n\n' +
-          '**Controlled**: Pass `value` + `onChange`.\n\n' +
-          '```tsx\n' +
-          "const [val, setVal] = useState('');\n" +
-          '<DropdownMenu options={options} value={val} onChange={(v) => setVal(v as string)} />\n' +
-          '```\n\n' +
-          '---\n\n' +
-          '## Accessibility\n\n' +
-          '- Trigger is a `<button type="button">` with `aria-haspopup="listbox"` and `aria-expanded`.\n' +
-          '- The panel has `role="listbox"` and `aria-multiselectable` when `multiple` is true.\n' +
-          '- Each option has `role="option"` and `aria-selected`.\n' +
-          '- Press `Escape` to close and return focus to the trigger.\n' +
-          '- Pass `aria-label` or `aria-labelledby` when there is no visible label.\n\n' +
-          '---\n\n' +
-          '| Token | Value |\n' +
-          '|---|---|\n' +
-          '| Trigger bg (contained) | `--color-neutral-100` `#f5f5f5` |\n' +
-          '| Trigger border (border=true) | `--color-neutral-300` `#dddddd` |\n' +
-          '| Trigger text | `--color-neutral-black` `#191919` |\n' +
-          '| Placeholder | `--color-neutral-500` `#aaaaaa` |\n' +
-          '| Panel bg | `--color-neutral-white` `#ffffff` |\n' +
-          '| Panel shadow | `rgba(25,25,25,0.15)` at 4px/15px |\n' +
-          '| Item hover | `--color-neutral-100` `#f5f5f5` |\n' +
-          '| Selected icon | `--color-action-blue` `#284cca` |\n' +
-          '| Category label | `--color-neutral-700` `#777777` |\n' +
-          '| Focus ring | `--color-border-focus` `#284cca` |',
+        component: [
+          'A compact **DropdownMenu** that lets people choose one or more options from a floating',
+          'menu panel. It supports category-grouped options, two trigger styles, and single or',
+          'multi-select modes. Reach for it in toolbars, filter bars, and compact layouts.',
+          '',
+          '---',
+          '',
+          '## Anatomy',
+          '',
+          '| Part | Prop | Required | Notes |',
+          '| --- | --- | --- | --- |',
+          '| Options | `options` | ✅ | `DropdownMenuOption[]` of `{ value, label, category?, disabled? }`. |',
+          '| Trigger | `type`, `border`, `placeholder` | — | `contained` (default) or `uncontained`; optional outline. |',
+          '| Label | `label` | — | Form label above the trigger; auto-associated via `aria-labelledby`. |',
+          '| Helper text | `helperText` | — | Small caption below the trigger. |',
+          '| Panel | — | — | `role="listbox"` popup with optional category headers. |',
+          '',
+          '---',
+          '',
+          '## How to use it',
+          '',
+          '```tsx',
+          'import { DropdownMenu } from "@nycopportunity/component-library";',
+          '',
+          'const options = [',
+          '  { value: "poverty", label: "Poverty rate", category: "Economic" },',
+          '  { value: "housing", label: "Housing cost burden", category: "Housing" },',
+          '];',
+          '',
+          '// Single-select, uncontrolled',
+          '<DropdownMenu label="Indicator" options={options} defaultValue="poverty" />',
+          '',
+          '// Multi-select, controlled',
+          'const [vals, setVals] = React.useState<string[]>([]);',
+          '<DropdownMenu',
+          '  options={options}',
+          '  multiple',
+          '  value={vals}',
+          '  onChange={(v) => setVals(v as string[])}',
+          '/>',
+          '```',
+          '',
+          '---',
+          '',
+          '## Trigger types',
+          '',
+          '`type="contained"` (default) — a gray `var(--color-neutral-100)` pill trigger. Pair with',
+          '`border` to add a visible `var(--color-neutral-300)` outline (which switches the idle',
+          'background to white).',
+          '',
+          '`type="uncontained"` — a transparent trigger that shows a hover fill. Trigger background,',
+          'hover, and press colors can all be overridden via `triggerBgColor`, `triggerHoverBgColor`,',
+          'and `triggerPressBgColor`.',
+          '',
+          '## Category grouping',
+          '',
+          'Add an optional `category` string to any option. Options sharing a `category` render',
+          'together under a section header, in the order they first appear; options without a',
+          '`category` form an unnamed group.',
+          '',
+          '## Selection modes',
+          '',
+          '**Single-select** (`multiple: false`, default) — selecting an option closes the panel and',
+          'marks the chosen item with a checkmark.',
+          '',
+          '**Multi-select** (`multiple: true`) — checkbox icons render alongside each option and the',
+          'panel stays open until the user clicks outside or presses Escape. The trigger summarizes',
+          'the selection: one label; two or three comma-separated labels; four or more show',
+          '`"N selected"`.',
+          '',
+          '## State management',
+          '',
+          '**Uncontrolled** — omit `value`; optionally pass `defaultValue` to pre-seed. The menu is',
+          'uncontrolled-open by default; pass `open` + `onOpenChange` to control visibility.',
+          '',
+          '**Controlled** — pass `value` + `onChange` (a `string` for single-select, `string[]` for',
+          'multi-select).',
+          '',
+          '## Accessibility',
+          '',
+          '- Trigger is a `<button type="button">` with `aria-haspopup="listbox"` and `aria-expanded`.',
+          '- The panel has `role="listbox"`, plus `aria-multiselectable` when `multiple` is true.',
+          '- Each option has `role="option"` and `aria-selected`.',
+          '- Press `Escape` to close and return focus to the trigger.',
+          '- Pass `aria-label` / `aria-labelledby` when there is no visible `label`.',
+        ].join('\n'),
       },
     },
   },

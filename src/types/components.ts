@@ -496,6 +496,16 @@ export interface GlobalNavigationProps {
    */
   showTranslate?: boolean;
   /**
+   * When `true`, renders a logo beside the official-site text.
+   * Defaults to `false` (no logo).
+   */
+  showLogo?: boolean;
+  /**
+   * Custom logo node rendered (when `showLogo` is `true`) in place of the built-in NYC mark.
+   * Any React node — typically a logo mark or icon.
+   */
+  logo?: React.ReactNode;
+  /**
    * Language label shown inside the translate toggle next to the icon.
    * Defaults to `'English'`.
    */

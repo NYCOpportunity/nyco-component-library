@@ -82,7 +82,7 @@ function PillButton({
       onClick={onClick}
       onPointerDown={handlePointerDown}
       className={cx(
-        'flex items-center justify-center h-[44px] px-[24px] rounded-full shrink-0',
+        'flex items-center justify-center h-[44px] min-w-[120px] px-[24px] rounded-full shrink-0',
         'text-[16px] font-semibold text-[var(--color-neutral-black)]',
         'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]',
         '[@media(hover:hover)]:transition-colors',

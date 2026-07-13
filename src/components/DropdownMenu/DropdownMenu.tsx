@@ -224,50 +224,63 @@ export function DropdownMenu({
         </span>
       )}
 
-      <button
-        ref={triggerRef}
-        type="button"
-        disabled={disabled}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        aria-controls={isOpen ? panelId : undefined}
-        aria-label={ariaLabel}
-        aria-labelledby={!ariaLabel ? (ariaLabelledby ?? (label ? labelId : undefined)) : undefined}
-        onClick={togglePanel}
-        onPointerDown={handlePointerDown}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onKeyDown={(e) => {
-          if (e.key === 'Escape') closePanel();
-        }}
-        style={{
-          backgroundColor: flashing ? effectivePressBg : isHovered ? effectiveHoverBg : effectiveBg,
-        }}
-        className={cx(
-          'flex items-center overflow-hidden rounded-[8px] w-full text-left transition-colors',
-          'px-[10px] py-[8px]',
-          'text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-black)]',
-          // Contained trigger — only border styling
-          type === 'contained' &&
-            (border ? 'border border-[var(--color-neutral-300)]' : 'border-0'),
-          // Uncontained trigger — only border styling
-          type === 'uncontained' && 'border border-transparent',
-          'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]'
-        )}
-      >
-        <span className="flex-1 min-w-0 px-[6px] py-[2px] truncate">{triggerText}</span>
-        <span className="pr-[2px] shrink-0">
-          <ChevronIcon open={isOpen} />
-        </span>
-      </button>
+      <div className="relative">
+        <button
+          ref={triggerRef}
+          type="button"
+          disabled={disabled}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? panelId : undefined}
+          aria-label={ariaLabel}
+          aria-labelledby={
+            !ariaLabel ? (ariaLabelledby ?? (label ? labelId : undefined)) : undefined
+          }
+          onClick={togglePanel}
+          onPointerDown={handlePointerDown}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') closePanel();
+          }}
+          style={{
+            backgroundColor: flashing
+              ? effectivePressBg
+              : isHovered
+                ? effectiveHoverBg
+                : effectiveBg,
+          }}
+          className={cx(
+            'flex items-center overflow-hidden rounded-[8px] w-full text-left transition-colors',
+            'px-[10px] py-[8px]',
+            'text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-black)]',
+            // Contained trigger — only border styling
+            type === 'contained' &&
+              (border ? 'border border-[var(--color-neutral-300)]' : 'border-0'),
+            // Uncontained trigger — only border styling
+            type === 'uncontained' && 'border border-transparent',
+            'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px]'
+          )}
+        >
+          <span className="flex-1 min-w-0 px-[6px] py-[2px] truncate">{triggerText}</span>
+          <span className="pr-[2px] shrink-0">
+            <ChevronIcon open={isOpen} />
+          </span>
+        </button>
+
+        {isOpen && panelContent}
+      </div>
 
       {helperText && (
-        <span className="block text-[14px] leading-[1.6] font-normal text-[var(--color-neutral-700)] mt-[8px]">
+        <span
+          className={cx(
+            'block text-[14px] leading-[1.6] font-normal mt-[8px] px-[16px] transition-colors',
+            isOpen ? 'text-[var(--color-neutral-900)]' : 'text-[var(--color-neutral-700)]'
+          )}
+        >
           {helperText}
         </span>
       )}
-
-      {isOpen && panelContent}
     </div>
   );
 }
