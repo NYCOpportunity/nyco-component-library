@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { ExpandableSelectGroup } from './ExpandableSelectGroup';
 import { ChipGroup } from '../ChipGroup/ChipGroup';
 import type { ExpandableSelectGroupFilter } from '../../types/components';
