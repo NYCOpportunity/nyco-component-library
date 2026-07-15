@@ -2,6 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
+// Shared asset renamer — used by both outputs so Vite 7 sees a single reference.
+// Renames any CSS asset to style.css (there is only one CSS entry: src/styles.css).
+const assetFileNames = (assetInfo: { name?: string }) =>
+  assetInfo.name?.endsWith('.css') ? 'style.css' : (assetInfo.name ?? 'asset');
+
 export default defineConfig({
   plugins: [
     react({
@@ -22,18 +27,12 @@ export default defineConfig({
         {
           format: 'es',
           entryFileNames: 'index.mjs',
-          assetFileNames: (assetInfo) => {
-            if (assetInfo.name === 'style.css') return 'style.css';
-            return assetInfo.name || 'asset';
-          },
+          assetFileNames,
         },
         {
           format: 'cjs',
           entryFileNames: 'index.cjs',
-          assetFileNames: (assetInfo) => {
-            if (assetInfo.name === 'style.css') return 'style.css';
-            return assetInfo.name || 'asset';
-          },
+          assetFileNames,
         },
       ],
     },
