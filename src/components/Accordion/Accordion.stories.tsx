@@ -379,6 +379,11 @@ function InPageNavLayout({ defaultOpen }: { defaultOpen?: boolean }) {
   const [activeId, setActiveId] = React.useState<SectionId>('introduction');
   const contentRef = React.useRef<HTMLDivElement>(null);
 
+  const scrollToSection = React.useCallback((id: string) => {
+    const target = contentRef.current?.querySelector(`#${id}`);
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
   const makeNavItems = (): AccordionNavItem[] =>
     pageSections.map((s) => ({
       label: s.label,
@@ -387,8 +392,7 @@ function InPageNavLayout({ defaultOpen }: { defaultOpen?: boolean }) {
       onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         setActiveId(s.id as SectionId);
-        const target = contentRef.current?.querySelector(`#${s.id}`);
-        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToSection(s.id);
       },
     }));
 

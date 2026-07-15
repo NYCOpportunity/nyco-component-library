@@ -66,6 +66,10 @@ export default [
       'react/prop-types': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
+      // Disable new strict rules added in react-hooks v7.1.1 that flag
+      // valid patterns (controlled state sync, two-pass measurement, etc.)
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/refs': 'off',
     },
   },
 ];
