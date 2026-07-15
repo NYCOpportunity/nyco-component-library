@@ -125,7 +125,7 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
             id={panelId}
             role="region"
             aria-label={title}
-            className="body-regular text-[var(--color-neutral-black)] px-6 max-[999px]:px-4 pt-4 pb-6 w-full shrink-0"
+            className="body-regular text-left text-[var(--color-neutral-black)] px-6 max-[999px]:px-4 pt-4 pb-6 w-full shrink-0"
           >
             {children}
           </div>
