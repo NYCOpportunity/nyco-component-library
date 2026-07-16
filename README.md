@@ -1,69 +1,210 @@
 # NYC Opportunity Component Library
 
-A React component library for NYC Opportunity projects, built with TypeScript, Tailwind CSS, and Storybook.
+A React component library for NYC Opportunity projects, built with TypeScript, Tailwind CSS, and Storybook. Published to Azure Artifacts.
 
 ## Features
 
-- **Tailwind CSS** - Utility-first styling with customizable design system
-- **TypeScript** - Full type safety and excellent developer experience
-- **Storybook** - Interactive component documentation and development environment
-- **Vite** - Fast build tooling and HMR
-- **ESLint & Prettier** - Code quality and consistent formatting
-- **Tree-shakeable** - Optimized bundle size with ES modules
+- **React 18** — peer dependency, supports React 18 and 19
+- **TypeScript** — full type safety and IntelliSense
+- **Tailwind CSS** — design-token-driven styling via CSS custom properties
+- **Storybook 10** — interactive component documentation
+- **Vite 7** — fast library build (ES + CJS)
+- **Tree-shakeable** — named imports only ship the code you use
 
-## Installation
+---
+
+## Using the library (consumers)
+
+### 1. Authenticate to Azure Artifacts (once per machine)
 
 ```bash
-npm install @nycopportunity/component-library
-# or
-pnpm add @nycopportunity/component-library
-# or
-yarn add @nycopportunity/component-library
+npx @azure/ado-npm-auth --config .npmrc
 ```
 
-## Usage
+This opens a browser login to Azure DevOps and writes credentials to `~/.npmrc`.
 
-### Import Components
+### 2. Add the scoped registry to your project
+
+Create or edit `.npmrc` in your project root:
+
+```ini
+@nycopportunity:registry=https://pkgs.dev.azure.com/doitt-compute-services/nyco-products/_packaging/nycopportunity/npm/registry/
+//pkgs.dev.azure.com/doitt-compute-services/nyco-products/_packaging/nycopportunity/npm/registry/:always-auth=true
+```
+
+### 3. Install the package
+
+```bash
+pnpm add @nycopportunity/component-library
+# or
+npm install @nycopportunity/component-library
+```
+
+### 4. Import and use
 
 ```tsx
-import { Button } from '@nycopportunity/component-library';
+// Import the stylesheet once at your app root (e.g. main.tsx)
 import '@nycopportunity/component-library/style.css';
 
+// Import components by name — unused components are tree-shaken
+import { Button, Card, Accordion } from '@nycopportunity/component-library';
+
 function App() {
-  return (
-    <Button variant="primary" size="medium">
-      Click Me
-    </Button>
-  );
+  return <Button variant="primary">Click Me</Button>;
 }
 ```
 
-### Available Components
+---
 
-- **Button** - Versatile button component with multiple variants and sizes
+## Available components
 
-_More components coming soon..._
+Accordion · Breadcrumbs · Button · Card · CardCarousel · Chip · ChipGroup · Divider · Dropdown · DropdownMenu · ExpandableSelect · ExpandableSelectGroup · Footer · GlobalNavigation · Icon · InputField · ListItem · NavDrawer · NavItem · Pagination · SiteNavigation · ToastMessage · Tooltip
 
-## Development
+See **Storybook** for live examples, prop documentation, and design token references.
+
+---
+
+## Local development
 
 ### Prerequisites
 
-- Node.js 18+
-- pnpm 10+ (recommended)
+- Node.js 20+
+- pnpm 10.29.2+
 
-### Setup
+### First-time setup
 
 ```bash
-# Clone the repository
+# Clone the repo
 git clone https://github.com/NYCOpportunity/nyco-component-library.git
 cd nyco-component-library
 
 # Install dependencies
 pnpm install
+```
+
+### Run Storybook
+
+```bash
+pnpm run storybook
+# Opens at http://localhost:6006
+```
+
+### Available scripts
+
+| Script                     | Description                                  |
+| -------------------------- | -------------------------------------------- |
+| `pnpm run storybook`       | Start Storybook dev server                   |
+| `pnpm run build`           | Build the library (`dist/`)                  |
+| `pnpm run build:storybook` | Build static Storybook                       |
+| `pnpm run type-check`      | TypeScript type check                        |
+| `pnpm run lint`            | ESLint                                       |
+| `pnpm run lint:fix`        | ESLint with auto-fix                         |
+| `pnpm run format`          | Prettier format                              |
+| `pnpm run check`           | Lint + type-check + format check (full gate) |
+
+---
+
+## Workflow — deploying changes
+
+### Branching strategy
+
+```
+feature/my-change  →  dev  →  (pipeline publishes)
+```
+
+1. Create a feature branch off `dev`.
+2. Make changes and open a **Pull Request → `dev`**.
+3. When the PR is **merged**, the Azure Pipeline triggers automatically.
+
+### What happens when a PR is merged to `dev`
+
+The pipeline (`azure-pipelines.yml`) runs these steps:
+
+| Step | Action                                              |
+| ---- | --------------------------------------------------- |
+| 1    | Checkout full git history                           |
+| 2    | Install Node.js 20 + pnpm                           |
+| 3    | `pnpm install`                                      |
+| 4    | Quality gate — lint, type-check, format check       |
+| 5    | Generate `.npmrc` with auth token                   |
+| 6    | `npm version patch` — bumps e.g. `0.1.3` → `0.1.4`  |
+| 7    | `pnpm run build` — compiles `dist/`                 |
+| 8    | `pnpm publish` → Azure Artifacts                    |
+| 9    | Commits the version bump + creates git tag `v0.1.4` |
+| 10   | Pushes commit + tag back to `dev`                   |
+
+The version commit uses `[skip ci]` so it does **not** re-trigger the pipeline.
+
+### Publishing manually (if needed)
+
+```bash
+# 1. Run the quality gate
+pnpm run check
+
+# 2. Bump version
+npm version patch   # or minor / major
+
+# 3. Build and publish
+pnpm publish        # prepublishOnly runs clean + build automatically
+
+# 4. Push the version commit and tag
+git push && git push --tags
+```
+
+---
+
+## Pipeline setup (one-time, for admins)
+
+### Azure DevOps — repository permissions
+
+**Project Settings → Repos → your repo → Security**  
+Set for `[Project] Build Service`:
+
+- **Contribute** → Allow
+- **Create tag** → Allow
+
+### Azure DevOps — pipeline secret variable
+
+**Pipelines → your pipeline → Edit → Variables → + Add**
+
+| Name                                    | Value                                        | Secret |
+| --------------------------------------- | -------------------------------------------- | ------ |
+| `NYCO_COMPONENT_LIBRARY_NPM_AUTH_TOKEN` | Base64-encoded PAT with Packaging read/write | ✅     |
+
+To generate the base64 PAT value:
+
+```bash
+printf '%s' 'YOUR_PAT' | base64
+```
+
+---
+
+## Package details
+
+| Field        | Value                                     |
+| ------------ | ----------------------------------------- |
+| Package name | `@nycopportunity/component-library`       |
+| Registry     | Azure Artifacts — `nycopportunity` feed   |
+| ES module    | `dist/index.mjs`                          |
+| CommonJS     | `dist/index.cjs`                          |
+| Types        | `dist/index.d.ts`                         |
+| Stylesheet   | `dist/style.css` (40 KB / 7.6 KB gzipped) |
+
+---
+
+## License
+
+MIT — NYC Opportunity
+
+# Install dependencies
+
+pnpm install
 
 # Start Storybook development server
+
 pnpm run storybook
-```
+
+````
 
 ### Available Scripts
 
@@ -108,7 +249,7 @@ This project includes VS Code configuration for optimal development experience:
    git checkout dev
    git pull origin dev
    git checkout -b feature/your-feature-name
-   ```
+````
 
 2. Make your changes and commit
 
@@ -158,4 +299,4 @@ For issues and questions, please [open an issue](https://github.com/NYCOpportuni
 
 ---
 
-Built with ❤️ by NYC Opportunity
+Built by NYC Opportunity
