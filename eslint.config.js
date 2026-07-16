@@ -12,7 +12,7 @@ export default [
   js.configs.recommended,
   // Node.js scripts at the repo root (e.g. build-npmrc.js)
   {
-    files: ['build-npmrc.js'],
+    files: ['build-npmrc.cjs'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'commonjs',
