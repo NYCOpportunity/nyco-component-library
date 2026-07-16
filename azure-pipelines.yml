@@ -51,7 +51,7 @@ steps:
     displayName: 'Quality gate (lint · type-check · format)'
 
   # 6. Authenticate to Azure Artifacts so pnpm publish can reach the feed
-  - script: node build-npmrc.js
+  - script: node build-npmrc.cjs
     displayName: 'Generate .npmrc with auth token'
     env:
       NYCO_COMPONENT_LIBRARY_NPM_AUTH_TOKEN: $(NYCO_COMPONENT_LIBRARY_NPM_AUTH_TOKEN)
