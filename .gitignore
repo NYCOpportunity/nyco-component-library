@@ -8,6 +8,7 @@ dist
 # Environment variables
 .env
 .env.*
+params.env
 !.env.example
 
 # Logs

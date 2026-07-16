@@ -33,10 +33,10 @@ steps:
     persistCredentials: true
 
   # 2. Node.js
-  - task: NodeTool@0
+  - task: UseNode@1
     displayName: 'Install Node.js $(NODE_VERSION)'
     inputs:
-      versionSpec: $(NODE_VERSION)
+      version: $(NODE_VERSION)
 
   # 3. pnpm
   - script: npm install -g pnpm@$(PNPM_VERSION)
@@ -51,10 +51,10 @@ steps:
     displayName: 'Quality gate (lint · type-check · format)'
 
   # 6. Authenticate to Azure Artifacts so pnpm publish can reach the feed
-  - task: npmAuthenticate@0
-    displayName: 'Authenticate to Azure Artifacts'
-    inputs:
-      workingFile: .npmrc
+  - script: node build-npmrc.js
+    displayName: 'Generate .npmrc with auth token'
+    env:
+      NYCO_COMPONENT_LIBRARY_NPM_AUTH_TOKEN: $(NYCO_COMPONENT_LIBRARY_NPM_AUTH_TOKEN)
 
   # 7. Bump patch version in package.json (no git commit yet)
   - script: npm version patch --no-git-tag-version
