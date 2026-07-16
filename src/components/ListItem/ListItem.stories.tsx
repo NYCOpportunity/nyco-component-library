@@ -1,10 +1,10 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { ListItem } from './ListItem';
 import { useState } from 'react';
 
-const meta = {
+const meta: Meta<typeof ListItem> = {
   title: 'Components/ListItem',
   component: ListItem,
   tags: ['autodocs'],
@@ -115,6 +115,11 @@ const meta = {
     onClick: fn(),
     onSelectedChange: fn(),
   },
+  render: (args) => (
+    <div style={{ width: 260, display: 'flex', flexDirection: 'column' }}>
+      <ListItem {...(args as React.ComponentProps<typeof ListItem>)} />
+    </div>
+  ),
   argTypes: {
     type: {
       control: 'select',
@@ -197,11 +202,6 @@ const listStyle: React.CSSProperties = { width: 260, display: 'flex', flexDirect
 export const Playground: Story = {
   name: 'Playground',
   args: { type: 'standard' },
-  render: (args) => (
-    <div style={listStyle}>
-      <ListItem {...args} />
-    </div>
-  ),
   parameters: {
     docs: {
       description: {
@@ -220,11 +220,6 @@ export const Playground: Story = {
 export const Default: Story = {
   name: 'Standard',
   args: { type: 'standard' },
-  render: (args) => (
-    <div style={listStyle}>
-      <ListItem {...args} />
-    </div>
-  ),
   parameters: {
     docs: {
       description: {
@@ -238,11 +233,6 @@ export const Default: Story = {
 
 export const WithPrimaryLabel: Story = {
   args: { type: 'standard', primaryLabel: 'Primary' },
-  render: (args) => (
-    <div style={listStyle}>
-      <ListItem {...args} />
-    </div>
-  ),
   parameters: {
     docs: {
       description: {
@@ -256,11 +246,6 @@ export const WithPrimaryLabel: Story = {
 
 export const WithSecondaryLabel: Story = {
   args: { type: 'standard', secondaryLabel: 'Secondary' },
-  render: (args) => (
-    <div style={listStyle}>
-      <ListItem {...args} />
-    </div>
-  ),
   parameters: {
     docs: {
       description: {
@@ -274,11 +259,6 @@ export const WithSecondaryLabel: Story = {
 
 export const WithBothLabels: Story = {
   args: { type: 'standard', primaryLabel: 'Primary', secondaryLabel: 'Secondary' },
-  render: (args) => (
-    <div style={listStyle}>
-      <ListItem {...args} />
-    </div>
-  ),
   parameters: {
     docs: {
       description: {
@@ -290,11 +270,6 @@ export const WithBothLabels: Story = {
 
 export const Disabled: Story = {
   args: { type: 'standard', disabled: true },
-  render: (args) => (
-    <div style={listStyle}>
-      <ListItem {...args} />
-    </div>
-  ),
   parameters: {
     docs: {
       description: {

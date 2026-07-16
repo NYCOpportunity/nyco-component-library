@@ -1,0 +1,89 @@
+# azure-pipelines.yml
+#
+# Triggered when a PR is merged into the `dev` branch.
+# Automatically patches the package version, builds, and publishes to
+# Azure Artifacts. The version bump commit is pushed back to dev.
+#
+# Repository permissions required (Project Settings > Repos > Security):
+#   Build Service account → Contribute: Allow
+#   Build Service account → Create tag: Allow
+# ─────────────────────────────────────────────────────────────────────────────
+
+trigger:
+  branches:
+    include:
+      - dev
+
+# Do NOT trigger on PR creation — only on the merge push.
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  NODE_VERSION: '20.x'
+  PNPM_VERSION: '10.29.2'
+
+# ─── Pipeline steps ──────────────────────────────────────────────────────────
+steps:
+  # 1. Check out the full history so npm version can commit/tag.
+  #    persistCredentials lets the pipeline push back to the repo.
+  - checkout: self
+    fetchDepth: 0
+    persistCredentials: true
+
+  # 2. Node.js
+  - task: NodeTool@0
+    displayName: 'Install Node.js $(NODE_VERSION)'
+    inputs:
+      versionSpec: $(NODE_VERSION)
+
+  # 3. pnpm
+  - script: npm install -g pnpm@$(PNPM_VERSION)
+    displayName: 'Install pnpm $(PNPM_VERSION)'
+
+  # 4. Dependencies
+  - script: pnpm install --frozen-lockfile --ignore-scripts
+    displayName: 'Install dependencies'
+
+  # 5. Quality gate — lint, type-check, format
+  - script: pnpm run check
+    displayName: 'Quality gate (lint · type-check · format)'
+
+  # 6. Authenticate to Azure Artifacts so pnpm publish can reach the feed
+  - task: npmAuthenticate@0
+    displayName: 'Authenticate to Azure Artifacts'
+    inputs:
+      workingFile: .npmrc
+
+  # 7. Bump patch version in package.json (no git commit yet)
+  - script: npm version patch --no-git-tag-version
+    displayName: 'Bump patch version'
+
+  # 8. Capture the new version for later steps
+  - script: |
+      VERSION=$(node -p "require('./package.json').version")
+      echo "New version: $VERSION"
+      echo "##vso[task.setvariable variable=NEW_VERSION]$VERSION"
+    displayName: 'Read new version'
+
+  # 9. Build the library (prepublishOnly also runs this, but explicit is safer)
+  - script: pnpm run build
+    displayName: 'Build library'
+
+  # 10. Publish to Azure Artifacts
+  #     --no-git-checks skips the git-dirty check (package.json was modified)
+  - script: pnpm publish --no-git-checks
+    displayName: 'Publish @nycopportunity/component-library@$(NEW_VERSION)'
+
+  # 11. Commit the version bump back to dev and create a git tag.
+  #     [skip ci] prevents this commit from re-triggering the pipeline.
+  - script: |
+      git config user.email "$(Build.RequestedForEmail)"
+      git config user.name "$(Build.RequestedFor)"
+      git add package.json pnpm-lock.yaml
+      git commit -m "chore: release v$(NEW_VERSION) [skip ci]"
+      git tag "v$(NEW_VERSION)"
+      git push origin HEAD:dev
+      git push origin "v$(NEW_VERSION)"
+    displayName: 'Commit version bump and push tag'
