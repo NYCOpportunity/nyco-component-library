@@ -10,6 +10,24 @@ export default [
     ignores: ['dist/**', 'node_modules/**', '.storybook-static/**'],
   },
   js.configs.recommended,
+  // Node.js scripts at the repo root (e.g. build-npmrc.js)
+  {
+    files: ['build-npmrc.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
+      globals: {
+        require: 'readonly',
+        module: 'readonly',
+        exports: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+      },
+    },
+  },
   {
     files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
