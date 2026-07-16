@@ -56,6 +56,39 @@ function App() {
 
 ---
 
+## Updating the library in your project
+
+When a new version is published to Azure Artifacts, update it in your consuming project:
+
+```bash
+# Update to the latest published version
+pnpm update @nycopportunity/component-library
+# or
+npm update @nycopportunity/component-library
+```
+
+To pin to a specific version, edit your `package.json`:
+
+```json
+"@nycopportunity/component-library": "0.1.4"
+```
+
+Then run `pnpm install`.
+
+### Check what version you have
+
+```bash
+pnpm list @nycopportunity/component-library
+```
+
+### Check what versions are available on the feed
+
+```bash
+pnpm view @nycopportunity/component-library versions
+```
+
+---
+
 ## Available components
 
 Accordion · Breadcrumbs · Button · Card · CardCarousel · Chip · ChipGroup · Divider · Dropdown · DropdownMenu · ExpandableSelect · ExpandableSelectGroup · Footer · GlobalNavigation · Icon · InputField · ListItem · NavDrawer · NavItem · Pagination · SiteNavigation · ToastMessage · Tooltip
