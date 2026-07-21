@@ -11,12 +11,8 @@ const sizeClasses: Record<ButtonSize, string> = {
   small: 'px-4 py-3 text-[14px] leading-[20px] font-semibold',
 };
 
-// Link/text variant — minimal padding, font size still responsive
-const linkSizeClasses: Record<ButtonSize, string> = {
-  large:
-    'px-1 py-1 text-[18px] leading-[22px] font-semibold max-[999px]:text-[14px] max-[999px]:leading-[20px]',
-  small: 'px-1 py-1 text-[14px] leading-[20px] font-semibold',
-};
+// Link/text variant — kept for reference but no longer used for sizing
+// (text variant now shares the same padding as primary/secondary)
 
 const iconOnlySizeClasses: Record<ButtonSize, string> = {
   large: 'size-[54px] max-[999px]:size-[44px]',
@@ -61,11 +57,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const classes = cx(
       baseClasses,
-      iconOnly
-        ? iconOnlySizeClasses[size]
-        : variant === 'text'
-          ? linkSizeClasses[size]
-          : sizeClasses[size],
+      iconOnly ? iconOnlySizeClasses[size] : sizeClasses[size],
       radiusClass,
       variantClasses[variant],
       flashing && flashClasses[variant],

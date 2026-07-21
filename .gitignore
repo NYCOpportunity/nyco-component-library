@@ -3,7 +3,7 @@ node_modules
 
 # Build outputs
 dist
-.storybook-static
+storybook-static
 
 # Environment variables
 .env
@@ -39,9 +39,3 @@ coverage
 
 # Misc
 *.tsbuildinfo
-.cache
-.temp
-.tmp
-
-# Vercel
-.vercel
