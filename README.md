@@ -93,7 +93,11 @@ pnpm view @nycopportunity/component-library versions
 
 Accordion · Breadcrumbs · Button · Card · CardCarousel · Chip · ChipGroup · Divider · Dropdown · DropdownMenu · ExpandableSelect · ExpandableSelectGroup · Footer · GlobalNavigation · Icon · InputField · ListItem · NavDrawer · NavItem · Pagination · SiteNavigation · ToastMessage · Tooltip
 
-See **Storybook** for live examples, prop documentation, and design token references.
+See the live **Storybook** for examples, prop documentation, and design token references:
+
+> 🔗 **https://nycopportunity.github.io/nyco-component-library/**
+
+Storybook is hosted on **GitHub Pages** and automatically redeployed whenever code is merged to `dev` or `production`.
 
 ---
 
@@ -142,15 +146,15 @@ pnpm run storybook
 ### Branching strategy
 
 ```
-feature/my-change  →  dev  →  production  →  (pipeline publishes)
+feature/my-change  →  dev (review)  →  production  →  (pipeline publishes)
 ```
 
 1. Create a feature branch off `dev`.
 2. Make changes and open a **Pull Request → `dev`** for review.
 3. Once approved, open a **Pull Request → `production`**.
-4. When that PR is **merged**, the Azure Pipeline triggers automatically.
+4. When that PR is **merged to `production`**, the Azure Pipeline triggers automatically.
 
-### What happens when a PR is merged to `dev`
+### What happens when a PR is merged to `production`
 
 The pipeline (`azure-pipelines.yml`) runs these steps:
 
@@ -165,7 +169,7 @@ The pipeline (`azure-pipelines.yml`) runs these steps:
 | 7    | `pnpm run build` — compiles `dist/`                 |
 | 8    | `pnpm publish` → Azure Artifacts                    |
 | 9    | Commits the version bump + creates git tag `v0.1.4` |
-| 10   | Pushes commit + tag back to `dev`                   |
+| 10   | Pushes commit + tag back to `production`            |
 
 The version commit uses `[skip ci]` so it does **not** re-trigger the pipeline.
 
