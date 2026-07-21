@@ -56,8 +56,6 @@
     "check": "pnpm run lint:ci && pnpm run type-check && pnpm run format:check",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
-    "deploy": "vercel deploy",
-    "deploy:prod": "vercel deploy --prod",
     "prepare": "husky"
   },
   "peerDependencies": {

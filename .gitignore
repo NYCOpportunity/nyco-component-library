@@ -39,9 +39,3 @@ coverage
 
 # Misc
 *.tsbuildinfo
-.cache
-.temp
-.tmp
-
-# Vercel
-.vercel
