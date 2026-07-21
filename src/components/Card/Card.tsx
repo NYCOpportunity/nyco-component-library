@@ -205,7 +205,7 @@ export function Card({
       >
         <h3
           className={cx(
-            'text-[22px] font-semibold leading-[1.4] text-[var(--color-neutral-black)] m-0 line-clamp-2 w-full',
+            'text-left text-[22px] font-semibold leading-[1.4] text-[var(--color-neutral-black)] m-0 line-clamp-2 w-full',
             !bordered &&
               'group-hover:underline group-hover:decoration-[2px] group-hover:underline-offset-[2px]'
           )}
@@ -214,7 +214,7 @@ export function Card({
         </h3>
 
         {description && (
-          <p className="text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-700)] line-clamp-2 w-full m-0">
+          <p className="text-left text-[16px] leading-[1.5] font-normal text-[var(--color-neutral-700)] line-clamp-2 w-full m-0">
             {description}
           </p>
         )}
