@@ -1,18 +1,18 @@
 # azure-pipelines.yml
 #
-# Triggered when a PR is merged into the `dev` branch.
+# Triggered when a PR is merged into the `production` branch.
 # Automatically patches the package version, builds, and publishes to
-# Azure Artifacts. The version bump commit is pushed back to dev.
+# Azure Artifacts. The version bump commit is pushed back to production.
 #
 # Repository permissions required (Project Settings > Repos > Security):
 #   Build Service account → Contribute: Allow
 #   Build Service account → Create tag: Allow
-# ─────────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────
 
 trigger:
   branches:
     include:
-      - dev
+      - production
 
 # Do NOT trigger on PR creation — only on the merge push.
 pr: none
@@ -84,6 +84,6 @@ steps:
       git add package.json pnpm-lock.yaml
       git commit -m "chore: release v$(NEW_VERSION) [skip ci]"
       git tag "v$(NEW_VERSION)"
-      git push origin HEAD:dev
+      git push origin HEAD:production
       git push origin "v$(NEW_VERSION)"
     displayName: 'Commit version bump and push tag'

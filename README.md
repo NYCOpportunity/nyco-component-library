@@ -142,12 +142,13 @@ pnpm run storybook
 ### Branching strategy
 
 ```
-feature/my-change  →  dev  →  (pipeline publishes)
+feature/my-change  →  dev  →  production  →  (pipeline publishes)
 ```
 
 1. Create a feature branch off `dev`.
-2. Make changes and open a **Pull Request → `dev`**.
-3. When the PR is **merged**, the Azure Pipeline triggers automatically.
+2. Make changes and open a **Pull Request → `dev`** for review.
+3. Once approved, open a **Pull Request → `production`**.
+4. When that PR is **merged**, the Azure Pipeline triggers automatically.
 
 ### What happens when a PR is merged to `dev`
 
