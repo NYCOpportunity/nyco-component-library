@@ -1,6 +1,6 @@
 {
   "name": "@nycopportunity/component-library",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A React component library for NYC Opportunity projects, built with TypeScript, Tailwind CSS, and Storybook",
   "keywords": [
     "react",
