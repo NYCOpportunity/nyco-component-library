@@ -124,7 +124,7 @@ export function ToastMessage({
       role={resolvedRole}
       aria-live={ariaLive}
       className={cx(
-        'flex h-fit w-full items-start rounded-[8px] p-[12px]',
+        'flex h-fit w-full max-w-[360px] items-start rounded-[8px] p-[12px]',
         typeStyle.bg,
         className
       )}
@@ -143,12 +143,12 @@ export function ToastMessage({
 
           <div className="flex min-w-0 flex-1 flex-col items-start">
             {title != null && title !== '' && (
-              <p className="m-0 w-full break-words font-primary text-[18px] font-semibold leading-[1.5] text-[var(--color-neutral-black)]">
+              <p className="m-0 w-full break-words text-left font-primary text-[18px] font-semibold leading-[1.5] text-[var(--color-neutral-black)]">
                 {title}
               </p>
             )}
             {description != null && description !== '' && (
-              <p className="m-0 w-full break-words font-primary text-[18px] font-normal leading-[1.5] text-[var(--color-neutral-black)]">
+              <p className="m-0 w-full break-words text-left font-primary text-[18px] font-normal leading-[1.5] text-[var(--color-neutral-black)]">
                 {description}
               </p>
             )}
