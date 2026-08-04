@@ -150,7 +150,11 @@ export function Dropdown({
   return (
     <div
       ref={wrapperRef}
-      className={cx('relative w-full', disabled && 'opacity-20 pointer-events-none', className)}
+      className={cx(
+        '[font-family:var(--font-primary)] relative w-full',
+        disabled && 'opacity-20 pointer-events-none',
+        className
+      )}
     >
       {variant === 'underlined' ? (
         // ── Underlined trigger ──────────────────────────────────────────────

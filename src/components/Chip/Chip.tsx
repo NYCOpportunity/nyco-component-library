@@ -36,7 +36,7 @@ function InfoIcon({ color = '#191919' }: { color?: string }) {
 // ---------------------------------------------------------------------------
 
 const SHELL =
-  'inline-flex items-center rounded-[8px] border px-[10px] py-[8px] select-none [@media(hover:hover)]:transition-colors';
+  '[font-family:var(--font-primary)] inline-flex items-center rounded-[8px] border px-[10px] py-[8px] select-none [@media(hover:hover)]:transition-colors';
 
 // ---------------------------------------------------------------------------
 // Chip — Selectable variant

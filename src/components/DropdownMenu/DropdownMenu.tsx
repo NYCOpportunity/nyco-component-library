@@ -213,7 +213,11 @@ export function DropdownMenu({
   return (
     <div
       ref={wrapperRef}
-      className={cx('relative w-full', disabled && 'opacity-40 pointer-events-none', className)}
+      className={cx(
+        '[font-family:var(--font-primary)] relative w-full',
+        disabled && 'opacity-40 pointer-events-none',
+        className
+      )}
     >
       {label && (
         <span

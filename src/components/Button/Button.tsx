@@ -3,7 +3,7 @@ import { ButtonProps, ButtonSize, ButtonVariant } from '../../types/components';
 import { useFlash } from '../../hooks/useFlash';
 
 const baseClasses =
-  'inline-flex items-center justify-center gap-1 [@media(hover:hover)]:transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] disabled:pointer-events-none';
+  '[font-family:var(--font-primary)] inline-flex items-center justify-center gap-1 [@media(hover:hover)]:transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--color-border-focus)] focus-visible:ring-offset-[2px] disabled:pointer-events-none';
 
 const sizeClasses: Record<ButtonSize, string> = {
   large:

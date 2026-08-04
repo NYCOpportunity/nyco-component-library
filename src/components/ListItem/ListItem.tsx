@@ -84,7 +84,7 @@ export function ListItem({
       onClick={handleClick}
       onPointerDown={handlePointerDown}
       className={cx(
-        'w-full flex items-center overflow-hidden rounded-[8px] text-left',
+        '[font-family:var(--font-primary)] w-full flex items-center overflow-hidden rounded-[8px] text-left',
         paddingClass,
         // Base text color cascades to currentColor for SVG icons
         disabled ? 'text-[var(--color-neutral-300)]' : 'text-[var(--color-neutral-black)]',
