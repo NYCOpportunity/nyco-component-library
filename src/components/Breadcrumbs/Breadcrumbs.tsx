@@ -46,7 +46,7 @@ export const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
       <nav
         ref={ref}
         aria-label="Breadcrumb"
-        className={cx('font-[var(--font-primary)] relative', className)}
+        className={cx('[font-family:var(--font-primary)] relative', className)}
         {...props}
       >
         {/* Hidden probe — measures full-list width to detect container overflow */}

@@ -143,12 +143,12 @@ export function ToastMessage({
 
           <div className="flex min-w-0 flex-1 flex-col items-start">
             {title != null && title !== '' && (
-              <p className="m-0 w-full break-words text-left font-primary text-[18px] font-semibold leading-[1.5] text-[var(--color-neutral-black)]">
+              <p className="m-0 w-full break-words text-left [font-family:var(--font-primary)] text-[18px] font-semibold leading-[1.5] text-[var(--color-neutral-black)]">
                 {title}
               </p>
             )}
             {description != null && description !== '' && (
-              <p className="m-0 w-full break-words text-left font-primary text-[18px] font-normal leading-[1.5] text-[var(--color-neutral-black)]">
+              <p className="m-0 w-full break-words text-left [font-family:var(--font-primary)] text-[18px] font-normal leading-[1.5] text-[var(--color-neutral-black)]">
                 {description}
               </p>
             )}

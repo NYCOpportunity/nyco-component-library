@@ -122,7 +122,7 @@ export function Card({
   const isMobile = useIsMobile();
 
   const rootClasses = cx(
-    'group flex relative cursor-pointer rounded-[8px]',
+    '[font-family:var(--font-primary)] group flex relative cursor-pointer rounded-[8px]',
     isHorizontal ? 'flex-row items-stretch' : 'flex-col items-start',
     bordered &&
       'overflow-clip border border-[var(--color-neutral-300)] transition-shadow duration-200 [@media(hover:hover)]:hover:shadow-[2px_2px_20px_0px_rgba(25,25,25,0.08)]',
