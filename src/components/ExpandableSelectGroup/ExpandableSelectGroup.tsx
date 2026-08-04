@@ -63,12 +63,12 @@ export const ExpandableSelectGroup = React.forwardRef<HTMLDivElement, Expandable
         {(title || subtitle) && (
           <div className="px-[24px] flex flex-col gap-[4px]">
             {title && (
-              <p className="font-primary font-semibold text-[18px] leading-[1.6] text-[var(--color-neutral-black)] m-0">
+              <p className="[font-family:var(--font-primary)] font-semibold text-[18px] leading-[1.6] text-[var(--color-neutral-black)] m-0">
                 {title}
               </p>
             )}
             {subtitle && (
-              <p className="font-primary font-normal text-[16px] leading-[1.6] text-[var(--color-neutral-700,#777)] m-0">
+              <p className="[font-family:var(--font-primary)] font-normal text-[16px] leading-[1.6] text-[var(--color-neutral-700,#777)] m-0">
                 {subtitle}
               </p>
             )}

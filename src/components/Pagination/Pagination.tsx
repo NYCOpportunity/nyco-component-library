@@ -370,7 +370,7 @@ export function Pagination({
     pageSize !== undefined && pageSizeOptions !== undefined && onPageSizeChange !== undefined;
 
   const nav = (
-    <nav aria-label="Pagination" className="flex items-center">
+    <nav aria-label="Pagination" className="[font-family:var(--font-primary)] flex items-center">
       <NavButton direction="prev" disabled={page <= 1} onClick={() => onChange(page - 1)} />
 
       {range.map((item, index) => {

@@ -96,7 +96,7 @@ export const ExpandableSelect = React.forwardRef<HTMLDivElement, ExpandableSelec
           }}
           className={cx(
             'flex h-[48px] items-center px-[12px] py-[8px] w-full rounded-[8px] text-left',
-            'text-[16px] leading-[1.5] font-normal font-primary',
+            '[font-family:var(--font-primary)] text-[16px] leading-[1.5] font-normal',
             'focus-visible:outline-none',
             disabled
               ? 'text-[var(--color-neutral-300)]'
