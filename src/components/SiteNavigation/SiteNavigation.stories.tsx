@@ -383,7 +383,7 @@ function InteractiveChipNav() {
   const [selected, setSelected] = React.useState<string | null>(null);
 
   const navItems: SiteNavItem[] = [
-    // Only chips and dropdowns — no plain NavItem links
+    // Chip NavItems
     ...CHIP_ITEMS.map((item) => ({
       label: item.label,
       navStyle: item.navStyle,
@@ -417,6 +417,9 @@ function InteractiveChipNav() {
         },
       })),
     },
+    // Link-variant NavItems at the end
+    { label: 'NYC Poverty Atlas', href: 'https://example.com', variant: 'link', external: true },
+    { label: 'Equity NYC', href: 'https://example.com', variant: 'link', external: true },
   ];
 
   return (

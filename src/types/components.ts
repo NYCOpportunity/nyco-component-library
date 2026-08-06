@@ -427,6 +427,13 @@ export interface SiteNavItem {
    */
   navStyle?: 'link' | 'chip' | 'dropdown';
   /**
+   * Visual variant forwarded to `NavItem` when `navStyle === 'link'` (or default).
+   * - `'default'` — 5 px bottom border on hover/active.
+   * - `'plain'` — no underline or border.
+   * - `'link'` — text underline on hover.
+   */
+  variant?: 'default' | 'plain' | 'link';
+  /**
    * Navigation links shown in the dropdown panel — required when `navStyle === 'dropdown'`.
    * Each item can be an anchor, a button, or an external link with a north-east arrow.
    */
@@ -536,6 +543,13 @@ export interface NavItemProps {
    * Use for external links that open outside the current site.
    */
   external?: boolean;
+  /**
+   * Visual style of the nav item.
+   * - `'default'` (default) — 5 px bottom border on hover/active.
+   * - `'plain'` — no underline or border; plain text, no hover indicator.
+   * - `'link'` — text underline on hover (not a bottom border); ideal for inline nav links.
+   */
+  variant?: 'default' | 'plain' | 'link';
   /** Called on click. Receives the native mouse event. */
   onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   className?: string;
