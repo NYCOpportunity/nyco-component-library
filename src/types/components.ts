@@ -418,6 +418,26 @@ export interface SiteNavItem {
    * Use for items that trigger a dropdown / mega-menu.
    */
   hasDropdown?: boolean;
+  /**
+   * Desktop rendering style for this item.
+   * - `'link'` (default) — standard `NavItem` with underline on active/hover.
+   * - `'chip'` — `NavItemChip` pill button.
+   * - `'dropdown'` — `NavItemChip` that opens a navigation dropdown panel.
+   * Overrides the global `SiteNavigationProps.navStyle` for this item.
+   */
+  navStyle?: 'link' | 'chip' | 'dropdown';
+  /**
+   * Visual variant forwarded to `NavItem` when `navStyle === 'link'` (or default).
+   * - `'default'` — 5 px bottom border on hover/active.
+   * - `'plain'` — no underline or border.
+   * - `'link'` — text underline on hover.
+   */
+  variant?: 'default' | 'plain' | 'link';
+  /**
+   * Navigation links shown in the dropdown panel — required when `navStyle === 'dropdown'`.
+   * Each item can be an anchor, a button, or an external link with a north-east arrow.
+   */
+  navDropdownItems?: NavDropdownItem[];
   /** Called on click. Receives the native mouse event. */
   onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   className?: string;
@@ -431,6 +451,11 @@ export interface SiteNavigationProps {
   logo: React.ReactNode;
   /** Navigation items. Desktop: `NavItem` links. Mobile drawer: large display-style links. */
   navItems?: SiteNavItem[];
+  /**
+   * Global desktop rendering style applied to all nav items.
+   * Can be overridden per item via `SiteNavItem.navStyle`. Defaults to `'link'`.
+   */
+  navStyle?: 'link' | 'chip' | 'dropdown';
   /** Mobile drawer layout variant. Defaults to `'none'`. */
   drawerVariant?: NavDrawerVariant;
   /** Sectioned data for categorized mobile drawer variant. */
@@ -455,6 +480,127 @@ export interface SiteNavigationProps {
    * Defaults to `false`.
    */
   defaultOpen?: boolean;
+  /**
+   * Color overrides for different segments of the navigation bar.
+   * Values accept any valid CSS color — hex, hsl, or a design token
+   * (`'var(--color-primary-base)'`).
+   *
+   * Each value is applied as a **scoped CSS variable override** on the bar
+   * element, so all child components (NavItem, NavItemChip, dropdown) pick
+   * it up automatically through CSS cascade — no per-component props needed.
+   *
+   * ```tsx
+   * // Dark primary bar
+   * <SiteNavigation
+   *   colors={{
+   *     barBg:            'var(--color-primary-base)',
+   *     barBorder:        'transparent',
+   *     navText:          'white',
+   *     navActiveIndicator: 'white',
+   *     iconColor:        'white',
+   *     chipHoverBg:      'rgba(255,255,255,0.12)',
+   *     chipActiveBg:     'rgba(255,255,255,0.22)',
+   *     dropdownBg:       'var(--color-primary-dark)',
+   *   }}
+   * />
+   * ```
+   */
+  colors?: {
+    // ── Bar ────────────────────────────────────────────────────
+    /** Bar background color. Default: `#ffffff`. */
+    barBg?: string;
+    /** Bar bottom border color. Default: `var(--color-neutral-300)`. */
+    barBorder?: string;
+
+    // ── Text & icons ────────────────────────────────────────
+    /**
+     * Default text color for NavItems and NavItemChips.
+     * Overrides `--color-neutral-black` within the bar.
+     * Default: `var(--color-neutral-black)` = `#191919`.
+     */
+    navText?: string;
+    /**
+     * Text color for external / link-variant NavItems.
+     * Overrides `--color-text-link` within the bar.
+     * Default: `#284cca`.
+     */
+    navLinkText?: string;
+    /**
+     * Active indicator color for NavItem `default` variant (bottom border)
+     * and `link` variant (text underline).
+     * Overrides `--color-primary-base` within the bar.
+     * Default: `var(--color-primary-base)` = `#050560`.
+     */
+    navActiveIndicator?: string;
+    /**
+     * Color for mobile search and hamburger icons.
+     * Default: inherits from `navText` or `--color-neutral-black`.
+     */
+    iconColor?: string;
+
+    // ── NavItemChip ────────────────────────────────────────
+    /**
+     * Chip hover background.
+     * Overrides `--color-neutral-100` within the bar.
+     * Default: `#f5f5f5`.
+     */
+    chipHoverBg?: string;
+    /**
+     * Chip selected/active background.
+     * Overrides `--color-neutral-200` within the bar.
+     * Default: `#eeeeee`.
+     */
+    chipActiveBg?: string;
+    /**
+     * Chip pressed/flash background.
+     * Overrides `--color-neutral-300` within the bar.
+     * Default: `#dddddd`.
+     */
+    chipPressedBg?: string;
+
+    // ── NavItemChipDropdown panel ────────────────────────
+    /**
+     * Dropdown panel background.
+     * Overrides `--color-neutral-white` within the bar.
+     * Default: `#ffffff`.
+     */
+    dropdownBg?: string;
+  };
+  className?: string;
+}
+
+// *** NavItemChip Types ***
+
+/** A single navigation link inside a `NavItemChipDropdown` panel. */
+export interface NavDropdownItem {
+  /** Visible label text. */
+  label: string;
+  /** Renders as `<a>` when provided, `<button>` otherwise. */
+  href?: string;
+  /** Renders in link color with a north-east arrow icon and `rel="noopener noreferrer"`. */
+  external?: boolean;
+  /** Inserts a thin divider **after** this item. */
+  dividerAfter?: boolean;
+  /** Click handler. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+}
+
+export interface NavItemChipProps {
+  /** Text label displayed in the chip. */
+  label: string;
+  /**
+   * URL the chip navigates to (plain chip — no dropdown).
+   * Renders as an `<a>` element when provided, `<button>` otherwise.
+   * Ignored when `dropdownOptions` is provided.
+   */
+  href?: string;
+  /**
+   * Marks this chip as active / selected.
+   * Active: neutral-200 background, no border.
+   */
+  active?: boolean;
+  /** Called on click (plain chip only, no dropdown). */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   className?: string;
 }
 
@@ -483,6 +629,13 @@ export interface NavItemProps {
    * Use for external links that open outside the current site.
    */
   external?: boolean;
+  /**
+   * Visual style of the nav item.
+   * - `'default'` (default) — 5 px bottom border on hover/active.
+   * - `'plain'` — no underline or border; plain text, no hover indicator.
+   * - `'link'` — text underline on hover (not a bottom border); ideal for inline nav links.
+   */
+  variant?: 'default' | 'plain' | 'link';
   /** Called on click. Receives the native mouse event. */
   onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   className?: string;

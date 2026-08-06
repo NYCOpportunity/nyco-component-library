@@ -63,5 +63,12 @@ export type {
   SiteNavItem,
 } from './types/components';
 
+export { NavItemChip, NavItemChipDropdown } from './components/NavItemChip';
+export type {
+  NavItemChipProps,
+  NavItemChipDropdownProps,
+  NavDropdownItem,
+} from './components/NavItemChip';
+
 export { Icon, icons, iconNames } from './components/Icon';
 export type { IconProps, IconName, IconDefinition } from './components/Icon';
