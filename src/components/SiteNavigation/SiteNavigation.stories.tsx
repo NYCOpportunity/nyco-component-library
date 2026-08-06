@@ -275,9 +275,7 @@ export const DrawerOpenWithSearch: Story = {
 // ---------------------------------------------------------------------------
 
 /**
- * NavItemChip — all navigation items rendered as pill chips.
- * Active chip shows a persistent light-grey background.
- * Hover/press steps through neutral-100 → neutral-200 → neutral-300.
+ * ChipNav — only NavItemChips. No plain links, no dropdowns.
  */
 export const ChipNav: Story = {
   args: {
@@ -289,7 +287,6 @@ export const ChipNav: Story = {
     ],
   },
   parameters: {
-    // Force a wide enough canvas so the desktop nav bar (min-1000px) is visible
     viewport: {
       viewports: { wide: { name: 'Wide', styles: { width: '1280px', height: '200px' } } },
       defaultViewport: 'wide',
@@ -297,23 +294,29 @@ export const ChipNav: Story = {
     docs: {
       description: {
         story:
-          'All nav items rendered as **`NavItemChip`** pills. Active chip keeps a light-grey ' +
-          'background. Hover adds `neutral-100`; press flashes `neutral-200`.',
+          'All nav items are **`NavItemChip`** pills. Active chip keeps a light-grey background; ' +
+          'hover adds `neutral-100`; press flashes `neutral-200`.',
       },
     },
   },
 };
 
 /**
- * ChipDropdownNav — chip triggers that open a navigation dropdown panel.
- * The chip always shows its fixed label with a chevron.
- * When the dropdown is open the trigger turns light grey.
+ * ChipDropdownNav — only NavItemChipDropdowns. No plain links, no plain chips.
  */
 export const ChipDropdownNav: Story = {
   args: {
     navItems: [
-      { label: 'Data Tool', href: '#' },
-      { label: 'Stories', href: '#' },
+      {
+        label: 'Data',
+        navStyle: 'dropdown',
+        navDropdownItems: [
+          { label: 'Data Dashboard', href: '#' },
+          { label: 'Common Metrics', href: '#' },
+          { label: 'Data Notes', href: '#', dividerAfter: true },
+          { label: 'Labor Market Data', href: 'https://example.com', external: true },
+        ],
+      },
       {
         label: 'About',
         navStyle: 'dropdown',
@@ -324,8 +327,14 @@ export const ChipDropdownNav: Story = {
           { label: 'NYC.gov', href: 'https://nyc.gov', external: true },
         ],
       },
-      { label: 'NYC Poverty Atlas', href: 'https://example.com', external: true },
-      { label: 'Equity NYC', href: 'https://example.com', external: true },
+      {
+        label: 'Resources',
+        navStyle: 'dropdown',
+        navDropdownItems: [
+          { label: 'Documentation', href: '#' },
+          { label: 'API Reference', href: '#' },
+        ],
+      },
     ],
   },
   parameters: {
@@ -336,8 +345,8 @@ export const ChipDropdownNav: Story = {
     docs: {
       description: {
         story:
-          'One item uses `navStyle: "dropdown"` with `navDropdownItems`. The chip trigger turns ' +
-          'light grey while the panel is open. Items support `href`, `external`, and `dividerAfter`.',
+          'All nav items are **`NavItemChipDropdown`** triggers. Selecting a panel item highlights ' +
+          'both the trigger chip and the chosen option. The trigger resets when another item is selected.',
       },
     },
   },
@@ -374,7 +383,7 @@ function InteractiveChipNav() {
   const [selected, setSelected] = React.useState<string | null>(null);
 
   const navItems: SiteNavItem[] = [
-    // Plain chips — clicking selects / deselects
+    // Only chips and dropdowns — no plain NavItem links
     ...CHIP_ITEMS.map((item) => ({
       label: item.label,
       navStyle: item.navStyle,
@@ -384,7 +393,6 @@ function InteractiveChipNav() {
         setSelected((prev) => (prev === item.id ? null : item.id));
       },
     })),
-    // Dropdown chips — selecting a panel item marks the parent chip as active
     {
       label: 'About',
       navStyle: 'dropdown' as const,
