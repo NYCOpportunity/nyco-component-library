@@ -51,7 +51,6 @@ export function DropdownMenu({
   const [isHovered, setIsHovered] = React.useState(false);
 
   // Compute effective trigger background colors
-  console.log('triggerBgColor:', triggerBgColor);
   const defaultBg =
     type === 'contained'
       ? border
