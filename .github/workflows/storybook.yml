@@ -36,7 +36,7 @@ jobs:
         run: npm install -g pnpm@10.29.2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Storybook
         run: pnpm run build:storybook
