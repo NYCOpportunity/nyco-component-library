@@ -72,3 +72,15 @@ export type {
 
 export { Icon, icons, iconNames } from './components/Icon';
 export type { IconProps, IconName, IconDefinition } from './components/Icon';
+
+export { NavItem } from './components/NavItem';
+export type { NavItemProps } from './types/components';
+
+export { GlobalNavigation } from './components/GlobalNavigation';
+export type { GlobalNavigationProps } from './types/components';
+
+export { SiteNavigation } from './components/SiteNavigation';
+export type { SiteNavigationProps } from './types/components';
+
+export { Footer } from './components/Footer';
+export type { FooterProps, FooterLink, FooterLinkGroup } from './types/components';
