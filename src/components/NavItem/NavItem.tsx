@@ -28,17 +28,12 @@ const baseClasses = [
   'no-underline',
   // Cursor
   'cursor-pointer',
-  // Transparent bottom border always present → no layout shift on hover/active
-  'border-b-[5px] border-b-transparent',
   // Smooth colour transition on pointer-capable devices
   '[@media(hover:hover)]:transition-colors',
   // Focus-visible: filled primary background (per Figma design)
-  // Use !important on border so it beats the active arbitrary-value class
-  // (Tailwind puts arbitrary values later in stylesheet → higher cascade priority)
   'focus-visible:outline-none',
   'focus-visible:bg-[var(--color-primary-base)] focus-visible:text-[var(--color-primary-foreground)]',
   'focus-visible:rounded-[var(--border-radius-base)]',
-  'focus-visible:![border-bottom-color:transparent]',
 ].join(' ');
 
 // ---------------------------------------------------------------------------
@@ -47,7 +42,16 @@ const baseClasses = [
 
 export const NavItem = React.forwardRef<HTMLAnchorElement | HTMLButtonElement, NavItemProps>(
   (
-    { label, href, active = false, hasDropdown = false, external = false, onClick, className },
+    {
+      label,
+      href,
+      active = false,
+      hasDropdown = false,
+      external = false,
+      variant = 'default',
+      onClick,
+      className,
+    },
     ref
   ) => {
     const hasIcon = hasDropdown || external;
@@ -58,17 +62,35 @@ export const NavItem = React.forwardRef<HTMLAnchorElement | HTMLButtonElement, N
       ? 'text-[var(--color-text-link)]'
       : 'text-[var(--color-neutral-black)]';
 
-    const borderClasses = external
-      ? cx(
-          active && 'border-b-[var(--color-text-link)]',
-          '[@media(hover:hover)]:hover:border-b-[var(--color-text-link)]'
-        )
-      : cx(
-          active && 'border-b-[var(--color-primary-base)]',
-          '[@media(hover:hover)]:hover:border-b-[var(--color-primary-base)]'
-        );
+    // ── Variant-specific classes ──────────────────────────────────────────
+    let variantClasses = '';
 
-    const classes = cx(baseClasses, paddingClasses, colorClasses, borderClasses, className);
+    if (variant === 'default') {
+      // 5 px bottom border — transparent always present to prevent layout shift
+      const borderColor = external
+        ? cx(
+            active && 'border-b-[var(--color-text-link)]',
+            '[@media(hover:hover)]:hover:border-b-[var(--color-text-link)]'
+          )
+        : cx(
+            active && 'border-b-[var(--color-primary-base)]',
+            '[@media(hover:hover)]:hover:border-b-[var(--color-primary-base)]'
+          );
+      variantClasses = cx(
+        'border-b-[5px] border-b-transparent',
+        'focus-visible:![border-bottom-color:transparent]',
+        borderColor
+      );
+    } else if (variant === 'link') {
+      // Text underline on hover — no bottom border
+      variantClasses = cx(
+        active && 'underline underline-offset-2',
+        '[@media(hover:hover)]:hover:underline [@media(hover:hover)]:hover:underline-offset-2'
+      );
+    }
+    // variant === 'plain': no underline, no border — variantClasses stays ''
+
+    const classes = cx(baseClasses, paddingClasses, colorClasses, variantClasses, className);
 
     // ── Anchor ──────────────────────────────────────────────────────────────
     if (href) {
