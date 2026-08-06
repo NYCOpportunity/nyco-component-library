@@ -20,9 +20,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build Storybook
+  # Single job: build + deploy in one runner so the OIDC token stays valid
+  # between building and deploying (avoids "Invalid actions OIDC token").
+  deploy:
+    name: Build and Deploy Storybook
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,25 +49,19 @@ jobs:
       - name: Build Storybook
         run: pnpm run build:storybook
 
-      # Preserve custom domain on every deploy (remove if not using a custom domain)
+      # Preserve custom domain on every deploy (skips gracefully if CNAME absent)
       - name: Copy CNAME
         run: cp CNAME storybook-static/CNAME
-        continue-on-error: true # skips gracefully if CNAME doesn't exist
+        continue-on-error: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: storybook-static
 
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
