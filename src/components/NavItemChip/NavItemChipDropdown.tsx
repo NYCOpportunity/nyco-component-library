@@ -123,7 +123,7 @@ export function NavItemChipDropdown({
             const itemClasses = cx(
               '[font-family:var(--font-primary)] flex items-center gap-[6px] w-full text-left',
               'px-[16px] py-[10px]',
-              'text-[16px] leading-[1.5] font-normal',
+              'text-[18px] leading-[1.5] font-normal',
               item.external
                 ? 'text-[var(--color-text-link)] [@media(hover:hover)]:hover:underline [@media(hover:hover)]:hover:underline-offset-2'
                 : cx(
