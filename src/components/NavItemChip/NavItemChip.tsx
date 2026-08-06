@@ -149,6 +149,39 @@ export function NavItemChipDropdown({
     className
   );
 
+  // Smart panel positioning — measure after render and flip if panel goes off-screen
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const [panelStyle, setPanelStyle] = React.useState<React.CSSProperties>({});
+
+  React.useLayoutEffect(() => {
+    if (!isOpen || !panelRef.current) return;
+    const panel = panelRef.current;
+    const rect = panel.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const style: React.CSSProperties = {};
+
+    // Flip horizontal: if panel overflows the right edge, align to right of trigger
+    if (rect.right > vw) {
+      style.left = 'auto';
+      style.right = 0;
+    }
+    // Flip vertical: if panel overflows the bottom, show above the trigger
+    if (rect.bottom > vh) {
+      style.top = 'auto';
+      style.bottom = '100%';
+      style.marginTop = 0;
+      style.marginBottom = '8px';
+    }
+
+    setPanelStyle(style);
+  }, [isOpen]);
+
+  // Reset panel style when closed
+  React.useEffect(() => {
+    if (!isOpen) setPanelStyle({});
+  }, [isOpen]);
+
   return (
     <div ref={wrapperRef} className="relative">
       <button
@@ -165,7 +198,9 @@ export function NavItemChipDropdown({
 
       {isOpen && (
         <div
+          ref={panelRef}
           role="menu"
+          style={panelStyle}
           className="absolute z-50 left-0 top-full mt-[8px] min-w-[200px] bg-[var(--color-neutral-white)] rounded-[12px] shadow-[0px_4px_15px_0px_rgba(25,25,25,0.15)] py-[8px] overflow-hidden"
         >
           {items.map((item, i) => {
