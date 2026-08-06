@@ -480,6 +480,92 @@ export interface SiteNavigationProps {
    * Defaults to `false`.
    */
   defaultOpen?: boolean;
+  /**
+   * Color overrides for different segments of the navigation bar.
+   * Values accept any valid CSS color — hex, hsl, or a design token
+   * (`'var(--color-primary-base)'`).
+   *
+   * Each value is applied as a **scoped CSS variable override** on the bar
+   * element, so all child components (NavItem, NavItemChip, dropdown) pick
+   * it up automatically through CSS cascade — no per-component props needed.
+   *
+   * ```tsx
+   * // Dark primary bar
+   * <SiteNavigation
+   *   colors={{
+   *     barBg:            'var(--color-primary-base)',
+   *     barBorder:        'transparent',
+   *     navText:          'white',
+   *     navActiveIndicator: 'white',
+   *     iconColor:        'white',
+   *     chipHoverBg:      'rgba(255,255,255,0.12)',
+   *     chipActiveBg:     'rgba(255,255,255,0.22)',
+   *     dropdownBg:       'var(--color-primary-dark)',
+   *   }}
+   * />
+   * ```
+   */
+  colors?: {
+    // ── Bar ────────────────────────────────────────────────────
+    /** Bar background color. Default: `#ffffff`. */
+    barBg?: string;
+    /** Bar bottom border color. Default: `var(--color-neutral-300)`. */
+    barBorder?: string;
+
+    // ── Text & icons ────────────────────────────────────────
+    /**
+     * Default text color for NavItems and NavItemChips.
+     * Overrides `--color-neutral-black` within the bar.
+     * Default: `var(--color-neutral-black)` = `#191919`.
+     */
+    navText?: string;
+    /**
+     * Text color for external / link-variant NavItems.
+     * Overrides `--color-text-link` within the bar.
+     * Default: `#284cca`.
+     */
+    navLinkText?: string;
+    /**
+     * Active indicator color for NavItem `default` variant (bottom border)
+     * and `link` variant (text underline).
+     * Overrides `--color-primary-base` within the bar.
+     * Default: `var(--color-primary-base)` = `#050560`.
+     */
+    navActiveIndicator?: string;
+    /**
+     * Color for mobile search and hamburger icons.
+     * Default: inherits from `navText` or `--color-neutral-black`.
+     */
+    iconColor?: string;
+
+    // ── NavItemChip ────────────────────────────────────────
+    /**
+     * Chip hover background.
+     * Overrides `--color-neutral-100` within the bar.
+     * Default: `#f5f5f5`.
+     */
+    chipHoverBg?: string;
+    /**
+     * Chip selected/active background.
+     * Overrides `--color-neutral-200` within the bar.
+     * Default: `#eeeeee`.
+     */
+    chipActiveBg?: string;
+    /**
+     * Chip pressed/flash background.
+     * Overrides `--color-neutral-300` within the bar.
+     * Default: `#dddddd`.
+     */
+    chipPressedBg?: string;
+
+    // ── NavItemChipDropdown panel ────────────────────────
+    /**
+     * Dropdown panel background.
+     * Overrides `--color-neutral-white` within the bar.
+     * Default: `#ffffff`.
+     */
+    dropdownBg?: string;
+  };
   className?: string;
 }
 
