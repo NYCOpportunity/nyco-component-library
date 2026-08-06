@@ -269,3 +269,183 @@ export const DrawerOpenWithSearch: Story = {
     },
   },
 };
+
+// ---------------------------------------------------------------------------
+// NavItemChip stories
+// ---------------------------------------------------------------------------
+
+/**
+ * NavItemChip — all navigation items rendered as pill chips.
+ * Active chip shows a persistent light-grey background.
+ * Hover/press steps through neutral-100 → neutral-200 → neutral-300.
+ */
+export const ChipNav: Story = {
+  args: {
+    navItems: [
+      { label: 'Data Tool', href: '#', navStyle: 'chip' },
+      { label: 'Findings', href: '#', navStyle: 'chip' },
+      { label: 'Methodology', href: '#', navStyle: 'chip', active: true },
+      { label: 'Workforce Data', href: '#', navStyle: 'chip' },
+    ],
+  },
+  parameters: {
+    // Force a wide enough canvas so the desktop nav bar (min-1000px) is visible
+    viewport: {
+      viewports: { wide: { name: 'Wide', styles: { width: '1280px', height: '200px' } } },
+      defaultViewport: 'wide',
+    },
+    docs: {
+      description: {
+        story:
+          'All nav items rendered as **`NavItemChip`** pills. Active chip keeps a light-grey ' +
+          'background. Hover adds `neutral-100`; press flashes `neutral-200`.',
+      },
+    },
+  },
+};
+
+/**
+ * ChipDropdownNav — chip triggers that open a navigation dropdown panel.
+ * The chip always shows its fixed label with a chevron.
+ * When the dropdown is open the trigger turns light grey.
+ */
+export const ChipDropdownNav: Story = {
+  args: {
+    navItems: [
+      { label: 'Data Tool', href: '#' },
+      { label: 'Stories', href: '#' },
+      {
+        label: 'About',
+        navStyle: 'dropdown',
+        navDropdownItems: [
+          { label: 'About Us', href: '#' },
+          { label: 'Our Team', href: '#' },
+          { label: 'Reports', href: '#', dividerAfter: true },
+          { label: 'NYC.gov', href: 'https://nyc.gov', external: true },
+        ],
+      },
+      { label: 'NYC Poverty Atlas', href: 'https://example.com', external: true },
+      { label: 'Equity NYC', href: 'https://example.com', external: true },
+    ],
+  },
+  parameters: {
+    viewport: {
+      viewports: { wide: { name: 'Wide', styles: { width: '1280px', height: '400px' } } },
+      defaultViewport: 'wide',
+    },
+    docs: {
+      description: {
+        story:
+          'One item uses `navStyle: "dropdown"` with `navDropdownItems`. The chip trigger turns ' +
+          'light grey while the panel is open. Items support `href`, `external`, and `dividerAfter`.',
+      },
+    },
+  },
+};
+
+/**
+ * MixedNavStyles — only NavItemChips and NavItemChipDropdowns (no plain NavItem links).
+ * Active chip stays light grey. Dropdown trigger turns grey while open.
+ */
+// ---------------------------------------------------------------------------
+// Interactive wrapper — tracks the selected nav item and updates active state
+// ---------------------------------------------------------------------------
+const CHIP_ITEMS = [
+  { id: 'data-tool', label: 'Data Tool', navStyle: 'chip' as const },
+  { id: 'findings', label: 'Findings', navStyle: 'chip' as const },
+  { id: 'methodology', label: 'Methodology', navStyle: 'chip' as const },
+];
+
+const ABOUT_ITEMS = [
+  { label: 'About Us', href: '#' },
+  { label: 'Our Team', href: '#' },
+  { label: 'Reports', href: '#', dividerAfter: true },
+  { label: 'NYC.gov', href: 'https://nyc.gov', external: true as const },
+];
+
+const DATA_ITEMS = [
+  { label: 'Data Dashboard', href: '#' },
+  { label: 'Common Metrics', href: '#' },
+  { label: 'Data Notes', href: '#', dividerAfter: true },
+  { label: 'Labor Market Data', href: 'https://example.com', external: true as const },
+];
+
+function InteractiveChipNav() {
+  const [selected, setSelected] = React.useState<string | null>(null);
+
+  const navItems: SiteNavItem[] = [
+    // Plain chips — clicking selects / deselects
+    ...CHIP_ITEMS.map((item) => ({
+      label: item.label,
+      navStyle: item.navStyle,
+      active: selected === item.id,
+      onClick: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+        e.preventDefault();
+        setSelected((prev) => (prev === item.id ? null : item.id));
+      },
+    })),
+    // Dropdown chips — selecting a panel item marks the parent chip as active
+    {
+      label: 'About',
+      navStyle: 'dropdown' as const,
+      active: selected === 'about',
+      navDropdownItems: ABOUT_ITEMS.map((d) => ({
+        ...d,
+        onClick: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+          e.preventDefault();
+          setSelected('about');
+        },
+      })),
+    },
+    {
+      label: 'Data',
+      navStyle: 'dropdown' as const,
+      active: selected === 'data',
+      navDropdownItems: DATA_ITEMS.map((d) => ({
+        ...d,
+        onClick: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+          e.preventDefault();
+          setSelected('data');
+        },
+      })),
+    },
+  ];
+
+  return (
+    <div>
+      <SiteNavigation logo={<DemoLogo />} navItems={navItems} />
+      <div
+        style={{
+          padding: '32px 56px',
+          fontFamily: 'Public Sans, sans-serif',
+          fontSize: 14,
+          color: '#777',
+        }}
+      >
+        {selected
+          ? `Selected: "${selected}" — click the same item to deselect.`
+          : 'Click a chip or select an item from a dropdown to highlight it.'}
+      </div>
+    </div>
+  );
+}
+
+export const MixedNavStyles: Story = {
+  render: () => <InteractiveChipNav />,
+  parameters: {
+    layout: 'fullscreen',
+    viewport: {
+      viewports: { wide: { name: 'Wide', styles: { width: '1280px', height: '400px' } } },
+      defaultViewport: 'wide',
+    },
+    docs: {
+      description: {
+        story:
+          'Fully interactive example. Clicking a **chip** toggles its light-grey active state ' +
+          '(click again to deselect). Choosing an item inside a **dropdown** marks its parent ' +
+          'trigger as active. Only one item is active at a time. No page navigation — ' +
+          '`e.preventDefault()` keeps you on the same page.',
+      },
+    },
+  },
+};

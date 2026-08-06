@@ -418,6 +418,19 @@ export interface SiteNavItem {
    * Use for items that trigger a dropdown / mega-menu.
    */
   hasDropdown?: boolean;
+  /**
+   * Desktop rendering style for this item.
+   * - `'link'` (default) — standard `NavItem` with underline on active/hover.
+   * - `'chip'` — `NavItemChip` pill button.
+   * - `'dropdown'` — `NavItemChip` that opens a navigation dropdown panel.
+   * Overrides the global `SiteNavigationProps.navStyle` for this item.
+   */
+  navStyle?: 'link' | 'chip' | 'dropdown';
+  /**
+   * Navigation links shown in the dropdown panel — required when `navStyle === 'dropdown'`.
+   * Each item can be an anchor, a button, or an external link with a north-east arrow.
+   */
+  navDropdownItems?: NavDropdownItem[];
   /** Called on click. Receives the native mouse event. */
   onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   className?: string;
@@ -431,6 +444,11 @@ export interface SiteNavigationProps {
   logo: React.ReactNode;
   /** Navigation items. Desktop: `NavItem` links. Mobile drawer: large display-style links. */
   navItems?: SiteNavItem[];
+  /**
+   * Global desktop rendering style applied to all nav items.
+   * Can be overridden per item via `SiteNavItem.navStyle`. Defaults to `'link'`.
+   */
+  navStyle?: 'link' | 'chip' | 'dropdown';
   /** Mobile drawer layout variant. Defaults to `'none'`. */
   drawerVariant?: NavDrawerVariant;
   /** Sectioned data for categorized mobile drawer variant. */
@@ -455,6 +473,41 @@ export interface SiteNavigationProps {
    * Defaults to `false`.
    */
   defaultOpen?: boolean;
+  className?: string;
+}
+
+// *** NavItemChip Types ***
+
+/** A single navigation link inside a `NavItemChipDropdown` panel. */
+export interface NavDropdownItem {
+  /** Visible label text. */
+  label: string;
+  /** Renders as `<a>` when provided, `<button>` otherwise. */
+  href?: string;
+  /** Renders in link color with a north-east arrow icon and `rel="noopener noreferrer"`. */
+  external?: boolean;
+  /** Inserts a thin divider **after** this item. */
+  dividerAfter?: boolean;
+  /** Click handler. */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+}
+
+export interface NavItemChipProps {
+  /** Text label displayed in the chip. */
+  label: string;
+  /**
+   * URL the chip navigates to (plain chip — no dropdown).
+   * Renders as an `<a>` element when provided, `<button>` otherwise.
+   * Ignored when `dropdownOptions` is provided.
+   */
+  href?: string;
+  /**
+   * Marks this chip as active / selected.
+   * Active: neutral-200 background, no border.
+   */
+  active?: boolean;
+  /** Called on click (plain chip only, no dropdown). */
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   className?: string;
 }
 

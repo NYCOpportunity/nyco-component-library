@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SiteNavigationProps } from '../../types/components';
 import { NavItem } from '../NavItem';
+import { NavItemChip, NavItemChipDropdown } from '../NavItemChip';
 import { NavDrawer } from '../NavDrawer';
 import { cx } from '../../utils/cx';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -37,6 +38,7 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
     {
       logo,
       navItems = [],
+      navStyle: globalNavStyle = 'link',
       drawerVariant = 'none',
       drawerSections,
       drawerFooterLinks = [],
@@ -63,10 +65,40 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
         {/* ── Desktop bar (≥ 1000 px) ──────────────────────────────────── */}
         <div className="hidden min-[1000px]:flex items-center justify-between bg-white border-b border-[var(--color-neutral-300)] px-14 h-[68px]">
           <div className="shrink-0">{logo}</div>
-          <nav aria-label="Site navigation" className="flex items-stretch h-full">
-            {navItems.map(({ className: itemClass, ...item }, i) => (
-              <NavItem key={i} {...item} className={cx('h-full', itemClass)} />
-            ))}
+          <nav aria-label="Site navigation" className="flex items-center gap-[4px] h-full">
+            {navItems.map(
+              ({ className: itemClass, navStyle: itemNavStyle, navDropdownItems, ...item }, i) => {
+                const style = itemNavStyle ?? globalNavStyle;
+
+                if (style === 'dropdown' && navDropdownItems) {
+                  return (
+                    <NavItemChipDropdown
+                      key={i}
+                      label={item.label}
+                      items={navDropdownItems}
+                      active={item.active}
+                      className={itemClass}
+                    />
+                  );
+                }
+
+                if (style === 'chip') {
+                  return (
+                    <NavItemChip
+                      key={i}
+                      label={item.label}
+                      href={item.href}
+                      active={item.active}
+                      onClick={item.onClick}
+                      className={itemClass}
+                    />
+                  );
+                }
+
+                // default: 'link' — standard NavItem
+                return <NavItem key={i} {...item} className={cx('h-full', itemClass)} />;
+              }
+            )}
           </nav>
         </div>
 
