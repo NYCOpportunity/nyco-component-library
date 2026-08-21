@@ -24,7 +24,9 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "tailwind-preset.cjs",
+    "tailwind-preset.d.cts"
   ],
   "sideEffects": [
     "dist/style.css"
@@ -38,7 +40,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./tailwind-preset": {
+      "types": "./tailwind-preset.d.cts",
+      "require": "./tailwind-preset.cjs"
+    }
   },
   "scripts": {
     "build:ts": "tsc -p tsconfig.build.json",
