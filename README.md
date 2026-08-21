@@ -54,6 +54,42 @@ function App() {
 }
 ```
 
+### 5. Add the Tailwind preset for design-token classes
+
+The package exposes a Tailwind preset that maps design tokens to readable utility names without the leading `--`.
+
+```js
+// tailwind.config.js
+const uiPreset = require('@nycopportunity/component-library/tailwind-preset');
+
+module.exports = {
+  presets: [uiPreset],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+};
+```
+
+Then import the shared stylesheet in your app entry:
+
+```tsx
+import '@nycopportunity/component-library/style.css';
+```
+
+Use semantic utility names like these in your app:
+
+```tsx
+<div className="bg-primary text-neutral-900 font-primary rounded-base">Hello</div>
+```
+
+Examples of preset names:
+
+- `bg-primary` → `--color-primary-base`
+- `text-neutral-900` → `--color-neutral-900`
+- `font-primary` → `--font-primary`
+- `font-secondary` → `--font-secondary`
+- `border-default` → `--color-border-default`
+
+This keeps the class names short, readable, and aligned with the actual semantic token names rather than the raw CSS variable syntax.
+
 ---
 
 ## Updating the library in your project
