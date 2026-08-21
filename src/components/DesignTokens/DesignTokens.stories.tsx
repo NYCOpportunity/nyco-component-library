@@ -391,6 +391,44 @@ const devTokenGroups = [
   },
 ];
 
+const presetClassRows = [
+  {
+    className: 'bg-primary',
+    token: '--color-primary-base',
+    description: 'Primary brand background',
+  },
+  {
+    className: 'bg-secondary',
+    token: '--color-secondary-base',
+    description: 'Secondary accent background',
+  },
+  { className: 'text-primary', token: '--color-text-primary', description: 'Primary text color' },
+  {
+    className: 'text-secondary',
+    token: '--color-text-secondary',
+    description: 'Secondary text color',
+  },
+  { className: 'text-link', token: '--color-text-link', description: 'Link text color' },
+  { className: 'text-neutral-900', token: '--color-neutral-900', description: 'Neutral dark text' },
+  {
+    className: 'border-default',
+    token: '--color-border-default',
+    description: 'Default border color',
+  },
+  { className: 'border-error', token: '--color-border-error', description: 'Error border color' },
+  { className: 'font-primary', token: '--font-primary', description: 'Primary body font stack' },
+  {
+    className: 'font-secondary',
+    token: '--font-secondary',
+    description: 'Secondary editorial font stack',
+  },
+  { className: 'font-brand', token: '--font-primary', description: 'Brand alias for primary font' },
+  { className: 'text-sm', token: '--font-size-sm', description: 'Small text size' },
+  { className: 'text-md', token: '--font-size-md', description: 'Body text size' },
+  { className: 'text-lg', token: '--font-size-lg', description: 'Large reading text size' },
+  { className: 'rounded-base', token: '--border-radius-base', description: 'Base form radius' },
+];
+
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
@@ -692,6 +730,91 @@ function DevTokensPage() {
   );
 }
 
+function PresetClassesPage() {
+  return (
+    <div style={{ padding: '40px 32px', maxWidth: 960, fontFamily: 'Public Sans, sans-serif' }}>
+      <h1 style={{ fontSize: '2rem', fontWeight: 600, color: '#191919', marginBottom: 8 }}>
+        Tailwind Preset Classes
+      </h1>
+      <p style={{ fontSize: '0.875rem', color: '#777', marginBottom: 28, lineHeight: 1.6 }}>
+        The preset exposes semantic utility names without the leading <code>--</code> so app code
+        stays readable. Example: <code>bg-primary</code>, <code>text-neutral-900</code>,
+        <code>font-primary</code>.
+      </p>
+      <div
+        style={{
+          display: 'grid',
+          gap: 12,
+          border: '1px solid #eeeeee',
+          borderRadius: 12,
+          background: '#ffffff',
+          overflow: 'hidden',
+        }}
+      >
+        {presetClassRows.map((entry) => (
+          <div
+            key={entry.className}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '220px 1fr 1fr',
+              gap: 16,
+              alignItems: 'center',
+              padding: '12px 16px',
+              borderBottom: '1px solid #f0f0f0',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'monospace',
+                fontSize: '0.75rem',
+                color: '#3f5bbf',
+                fontWeight: 600,
+              }}
+            >
+              {entry.className}
+            </div>
+            <div
+              style={{
+                fontFamily: 'monospace',
+                fontSize: '0.6875rem',
+                color: '#777',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {entry.token}
+            </div>
+            <div
+              style={{
+                fontFamily: 'Public Sans, sans-serif',
+                fontSize: '0.8125rem',
+                color: '#555',
+              }}
+            >
+              {entry.description}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop: 32 }}>
+        <CodeSnippet
+          code={`// tailwind.config.js
+const uiPreset = require('@nycopportunity/component-library/tailwind-preset');
+
+module.exports = {
+  presets: [uiPreset],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+};
+
+// app usage
+<div className="bg-primary text-neutral-900 font-primary rounded-base">
+  Hello
+</div>`}
+        />
+      </div>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Page-level render components (used by stories)
 // ---------------------------------------------------------------------------
@@ -973,6 +1096,10 @@ export const Colors: Story = {
 
 export const DevTokens: Story = {
   render: () => <DevTokensPage />,
+};
+
+export const Presets: Story = {
+  render: () => <PresetClassesPage />,
 };
 
 export const Typography: Story = {
