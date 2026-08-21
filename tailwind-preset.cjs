@@ -1,4 +1,259 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
+const typographyUtilities = {
+  '.display-title': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '2.5rem',
+    letterSpacing: '-0.02em',
+    lineHeight: '114%',
+    fontWeight: '600',
+  },
+  '.display-subtitle': {
+    fontFamily: 'var(--font-secondary)',
+    fontSize: '1.5rem',
+    letterSpacing: 'normal',
+    lineHeight: '130%',
+    fontWeight: '400',
+  },
+  '.display-section-title': {
+    fontFamily: 'var(--font-secondary)',
+    fontSize: '2.5rem',
+    letterSpacing: '-0.01em',
+    lineHeight: '124%',
+    fontWeight: '400',
+  },
+  '.display-product-header': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1.5rem',
+    letterSpacing: 'normal',
+    lineHeight: '140%',
+    fontWeight: '600',
+  },
+  '.heading-h1': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '2.5rem',
+    letterSpacing: '-0.01em',
+    lineHeight: '124%',
+    fontWeight: '600',
+  },
+  '.heading-h2': {
+    fontFamily: 'var(--font-secondary)',
+    fontSize: '2rem',
+    letterSpacing: '-0.01em',
+    lineHeight: '124%',
+    fontWeight: '400',
+  },
+  '.heading-h3': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1.5rem',
+    letterSpacing: '-0.01em',
+    lineHeight: '124%',
+    fontWeight: '600',
+  },
+  '.body-regular': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1.125rem',
+    letterSpacing: 'normal',
+    lineHeight: '150%',
+    fontWeight: '400',
+  },
+  '.body-italic': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1.125rem',
+    letterSpacing: 'normal',
+    lineHeight: '150%',
+    fontStyle: 'italic',
+  },
+  '.body-bold': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1.125rem',
+    letterSpacing: 'normal',
+    lineHeight: '150%',
+    fontWeight: '600',
+  },
+  '.body-link': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1.125rem',
+    letterSpacing: 'normal',
+    lineHeight: '150%',
+    fontWeight: '600',
+    textDecoration: 'underline',
+  },
+  '.ui-16-regular': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1rem',
+    letterSpacing: 'normal',
+    lineHeight: '150%',
+    fontWeight: '400',
+  },
+  '.ui-16-bold': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1rem',
+    letterSpacing: 'normal',
+    lineHeight: '150%',
+    fontWeight: '600',
+  },
+  '.ui-14-regular': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '0.875rem',
+    letterSpacing: 'normal',
+    lineHeight: '160%',
+    fontWeight: '400',
+  },
+  '.ui-14-bold': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '0.875rem',
+    letterSpacing: 'normal',
+    lineHeight: '160%',
+    fontWeight: '600',
+  },
+  '.button-label': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1rem',
+    letterSpacing: 'normal',
+    lineHeight: '1.375rem',
+    fontWeight: '600',
+  },
+  '.button-link-label': {
+    fontFamily: 'var(--font-primary)',
+    fontSize: '1rem',
+    letterSpacing: 'normal',
+    lineHeight: '1.375rem',
+    fontWeight: '600',
+    textDecoration: 'underline',
+  },
+  '@media (max-width: 999px)': {
+    '.display-title': {
+      fontSize: '2.375rem',
+      lineHeight: '114%',
+      fontWeight: '600',
+    },
+    '.display-subtitle': {
+      fontSize: '1.25rem',
+      lineHeight: '130%',
+      fontWeight: '400',
+    },
+    '.display-section-title': {
+      fontSize: '2rem',
+      letterSpacing: '-0.01em',
+      lineHeight: '124%',
+      fontWeight: '400',
+    },
+    '.display-product-header': {
+      fontSize: '1.375rem',
+      lineHeight: '140%',
+      fontWeight: '600',
+    },
+    '.heading-h1': {
+      fontSize: '2.375rem',
+      letterSpacing: 'normal',
+      lineHeight: '130%',
+      fontWeight: '400',
+    },
+    '.heading-h2': {
+      fontSize: '1.75rem',
+      letterSpacing: 'normal',
+      lineHeight: '124%',
+      fontWeight: '400',
+    },
+    '.heading-h3': {
+      fontSize: '1.375rem',
+      letterSpacing: 'normal',
+      lineHeight: '130%',
+      fontWeight: '400',
+    },
+    '.body-regular': {
+      fontSize: '1.125rem',
+      lineHeight: '150%',
+      fontWeight: '400',
+    },
+    '.body-italic': {
+      fontSize: '1.125rem',
+      lineHeight: '150%',
+      fontStyle: 'italic',
+    },
+    '.body-bold': {
+      fontSize: '1.125rem',
+      lineHeight: '150%',
+      fontWeight: '600',
+    },
+    '.body-link': {
+      fontSize: '1.125rem',
+      lineHeight: '150%',
+      fontWeight: '600',
+      textDecoration: 'underline',
+    },
+    '.ui-16-regular': {
+      fontSize: '1rem',
+      lineHeight: '150%',
+      fontWeight: '400',
+    },
+    '.ui-16-bold': {
+      fontSize: '1rem',
+      lineHeight: '150%',
+      fontWeight: '600',
+    },
+    '.ui-14-regular': {
+      fontSize: '0.875rem',
+      lineHeight: '160%',
+      fontWeight: '400',
+    },
+    '.ui-14-italic': {
+      fontSize: '0.875rem',
+      lineHeight: '160%',
+      fontStyle: 'italic',
+    },
+    '.ui-14-bold': {
+      fontSize: '0.875rem',
+      lineHeight: '160%',
+      fontWeight: '600',
+    },
+    '.ui-12-all-caps': {
+      fontSize: '0.75rem',
+      lineHeight: '160%',
+      textTransform: 'uppercase',
+    },
+    '.button-label': {
+      fontSize: '1rem',
+      lineHeight: '1.375rem',
+      fontWeight: '600',
+    },
+    '.button-link-label': {
+      fontSize: '1rem',
+      lineHeight: '1.375rem',
+      fontWeight: '600',
+      textDecoration: 'underline',
+    },
+    '.component-accordion-title': {
+      fontSize: '1.25rem',
+      lineHeight: '140%',
+      fontWeight: '600',
+    },
+    '.component-card-title': {
+      fontSize: '1.375rem',
+      lineHeight: '140%',
+      fontWeight: '600',
+    },
+    '.component-card-link-title': {
+      fontSize: '1.375rem',
+      lineHeight: '140%',
+      fontWeight: '600',
+      textDecoration: 'underline',
+    },
+    '.component-control-panel-title': {
+      fontSize: '1rem',
+      lineHeight: '140%',
+      fontWeight: '600',
+    },
+    '.component-nav-inpage-item': {
+      fontSize: '1.125rem',
+      lineHeight: '130%',
+      fontWeight: '400',
+    },
+  },
+};
+
 const preset = {
   theme: {
     extend: {
@@ -128,6 +383,11 @@ const preset = {
       },
     },
   },
+  plugins: [
+    plugin(function ({ addComponents }) {
+      addComponents(typographyUtilities);
+    }),
+  ],
 };
 
 module.exports = preset;
