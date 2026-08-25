@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { ReactNode } from 'react';
 
 // ---------------------------------------------------------------------------
 // Color data — mirrors CSS custom properties in styles.css
@@ -278,44 +277,6 @@ const fontGroups = [
   },
 ];
 
-const presetClassRows = [
-  {
-    className: 'bg-primary',
-    token: '--color-primary-base',
-    description: 'Primary brand background',
-  },
-  {
-    className: 'bg-secondary',
-    token: '--color-secondary-base',
-    description: 'Secondary accent background',
-  },
-  { className: 'text-primary', token: '--color-text-primary', description: 'Primary text color' },
-  {
-    className: 'text-secondary',
-    token: '--color-text-secondary',
-    description: 'Secondary text color',
-  },
-  { className: 'text-link', token: '--color-text-link', description: 'Link text color' },
-  { className: 'text-neutral-900', token: '--color-neutral-900', description: 'Neutral dark text' },
-  {
-    className: 'border-default',
-    token: '--color-border-default',
-    description: 'Default border color',
-  },
-  { className: 'border-error', token: '--color-border-error', description: 'Error border color' },
-  { className: 'font-primary', token: '--font-primary', description: 'Primary body font stack' },
-  {
-    className: 'font-secondary',
-    token: '--font-secondary',
-    description: 'Secondary editorial font stack',
-  },
-  { className: 'font-brand', token: '--font-primary', description: 'Brand alias for primary font' },
-  { className: 'text-sm', token: '--font-size-sm', description: 'Small text size' },
-  { className: 'text-md', token: '--font-size-md', description: 'Body text size' },
-  { className: 'text-lg', token: '--font-size-lg', description: 'Large reading text size' },
-  { className: 'rounded-base', token: '--border-radius-base', description: 'Base form radius' },
-];
-
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
@@ -493,91 +454,6 @@ function FontGroup({ group, description, classes }: (typeof fontGroups)[number])
   );
 }
 
-function PresetClassesPage() {
-  return (
-    <div style={{ padding: '40px 32px', maxWidth: 960, fontFamily: 'Public Sans, sans-serif' }}>
-      <h1 style={{ fontSize: '2rem', fontWeight: 600, color: '#191919', marginBottom: 8 }}>
-        Tailwind Preset Classes
-      </h1>
-      <p style={{ fontSize: '0.875rem', color: '#777', marginBottom: 28, lineHeight: 1.6 }}>
-        The preset exposes semantic utility names without the leading <code>--</code> so app code
-        stays readable. Example: <code>bg-primary</code>, <code>text-neutral-900</code>,
-        <code>font-primary</code>.
-      </p>
-      <div
-        style={{
-          display: 'grid',
-          gap: 12,
-          border: '1px solid #eeeeee',
-          borderRadius: 12,
-          background: '#ffffff',
-          overflow: 'hidden',
-        }}
-      >
-        {presetClassRows.map((entry) => (
-          <div
-            key={entry.className}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '220px 1fr 1fr',
-              gap: 16,
-              alignItems: 'center',
-              padding: '12px 16px',
-              borderBottom: '1px solid #f0f0f0',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'monospace',
-                fontSize: '0.75rem',
-                color: '#3f5bbf',
-                fontWeight: 600,
-              }}
-            >
-              {entry.className}
-            </div>
-            <div
-              style={{
-                fontFamily: 'monospace',
-                fontSize: '0.6875rem',
-                color: '#777',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {entry.token}
-            </div>
-            <div
-              style={{
-                fontFamily: 'Public Sans, sans-serif',
-                fontSize: '0.8125rem',
-                color: '#555',
-              }}
-            >
-              {entry.description}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div style={{ marginTop: 32 }}>
-        <CodeSnippet
-          code={`// tailwind.config.js
-const uiPreset = require('@nycopportunity/component-library/tailwind-preset');
-
-module.exports = {
-  presets: [uiPreset],
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
-};
-
-// app usage
-<div className="bg-primary text-neutral-900 font-primary rounded-base">
-  Hello
-</div>`}
-        />
-      </div>
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Page-level render components (used by stories)
 // ---------------------------------------------------------------------------
@@ -616,227 +492,6 @@ function TypographyPage() {
   );
 }
 
-function CodeSnippet({ code }: { code: string }) {
-  return (
-    <pre
-      style={{
-        margin: 0,
-        padding: '14px 16px',
-        background: '#191919',
-        color: '#f5f5f5',
-        borderRadius: 8,
-        fontFamily: 'monospace',
-        fontSize: '0.8125rem',
-        lineHeight: 1.65,
-        overflowX: 'auto',
-        whiteSpace: 'pre',
-      }}
-    >
-      <code>{code}</code>
-    </pre>
-  );
-}
-
-function Example({
-  title,
-  description,
-  preview,
-  code,
-}: {
-  title: string;
-  description?: string;
-  preview?: ReactNode;
-  code: string;
-}) {
-  return (
-    <div style={{ marginBottom: 32 }}>
-      <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#191919', margin: '0 0 4px' }}>
-        {title}
-      </h3>
-      {description && (
-        <p style={{ fontSize: '0.8125rem', color: '#777', margin: '0 0 12px', lineHeight: 1.6 }}>
-          {description}
-        </p>
-      )}
-      {preview != null && (
-        <div
-          style={{
-            border: '1px solid #eee',
-            borderRadius: 8,
-            padding: 20,
-            marginBottom: 10,
-            background: '#fff',
-          }}
-        >
-          {preview}
-        </div>
-      )}
-      <CodeSnippet code={code} />
-    </div>
-  );
-}
-
-function UsageSection({ children, note }: { children: ReactNode; note?: string }) {
-  return (
-    <div style={{ margin: '48px 0 20px' }}>
-      <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#191919', margin: 0 }}>
-        {children}
-      </h2>
-      {note && (
-        <p style={{ fontSize: '0.875rem', color: '#777', margin: '6px 0 0', lineHeight: 1.6 }}>
-          {note}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function UsagePage() {
-  return (
-    <div style={{ padding: '40px 32px', maxWidth: 960, fontFamily: 'Public Sans, sans-serif' }}>
-      <h1 style={{ fontSize: '2rem', fontWeight: 600, color: '#191919', marginBottom: 8 }}>
-        Using Tokens
-      </h1>
-      <p style={{ fontSize: '0.875rem', color: '#777', margin: '0 0 12px', lineHeight: 1.6 }}>
-        Every token is a CSS custom property defined in <code>styles.css</code>. Import the
-        stylesheet once at your app root, then reference the variables anywhere — in CSS, inline
-        styles, Tailwind, or JavaScript.
-      </p>
-      <CodeSnippet
-        code={`// app entry (e.g. main.tsx)\nimport '@nycopportunity/component-library/style.css';`}
-      />
-
-      {/* ---------------------------------------------------------------- */}
-      {/* Colors                                                            */}
-      {/* ---------------------------------------------------------------- */}
-      <UsageSection note="Reference the --color-* custom properties — never hard-code hex values, so themes stay consistent.">
-        Pulling colors
-      </UsageSection>
-
-      <Example
-        title="Plain CSS"
-        description="Reference the variable in any stylesheet or CSS module."
-        preview={
-          <span
-            style={{
-              background: 'var(--color-primary-base)',
-              color: 'var(--color-primary-foreground)',
-              padding: '10px 16px',
-              borderRadius: 6,
-              fontWeight: 600,
-              display: 'inline-block',
-            }}
-          >
-            Primary surface
-          </span>
-        }
-        code={`.cta {\n  background: var(--color-primary-base);\n  color: var(--color-primary-foreground);\n}`}
-      />
-
-      <Example
-        title="Inline React style"
-        description="Pass the variable straight into the style object."
-        preview={
-          <span style={{ color: 'var(--color-error-base)', fontWeight: 600 }}>Error message</span>
-        }
-        code={`<span style={{ color: 'var(--color-error-base)' }}>\n  Error message\n</span>`}
-      />
-
-      <Example
-        title="Tailwind (arbitrary value)"
-        description="Wrap the variable in Tailwind's arbitrary-value brackets."
-        preview={
-          <span
-            style={{
-              background: 'var(--color-secondary-base)',
-              color: '#fff',
-              padding: '8px 16px',
-              borderRadius: 6,
-              fontWeight: 600,
-              display: 'inline-block',
-            }}
-          >
-            Secondary
-          </span>
-        }
-        code={`<button className="bg-[var(--color-secondary-base)] text-white px-4 py-2 rounded">\n  Secondary\n</button>`}
-      />
-
-      <Example
-        title="JavaScript (dynamic / data-viz)"
-        description="Resolve a value at runtime — handy for charts, canvas, or SVG fills."
-        preview={
-          <span style={{ display: 'inline-flex', gap: 8 }}>
-            {['01', '02', '03', '04'].map((n) => (
-              <span
-                key={n}
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: 4,
-                  background: `var(--color-data-viz-${n})`,
-                }}
-              />
-            ))}
-          </span>
-        }
-        code={`const styles = getComputedStyle(document.documentElement);\nconst color = styles.getPropertyValue('--color-data-viz-01').trim();\n// → "#3f5bbf"`}
-      />
-
-      {/* ---------------------------------------------------------------- */}
-      {/* Typography                                                        */}
-      {/* ---------------------------------------------------------------- */}
-      <UsageSection note="Apply a typography utility class — one class sets font-family, size, line-height, and weight together.">
-        Pulling typography
-      </UsageSection>
-
-      <Example
-        title="Utility classes"
-        description="The quickest way — the class name is the full type style."
-        preview={
-          <div>
-            <div className="heading-h1" style={{ marginBottom: 4 }}>
-              Heading H1
-            </div>
-            <p className="body-regular" style={{ margin: 0 }}>
-              Body regular paragraph for long-form reading.
-            </p>
-          </div>
-        }
-        code={`<h1 className="heading-h1">Page title</h1>\n<p className="body-regular">Body copy…</p>\n<span className="ui-16-bold">Button label</span>`}
-      />
-
-      <Example
-        title="Font family & size variables"
-        description="For custom rules, compose from the raw font tokens."
-        preview={
-          <span
-            style={{
-              fontFamily: 'var(--font-secondary)',
-              fontSize: 'var(--font-size-lg)',
-              lineHeight: 'var(--line-height-lg)',
-            }}
-          >
-            Source Serif, large
-          </span>
-        }
-        code={`.quote {\n  font-family: var(--font-secondary);\n  font-size: var(--font-size-lg);\n  line-height: var(--line-height-lg);\n}`}
-      />
-
-      <Example
-        title="Typography + color together"
-        description="Combine a type class with a color token for links and emphasis."
-        preview={
-          <span className="ui-16-link" style={{ color: 'var(--color-text-link)' }}>
-            Learn more
-          </span>
-        }
-        code={`<a\n  className="ui-16-link"\n  style={{ color: 'var(--color-text-link)' }}\n>\n  Learn more\n</a>`}
-      />
-    </div>
-  );
-}
-
 function DeveloperReferencePage() {
   const allColorTokens = colorGroups.flatMap((group) =>
     group.colors.map((color) => ({
@@ -864,73 +519,13 @@ function DeveloperReferencePage() {
 
       <div style={{ marginBottom: 48 }}>
         <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#191919', marginBottom: 16 }}>
-          Tailwind preset classes
-        </h2>
-        <div
-          style={{
-            display: 'grid',
-            gap: 12,
-            border: '1px solid #eeeeee',
-            borderRadius: 12,
-            background: '#ffffff',
-            overflow: 'hidden',
-          }}
-        >
-          {presetClassRows.map((entry) => (
-            <div
-              key={entry.className}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '220px 1fr 1fr',
-                gap: 16,
-                alignItems: 'center',
-                padding: '12px 16px',
-                borderBottom: '1px solid #f0f0f0',
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: 'monospace',
-                  fontSize: '0.75rem',
-                  color: '#3f5bbf',
-                  fontWeight: 600,
-                }}
-              >
-                {entry.className}
-              </div>
-              <div
-                style={{
-                  fontFamily: 'monospace',
-                  fontSize: '0.6875rem',
-                  color: '#777',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {entry.token}
-              </div>
-              <div
-                style={{
-                  fontFamily: 'Public Sans, sans-serif',
-                  fontSize: '0.8125rem',
-                  color: '#555',
-                }}
-              >
-                {entry.description}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ marginBottom: 48 }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#191919', marginBottom: 16 }}>
           Color tokens
         </h2>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: 16,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: 20,
           }}
         >
           {allColorTokens.map((color) => (
@@ -950,7 +545,7 @@ function DeveloperReferencePage() {
                   borderBottom: color.value === '#ffffff' ? '1px solid #dddddd' : 'none',
                 }}
               />
-              <div style={{ padding: '10px 12px' }}>
+              <div style={{ padding: '16px' }}>
                 <div style={{ fontWeight: 600, fontSize: '0.75rem', color: '#191919' }}>
                   {color.name}
                 </div>
@@ -973,6 +568,28 @@ function DeveloperReferencePage() {
                   }}
                 >
                   {color.value}
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: '0.75rem',
+                    color: '#3f5bbf',
+                    marginTop: 12,
+                    overflowWrap: 'anywhere',
+                  }}
+                >
+                  bg-{color.variable.replace('--color-', '')}
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: '0.75rem',
+                    color: '#3f5bbf',
+                    marginTop: 4,
+                    overflowWrap: 'anywhere',
+                  }}
+                >
+                  text-{color.variable.replace('--color-', '')}
                 </div>
                 <div style={{ fontSize: '0.6875rem', color: '#555', marginTop: 6 }}>
                   {color.group}
@@ -1039,16 +656,8 @@ export const Colors: Story = {
   render: () => <ColorsPage />,
 };
 
-export const Presets: Story = {
-  render: () => <PresetClassesPage />,
-};
-
 export const Typography: Story = {
   render: () => <TypographyPage />,
-};
-
-export const Usage: Story = {
-  render: () => <UsagePage />,
 };
 
 export const DeveloperReference: Story = {
