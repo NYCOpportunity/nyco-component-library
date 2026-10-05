@@ -81,7 +81,7 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
       <header ref={ref} className={cx('relative', className)}>
         {/* ── Desktop bar (≥ 1000 px) ──────────────────────────────────────────── */}
         <div
-          className="hidden min-[1000px]:flex items-center justify-between bg-white border-b border-[var(--color-neutral-300)] px-14 h-[68px]"
+          className="max-[999px]:hidden min-[1000px]:flex items-center justify-between bg-white border-b border-[var(--color-neutral-300)] px-14 h-[68px]"
           style={barStyle}
         >
           <div className="shrink-0">{logo}</div>
@@ -124,7 +124,7 @@ export const SiteNavigation = React.forwardRef<HTMLElement, SiteNavigationProps>
 
         {/* ── Mobile bar (< 1000 px) ───────────────────────────────────── */}
         <div
-          className="flex min-[1000px]:hidden items-center justify-between bg-white border-b border-[var(--color-neutral-300)] pl-6 pr-2"
+          className="max-[999px]:flex min-[1000px]:hidden items-center justify-between bg-white border-b border-[var(--color-neutral-300)] pl-6 pr-2"
           style={barStyle}
         >
           <div className="shrink-0 flex items-center">{logo}</div>
