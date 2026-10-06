@@ -73,7 +73,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
               className={cx(
                 'mx-auto',
                 // Mobile: 16 px h-padding
-                'px-4 py-12',
+                'max-[599px]:px-4 max-[999px]:py-12',
                 // Tablet: 24 px h-padding
                 'min-[600px]:max-[999px]:px-6',
                 // Desktop: 56 px h-padding
@@ -83,7 +83,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
               <div
                 className={cx(
                   // Mobile: single column stack
-                  'flex flex-col gap-8',
+                  'max-[999px]:flex max-[999px]:flex-col max-[999px]:gap-8',
                   // Desktop: grid layout with logo column + 3 equal columns
                   'min-[1000px]:grid min-[1000px]:[grid-template-columns:minmax(12rem,auto)_1fr_1fr_1fr] min-[1000px]:gap-12'
                 )}
@@ -127,7 +127,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
               className={cx(
                 'mx-auto flex flex-col gap-8',
                 // Mobile: 16 px h-padding
-                'px-4 py-12',
+                'max-[599px]:px-4 max-[999px]:py-12',
                 // Tablet: 24 px h-padding
                 'min-[600px]:max-[999px]:px-6 min-[600px]:max-[999px]:gap-8',
                 // Desktop: 56 px h-padding
@@ -139,7 +139,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(
                 <div
                   className={cx(
                     // Mobile: stacked
-                    'flex flex-col gap-8',
+                    'max-[999px]:flex max-[999px]:flex-col max-[999px]:gap-8',
                     // Desktop: grid with heading column + 3 link columns
                     'min-[1000px]:grid min-[1000px]:[grid-template-columns:minmax(12rem,auto)_1fr_1fr_1fr] min-[1000px]:gap-12'
                   )}
